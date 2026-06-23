@@ -16,6 +16,7 @@
 
   --color-bg-base:        #ffffff;
   --color-bg-page:        #f8fafa;   /* 커뮤니티 등 회색 배경 */
+  --color-bg-outer:       #e7ebec;   /* 앱 바깥(viewport) 배경 — 앱 영역과 구분용 */
   --color-border:         #eaeaea;
   --color-divider:        #eaeaea;
 
@@ -31,6 +32,26 @@
   --color-badge-contest-text: #1976d2;
   --color-badge-review-bg:    #f3e8ff;
   --color-badge-review-text:  #7b1fa2;
+
+  /* 프로젝트 카테고리 배지 (홈 — 커뮤니티 배지와 별도) */
+  --color-badge-hackathon-bg:   #fff3eb;
+  --color-badge-hackathon-text: #e65100;
+  --color-badge-side-bg:        #f0fff4;
+  --color-badge-side-text:      #2e7d32;
+  /* 공모전은 --color-badge-contest-bg/text 재사용 */
+
+  /* 모집 상태 */
+  --color-status-open:   #16a34a;   /* ● 모집 중 */
+  --color-status-urgent: #ef4444;   /* ● 모집 마감임박 */
+
+  /* 역할(직군) 뱃지 */
+  --color-role-badge-text: #444;    /* 배경은 --color-badge-free-bg 재사용 */
+
+  /* 배너 그라디언트 */
+  --gradient-banner: linear-gradient(145deg, #202020 0%, #333333 100%);
+
+  /* 보조 아바타 색상 */
+  --color-avatar-cyan: #b2ebf2;
 
   /* ── Typography ── */
   --font-title: "S-Core Dream", sans-serif;
@@ -62,6 +83,7 @@
   /* ── Shadow ── */
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
   --shadow-fab:  0 6px 12px rgba(127, 255, 212, 0.5);
+  --shadow-app:  0 0 40px rgba(0, 0, 0, 0.12);
 
   /* ── Layout ── */
   --bottom-nav-height:  80px;
