@@ -126,6 +126,7 @@ const AuthPage = {
 
       /* 더미 회원가입 처리 → 성향 테스트로 이동 */
       Storage.set('session', { email, nickname, dummy: true });
+      Storage.remove('quiz_answers');
       showToast('회원가입이 완료되었습니다!', 'success');
       Router.navigate('quiz-1');
     });
