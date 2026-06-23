@@ -1,0 +1,74 @@
+/* ===================================================
+   variables.css — 디자인 토큰 (Figma 기준)
+   =================================================== */
+
+:root {
+  /* ── Color ── */
+  --color-primary:        #5ccfa6;   /* 메인 CTA, 온보딩 버튼 */
+  --color-primary-light:  #7fffd4;   /* FAB, active dot, 아바타 */
+  --color-primary-dark:   #66ccaa;   /* 링크 hover */
+
+  --color-black:          #202020;   /* 기본 텍스트, 진한 버튼 */
+  --color-text-primary:   #333;      /* 온보딩 제목 */
+  --color-text-secondary: #666;      /* 본문 보조 텍스트 */
+  --color-text-muted:     #aaa;      /* 시간, 부가정보 */
+  --color-text-nav-off:   #bbb;      /* 바텀 네비 비활성 */
+
+  --color-bg-base:        #ffffff;
+  --color-bg-page:        #f8fafa;   /* 커뮤니티 등 회색 배경 */
+  --color-border:         #eaeaea;
+  --color-divider:        #eaeaea;
+
+  /* 소셜 로그인 */
+  --color-kakao:          #fee500;
+  --color-kakao-text:     #3c1e1e;
+  --color-naver:          #03c75a;
+
+  /* 커뮤니티 카테고리 배지 */
+  --color-badge-free-bg:      #f5f5f5;
+  --color-badge-free-text:    #555;
+  --color-badge-contest-bg:   #ebf5ff;
+  --color-badge-contest-text: #1976d2;
+  --color-badge-review-bg:    #f3e8ff;
+  --color-badge-review-text:  #7b1fa2;
+
+  /* ── Typography ── */
+  --font-title: "S-Core Dream", sans-serif;
+  --font-body:  "Pretendard", sans-serif;
+
+  --text-xs:   13px;   /* 0.813rem */
+  --text-sm:   14px;   /* 0.875rem */
+  --text-base: 16px;   /* 1rem     */
+  --text-lg:   17px;   /* 1.063rem */
+  --text-xl:   18px;   /* 1.125rem */
+  --text-2xl:  22px;   /* 1.375rem */
+  --text-3xl:  24px;   /* 1.5rem   */
+
+  /* ── Spacing ── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+
+  /* ── Border Radius ── */
+  --radius-sm:    8px;
+  --radius-md:    14px;    /* 카드, 버튼 */
+  --radius-lg:    16px;    /* 온보딩 버튼 */
+  --radius-input: 17px;    /* 인풋 필드 */
+  --radius-full:  9999px;  /* 도트, 칩 */
+
+  /* ── Shadow ── */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-fab:  0 6px 12px rgba(127, 255, 212, 0.5);
+
+  /* ── Layout ── */
+  --bottom-nav-height:  80px;
+  --status-bar-height:  47px;
+  --page-px:            20px;   /* 페이지 좌우 패딩 */
+
+  /* ── Transition ── */
+  --transition-fast:   150ms ease;
+  --transition-normal: 300ms ease;
+}

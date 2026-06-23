@@ -1,0 +1,12 @@
+-- ===================================================
+-- schema.sql — Supabase DB 스키마 (추후 Sprint 1에서 작성)
+-- ===================================================
+
+-- profiles        (id, name, email, avatar_url, bio, skills, personality_type, created_at)
+-- projects        (id, title, category, deadline, members_current, members_total, tech_stack, roles, author_id, created_at)
+-- applications    (id, project_id, user_id, motivation, portfolio_url, status, created_at)
+-- posts           (id, category, title, content, author_id, views, created_at)
+-- comments        (id, post_id, author_id, content, created_at)
+-- bookmarks       (id, user_id, project_id, created_at)
+-- notifications   (id, user_id, type, message, is_read, created_at)
+-- reviews         (id, project_id, author_id, rating, content, created_at)
