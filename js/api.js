@@ -82,39 +82,6 @@ const SAMPLE_POSTS = [
   }
 ];
 
-const QUIZ_QUESTIONS = [
-  {
-    step: 1,
-    question: '프로젝트에서 나는?',
-    options: [
-      { value: 'A', label: '아이디어를 주도한다' },
-      { value: 'B', label: '실행에 집중한다' },
-      { value: 'C', label: '팀을 조율한다' },
-      { value: 'D', label: '완성도를 높인다' }
-    ]
-  },
-  {
-    step: 2,
-    question: '팀 작업 시 선호하는 방식은?',
-    options: [
-      { value: 'A', label: '자유롭게 각자 진행' },
-      { value: 'B', label: '역할 분담 후 협업' },
-      { value: 'C', label: '함께 논의하며 진행' },
-      { value: 'D', label: '문서화 후 체계적으로' }
-    ]
-  },
-  {
-    step: 3,
-    question: '프로젝트 마감이 촉박할 때 나는?',
-    options: [
-      { value: 'A', label: '핵심 기능에만 집중' },
-      { value: 'B', label: '팀원과 즉시 소통' },
-      { value: 'C', label: '우선순위를 재정렬' },
-      { value: 'D', label: '야근도 불사한다' }
-    ]
-  }
-];
-
 const SAMPLE_USER = {
   id: 'user-001',
   name: '박민서',
