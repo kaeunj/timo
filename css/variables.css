@@ -46,6 +46,8 @@
 
   /* 역할(직군) 뱃지 */
   --color-role-badge-text: #444;    /* 배경은 --color-badge-free-bg 재사용 */
+  --color-role-card-bg:     #f0fffb;            /* 상세 페이지 모집 직군 카드 배경 */
+  --color-role-card-border: var(--color-primary-light);
 
   /* 배너 그라디언트 */
   --gradient-banner: linear-gradient(145deg, #202020 0%, #333333 100%);

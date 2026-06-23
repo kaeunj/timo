@@ -32,7 +32,9 @@
   <div id="app">
 
     <!-- ② 상태바 -->
-    <div class="status-bar" aria-hidden="true"></div>
+    <div class="status-bar" aria-hidden="true">
+      <img src="assets/icons/StatusBar.svg" alt="" class="status-bar__img" />
+    </div>
 
     <!-- ③ 페이지 섹션 (16개) -->
 
@@ -304,11 +306,107 @@
     </section>
 
     <section data-page="project-detail" class="page" aria-label="프로젝트 상세">
-      <!-- Phase 4에서 구현 -->
+      <div class="detail__hero">
+        <div class="detail__hero-bg" id="detail-hero-bg" aria-hidden="true"></div>
+        <div class="detail__hero-actions">
+          <button class="icon-btn icon-btn--dark" type="button" data-action="back" aria-label="뒤로가기">
+            <span class="icon-btn-icon icon-btn-icon--back" aria-hidden="true"></span>
+          </button>
+          <div class="detail__hero-actions-right">
+            <button class="icon-btn icon-btn--dark" type="button" data-action="bookmark" aria-label="북마크">
+              <span class="icon-btn-icon icon-btn-icon--bookmark" aria-hidden="true"></span>
+            </button>
+            <button class="icon-btn icon-btn--dark" type="button" data-action="share" aria-label="공유">
+              <span class="icon-btn-icon icon-btn-icon--share" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail__body">
+        <div class="detail__badges">
+          <span class="cat-badge" id="detail-cat-badge"></span>
+          <span class="recruit-status" id="detail-status"></span>
+        </div>
+        <h1 class="detail__title" id="detail-title"></h1>
+
+        <div class="info-grid">
+          <div class="info-grid__item">
+            <img src="assets/icons/deadline-icon.svg" alt="" class="info-grid__icon" aria-hidden="true" />
+            <span class="info-grid__label">마감일</span>
+            <span class="info-grid__value" id="detail-deadline"></span>
+          </div>
+          <div class="info-grid__item">
+            <img src="assets/icons/teampeople-icon.svg" alt="" class="info-grid__icon" aria-hidden="true" />
+            <span class="info-grid__label">팀원 수</span>
+            <span class="info-grid__value" id="detail-team-size"></span>
+          </div>
+          <div class="info-grid__item">
+            <img src="assets/icons/time-icon.svg" alt="" class="info-grid__icon" aria-hidden="true" />
+            <span class="info-grid__label">기간</span>
+            <span class="info-grid__value" id="detail-duration"></span>
+          </div>
+        </div>
+
+        <section class="detail__card">
+          <h2 class="detail__card-title">프로젝트 소개</h2>
+          <p class="detail__description" id="detail-description"></p>
+        </section>
+
+        <section class="detail__card">
+          <h2 class="detail__card-title">모집 직군</h2>
+          <div class="role-badge-list" id="detail-role-list"></div>
+        </section>
+      </div>
+
+      <div class="fixed-action-bar">
+        <span class="fixed-action-bar__applicants" id="detail-applicants"></span>
+        <button class="fixed-action-bar__apply" type="button" data-action="go-apply">지원하기</button>
+      </div>
     </section>
 
     <section data-page="project-apply" class="page" aria-label="프로젝트 지원">
-      <!-- Phase 4에서 구현 -->
+      <header class="apply-header">
+        <button class="app-header__back" type="button" data-action="back" aria-label="뒤로가기">
+          <img src="assets/icons/back-icon.svg" alt="" aria-hidden="true" />
+        </button>
+        <h1 class="apply-header__title">프로젝트 지원</h1>
+      </header>
+
+      <div class="apply-target">
+        <span class="apply-target__label">지원 프로젝트</span>
+        <p class="apply-target__name" id="apply-target-name"></p>
+      </div>
+
+      <form class="apply-form" id="apply-form" novalidate>
+        <div class="apply-form__group">
+          <label class="apply-form__label" for="apply-motivation">지원 동기 <span class="apply-form__required">*</span></label>
+          <textarea
+            class="apply-form__textarea"
+            id="apply-motivation"
+            placeholder="이 프로젝트에 지원하는 이유를 적어주세요"
+          ></textarea>
+        </div>
+
+        <div class="apply-form__group">
+          <label class="apply-form__label" for="apply-portfolio">포트폴리오 링크</label>
+          <div class="apply-form__input-wrap">
+            <img src="assets/icons/link-clip-icon.svg" alt="" class="apply-form__input-icon" aria-hidden="true" />
+            <input class="apply-form__input" type="url" id="apply-portfolio" placeholder="https://..." />
+          </div>
+        </div>
+
+        <div class="apply-form__group">
+          <label class="apply-form__label" for="apply-intro">자기소개 <span class="apply-form__required">*</span></label>
+          <textarea
+            class="apply-form__textarea apply-form__textarea--lg"
+            id="apply-intro"
+            placeholder="간단한 자기소개를 작성해주세요"
+          ></textarea>
+        </div>
+
+        <button type="submit" class="apply-form__submit">지원 완료</button>
+      </form>
     </section>
 
     <section data-page="apply-complete" class="page" aria-label="지원 완료">
@@ -375,6 +473,11 @@
 
     <!-- ⑧ 토스트 -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- ⑨ 홈 인디케이터 (모든 화면 공통, 최상단 오버레이) -->
+    <div class="home-indicator" aria-hidden="true">
+      <img src="assets/icons/HomeIndicator.png" alt="" />
+    </div>
 
   </div><!-- /#app -->
 
