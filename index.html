@@ -409,8 +409,33 @@
       </form>
     </section>
 
-    <section data-page="apply-complete" class="page" aria-label="지원 완료">
-      <!-- Phase 4에서 구현 -->
+    <section data-page="apply-complete" class="page success-page" aria-label="지원 완료">
+      <div class="success">
+        <div class="success-visual" id="success-visual">
+          <div class="success-visual__breathe">
+            <div class="success-visual__badge">
+              <img src="assets/images/check.png" alt="" class="success-visual__badge-img" />
+            </div>
+            <span class="success-visual__deco success-visual__deco--star-1" aria-hidden="true">
+              <img src="assets/icons/star-icon.svg" alt="" />
+            </span>
+            <span class="success-visual__deco success-visual__deco--drop-1" aria-hidden="true"></span>
+            <span class="success-visual__deco success-visual__deco--diamond" aria-hidden="true"></span>
+            <span class="success-visual__deco success-visual__deco--drop-2" aria-hidden="true"></span>
+            <span class="success-visual__deco success-visual__deco--star-2" aria-hidden="true">
+              <img src="assets/icons/star-icon.svg" alt="" />
+            </span>
+            <span class="success-visual__deco success-visual__deco--line" aria-hidden="true"></span>
+          </div>
+        </div>
+        <h1 class="success__title">지원이 완료되었어요!</h1>
+        <p class="success__desc">프로젝트 팀에서 검토 후 연락드릴 예정이에요.</p>
+      </div>
+
+      <div class="success-actions">
+        <button type="button" class="success-actions__btn success-actions__btn--outline" data-action="go-home">홈으로 이동</button>
+        <button type="button" class="success-actions__btn success-actions__btn--primary" data-action="go-applications">내 지원 내역 보기</button>
+      </div>
     </section>
 
     <section data-page="community" class="page" aria-label="커뮤니티">
