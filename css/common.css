@@ -6,7 +6,7 @@
 
 body {
   font-family: var(--font-body);
-  background-color: var(--color-bg-base);
+  background-color: var(--color-bg-outer);
   color: var(--color-black);
   font-size: var(--text-base);
 }
@@ -22,6 +22,7 @@ h1, h2, h3, h4, h5, h6, .title {
   min-height: 100dvh;
   margin: 0 auto;
   background-color: var(--color-bg-base);
+  box-shadow: var(--shadow-app);
   overflow: hidden;
   display: flex;
   flex-direction: column;
