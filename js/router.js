@@ -5,12 +5,13 @@
 const NAV_HIDDEN_PAGES = [
   'onboarding-1', 'onboarding-2',
   'login', 'signup',
-  'quiz-1', 'quiz-2', 'quiz-3', 'quiz-result'
+  'quiz-1', 'quiz-2', 'quiz-3', 'quiz-result',
+  'project-detail', 'project-apply', 'apply-complete'
 ];
 
 /* 탭 버튼 → 활성화 화면 매핑 */
 const NAV_TAB_MAP = {
-  home:      ['home', 'project-detail', 'project-apply', 'apply-complete'],
+  home:      ['home'],
   project:   [],
   community: ['community', 'community-post'],
   mypage:    ['mypage', 'project-review']
@@ -53,8 +54,11 @@ const Router = {
     /* 바텀 네비 업데이트 */
     this._updateBottomNav(pageId);
 
-    /* history 업데이트 */
-    if (!params.noHistory) {
+    /* history 업데이트 — noHistory여도 state는 채워야 뒤로가기 시 popstate.state가
+       null로 빠져 _getInitialPage()로 강제 이동하는 문제가 생기지 않는다 */
+    if (params.noHistory) {
+      history.replaceState({ page: pageId }, '', `#${pageId}`);
+    } else {
       history.pushState({ page: pageId }, '', `#${pageId}`);
     }
 

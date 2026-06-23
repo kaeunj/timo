@@ -1,1 +1,361 @@
-/* project.css — 상세 + 지원 + 지원완료 + 리뷰 — Phase 4에서 구현 */
+/* ===================================================
+   project.css — 프로젝트 상세 (이번 단계: 상세만 구현)
+   =================================================== */
+
+/* ── Hero ── */
+
+.detail__hero {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  height: 204px;
+  overflow: hidden;
+  background-image: var(--gradient-banner);
+}
+
+.detail__hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.detail__hero-actions {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 15px 17px;
+}
+
+.detail__hero-actions-right {
+  display: flex;
+  gap: 9px;
+}
+
+/* ── 본문 ── */
+
+.detail__body {
+  flex: 1;
+  padding: 17px var(--page-px) 110px;
+  background-color: var(--color-bg-page);
+}
+
+.detail__badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail__title {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-black);
+}
+
+/* ── 정보 그리드 (마감일/팀원수/기간 3분할) ── */
+
+.info-grid {
+  display: flex;
+  margin-top: 14px;
+  padding: 15px 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-base);
+}
+
+.info-grid__item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.info-grid__icon {
+  width: 17px;
+  height: 17px;
+}
+
+.info-grid__label {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.info-grid__value {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+/* ── 카드 (프로젝트 소개 / 모집 직군) ── */
+
+.detail__card {
+  margin-top: 15px;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-base);
+}
+
+.detail__card-title {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.detail__description {
+  margin-top: 9px;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.role-badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+/* .role-badge(홈) 위에 덧씌우는 상세 페이지용 모디파이어 — 모든 속성을 재정의 */
+.role-badge--card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-role-card-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-role-card-bg);
+  font-size: inherit;
+}
+
+.role-badge__name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.role-badge__status {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ── 하단 고정 액션바 ── */
+
+.fixed-action-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 13px 29px 15px;
+  background-color: var(--color-bg-base);
+  border-top: 1px solid var(--color-border);
+}
+
+.fixed-action-bar__applicants {
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.fixed-action-bar__apply {
+  flex: 1;
+  height: 64px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-light);
+  font-family: var(--font-body);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-black);
+  transition: opacity var(--transition-fast);
+}
+
+.fixed-action-bar__apply:active {
+  opacity: 0.85;
+}
+
+/* ===================================================
+   프로젝트 지원 (Project Apply)
+   =================================================== */
+
+/* ── 헤더 ── */
+
+.apply-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+  padding: 17px var(--page-px) 19px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.apply-header .app-header__back {
+  margin-left: 0;
+}
+
+.apply-header .app-header__back img {
+  width: 24px;
+  height: 24px;
+}
+
+.apply-header__title {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+/* ── 지원 대상 프로젝트 ── */
+
+.apply-target {
+  flex-shrink: 0;
+  padding: 15px var(--page-px) 16px;
+  background-color: var(--color-badge-free-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.apply-target__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.apply-target__name {
+  margin-top: 2px;
+  font-family: var(--font-title);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+/* ── 지원 폼 ── */
+
+.apply-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: var(--page-px);
+}
+
+.apply-form__group {
+  display: flex;
+  flex-direction: column;
+}
+
+.apply-form__label {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-black);
+}
+
+.apply-form__required {
+  color: var(--color-status-urgent);
+}
+
+.apply-form__textarea {
+  width: 100%;
+  margin-top: 9px;
+  height: 131px;
+  padding: 16px 19px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: #fafafa;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-black);
+  line-height: 1.5;
+  resize: none;
+  transition: border-color var(--transition-fast);
+}
+
+.apply-form__textarea--lg {
+  height: 146px;
+}
+
+.apply-form__textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.apply-form__textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.apply-form__input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 58px;
+  margin-top: 9px;
+  padding: 0 19px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+}
+
+.apply-form__input-wrap:focus-within {
+  border-color: var(--color-primary);
+}
+
+.apply-form__input-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+.apply-form__input {
+  flex: 1;
+  width: auto;
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-black);
+}
+
+.apply-form__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.apply-form__submit {
+  width: 100%;
+  height: 64px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-light);
+  font-family: var(--font-body);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-black);
+  transition: opacity var(--transition-fast);
+}
+
+.apply-form__submit:active {
+  opacity: 0.85;
+}
+
+/* ── 반응형 ── */
+
+@media (min-width: 430px) {
+  .detail__body {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .apply-header,
+  .apply-target,
+  .apply-form {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
