@@ -124,7 +124,10 @@
       this._bindApplyEvents();
     },
 
-    initComplete(params = {}) {},
+    initComplete(params = {}) {
+      this._playCompleteAnimation();
+      this._bindCompleteEvents();
+    },
 
     _render(project) {
       if (!project) return;
@@ -253,6 +256,33 @@
         Storage.set('application_draft', applicationDraft);
 
         Router.navigate('apply-complete', { id: project.id });
+      });
+    },
+
+    /* 페이지 진입마다 등장 애니메이션을 처음부터 재생 (display:none ↔ flex 토글만으로는
+       내부 자식 요소의 animation-delay가 일관되게 재시작되지 않는 브라우저가 있어
+       클래스를 강제로 떼고-리플로우-다시 붙인다) */
+    _playCompleteAnimation() {
+      const page = document.querySelector('[data-page="apply-complete"]');
+      if (!page) return;
+
+      page.classList.remove('is-animating');
+      void page.offsetWidth;
+      page.classList.add('is-animating');
+    },
+
+    _bindCompleteEvents() {
+      if (this._completeBound) return;
+      this._completeBound = true;
+
+      const completeSection = document.querySelector('[data-page="apply-complete"]');
+
+      qs('[data-action="go-home"]', completeSection)?.addEventListener('click', () => {
+        Router.navigate('home');
+      });
+
+      qs('[data-action="go-applications"]', completeSection)?.addEventListener('click', () => {
+        Router.navigate('mypage', { tab: 'applications' });
       });
     }
   };
