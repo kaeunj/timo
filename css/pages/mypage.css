@@ -1,1 +1,297 @@
-/* mypage.css — Phase 6에서 구현 */
+/* ===================================================
+   mypage.css — 마이페이지
+   prefix: myp-  (다른 페이지와 충돌 없음)
+   =================================================== */
+
+/* ── 페이지 래퍼 ── */
+.myp-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-bg-base);
+  overflow: hidden;
+}
+
+/* ── 상단 헤더 ── */
+.myp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px 14px;
+  flex-shrink: 0;
+}
+
+.myp-header__title {
+  font-family: var(--font-body);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--color-black);
+  letter-spacing: -0.52px;
+}
+
+.myp-header__settings {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.myp-header__settings img {
+  width: 26px;
+  height: 26px;
+}
+
+/* ── 스크롤 본문 ── */
+.myp-body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px 26px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── 프로필 카드 ── */
+.myp-profile {
+  display: flex;
+  flex-direction: column;
+}
+
+.myp-profile__top {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: -6px;
+}
+
+.myp-profile__avatar-wrap {
+  width: 92px;
+  height: 92px;
+  border-radius: var(--radius-full);
+  border: 2.5px solid var(--color-primary-light);
+  background-color: var(--color-primary-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.myp-profile__avatar-emoji {
+  font-size: 46px;
+  line-height: 1;
+}
+
+.myp-profile__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.myp-profile__name {
+  font-family: var(--font-body);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-black);
+  letter-spacing: -0.58px;
+  line-height: 1.65;
+}
+
+.myp-profile__role {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.myp-profile__type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: var(--color-primary-light);
+  padding: 5px 16px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+/* ── 통계 박스 ── */
+.myp-stats {
+  display: flex;
+  gap: 20px;
+  padding-top: 34px;
+}
+
+.myp-stats__item {
+  flex: 1;
+  background-color: var(--color-stats-bg);
+  border-radius: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.myp-stats__item:active {
+  background-color: var(--color-border);
+}
+
+.myp-stats__num {
+  font-family: var(--font-body);
+  font-size: 25px;
+  font-weight: 600;
+  color: var(--color-black);
+  letter-spacing: -0.64px;
+  line-height: 1.9;
+}
+
+.myp-stats__label {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── 섹션 헤더 (참여 중인 프로젝트) ── */
+.myp-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.myp-section-head__title {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.myp-section-head__more {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  cursor: pointer;
+}
+
+/* ── 프로젝트 카드 ── */
+.myp-project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.myp-pcard {
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  height: 113px;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+  gap: 13px;
+}
+
+.myp-pcard__left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-left: 13px;
+}
+
+.myp-pcard__icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  flex-shrink: 0;
+}
+
+.myp-pcard__icon--green  { background-color: var(--color-primary-tint); }
+.myp-pcard__icon--orange { background-color: var(--color-badge-hackathon-bg); }
+.myp-pcard__icon--purple { background-color: var(--color-avatar-purple); }
+
+.myp-pcard__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.myp-pcard__name {
+  font-family: var(--font-body);
+  font-size: 13.4px;
+  font-weight: 700;
+  color: var(--color-black);
+  line-height: 1.85;
+  margin-bottom: -5px;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.myp-pcard__sub {
+  font-family: var(--font-body);
+  font-size: 11.4px;
+  color: var(--color-text-secondary);
+  line-height: 1.9;
+}
+
+.myp-pcard__right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-right: 14px;
+}
+
+.myp-pcard__deadline {
+  height: 29px;
+  padding: 0 14px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.myp-pcard__deadline--urgent {
+  background-color: var(--color-deadline-bg);
+  color: var(--color-deadline);
+}
+
+.myp-pcard__deadline--normal {
+  background-color: var(--color-deadline-gray-bg);
+  color: var(--color-deadline-gray);
+}
+
+.myp-pcard__status {
+  height: 29px;
+  padding: 0 14px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.myp-pcard__status--active {
+  background-color: var(--color-status-active-bg);
+  color: var(--color-status-active);
+}

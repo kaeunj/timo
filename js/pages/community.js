@@ -1,6 +1,394 @@
-/* community.js — Phase 5에서 구현 */
+/* ===================================================
+   community.js — 커뮤니티 목록 + 게시글 상세
+   =================================================== */
 
-const CommunityPage = {
-  init(params = {}) {},
-  initPost(params = {}) {}
-};
+const CommunityPage = (() => {
+
+  /* ── 목 데이터 ── */
+  const POSTS = [
+    {
+      id: 1,
+      tab: 'free',
+      badge: 'free',
+      badgeLabel: '자유게시판',
+      title: '해커톤 처음인데 어떻게 준비해야 하나요?',
+      excerpt: '다음 달에 첫 해커톤을 나가게 됐는데요, 처음이라 어떤 준비를 해야 할지 막막합니다. 경험자 분들의 조언 부탁드립니다!',
+      author: '이준혁',
+      authorInitial: '이',
+      avatarClass: 'comm-card__avatar--primary',
+      time: '2시간 전',
+      views: 234,
+      likes: 18,
+      comments: 12,
+      content: '다음 달에 첫 해커톤을 나가게 됐는데요, 처음이라 어떤 준비를 해야 할지 막막합니다. 아이디어 구체화부터 역할 분담까지 경험자 분들의 조언 부탁드립니다! 특히 기술 스택 선택이나 MVP 범위를 어떻게 정하는지 궁금해요.',
+      commentList: [
+        { name: '박서연', initial: '박', avatarClass: 'prv-item__avatar--cyan', text: '기획서를 미리 작성해두면 좋아요!', time: '1시간 전' },
+        { name: '김도현', initial: '김', avatarClass: 'prv-item__avatar--primary', text: 'MVP 기준을 명확히 정하는 게 제일 중요해요.', time: '45분 전' },
+        { name: '최민준', initial: '최', avatarClass: 'prv-item__avatar--purple', text: '팀원들과 사전에 기술 스택 맞춰두세요!', time: '30분 전' },
+      ]
+    },
+    {
+      id: 2,
+      tab: 'contest',
+      badge: 'contest',
+      badgeLabel: '공모전 정보',
+      title: '2026 스마트시티 공모전 참가자 모집',
+      excerpt: '스마트시티 공모전 정보 공유합니다. 마감은 7월 말입니다.',
+      author: '김서연',
+      authorInitial: '김',
+      avatarClass: 'comm-card__avatar--primary',
+      time: '5시간 전',
+      views: 412,
+      likes: 45,
+      comments: 23,
+      content: '2026 스마트시티 혁신 아이디어 공모전 정보 공유합니다!\n\n주최: 한국스마트시티학회\n마감: 2026년 7월 31일\n시상: 대상(500만원), 최우수(200만원), 우수(100만원)\n\n1~4인 팀 구성 가능하며, 학생 참여 가능합니다. 관심 있는 분들은 댓글 달아주세요!',
+      commentList: [
+        { name: '이준혁', initial: '이', avatarClass: 'prv-item__avatar--primary', text: '좋은 정보 감사해요! 팀 구하는 중인데 같이 해볼 분 계신가요?', time: '4시간 전' },
+        { name: '박민서', initial: '박', avatarClass: 'prv-item__avatar--cyan', text: '저도 참가하고 싶어요. 기획자인데 연락해도 될까요?', time: '3시간 전' },
+      ]
+    },
+    {
+      id: 3,
+      tab: 'review',
+      badge: 'review',
+      badgeLabel: '프로젝트 후기',
+      title: 'TIMO로 만난 팀원과 공모전 수상했어요 🏆',
+      excerpt: '지난 3개월간 TIMO를 통해 만난 팀원들과 공모전에서 수상의 영광을 안았습니다!',
+      author: '박민서',
+      authorInitial: '박',
+      avatarClass: 'comm-card__avatar--cyan',
+      time: '1일 전',
+      views: 892,
+      likes: 134,
+      comments: 56,
+      content: '지난 3개월간 TIMO를 통해 만난 팀원들과 함께 공모전에 참가해서 수상의 영광을 안았습니다! 🏆\n\n처음에는 온라인으로만 만난 사람들이라 걱정도 됐는데, TIMO의 성향 테스트 덕분에 서로 잘 맞는 팀원들을 만날 수 있었어요. 소통도 원활하고 각자 맡은 역할에 최선을 다해줬습니다.\n\nTIMO 덕분에 좋은 팀원들을 만났어요. 다들 감사합니다!',
+      commentList: [
+        { name: '이지은', initial: '이', avatarClass: 'prv-item__avatar--primary', text: '축하드려요! 저도 TIMO로 좋은 팀원 찾고 싶네요.', time: '20시간 전' },
+        { name: '김도현', initial: '김', avatarClass: 'prv-item__avatar--primary', text: '정말 대단하세요! 어떤 공모전인지 여쭤봐도 될까요?', time: '18시간 전' },
+        { name: '최민준', initial: '최', avatarClass: 'prv-item__avatar--purple', text: '동기부여가 됩니다 감사해요!', time: '10시간 전' },
+      ]
+    },
+    {
+      id: 4,
+      tab: 'free',
+      badge: 'free',
+      badgeLabel: '자유게시판',
+      title: '사이드 프로젝트 첫 배포 성공했어요!',
+      excerpt: '3개월 동안 TIMO 팀원들과 함께 만든 사이드 프로젝트를 드디어 배포했습니다. 많이 사용해주세요!',
+      author: '정하윤',
+      authorInitial: '정',
+      avatarClass: 'comm-card__avatar--primary',
+      time: '2일 전',
+      views: 563,
+      likes: 89,
+      comments: 31,
+      content: '3개월간 TIMO 팀원들과 함께 만든 사이드 프로젝트를 드디어 배포했습니다!\n\n캠퍼스 내 구인구직 플랫폼인데, 팀원들 덕분에 생각보다 훨씬 완성도 있게 나왔어요. 많이 사용해주시고 피드백도 부탁드려요!',
+      commentList: [
+        { name: '이준혁', initial: '이', avatarClass: 'prv-item__avatar--primary', text: '축하해요! 링크 공유해주실 수 있나요?', time: '1일 전' },
+        { name: '박민서', initial: '박', avatarClass: 'prv-item__avatar--cyan', text: '대단하세요! 저도 배포해보고 싶어요.', time: '1일 전' },
+      ]
+    },
+    {
+      id: 5,
+      tab: 'contest',
+      badge: 'contest',
+      badgeLabel: '공모전 정보',
+      title: '2026 AI 해커톤 팀원 모집 중',
+      excerpt: '7월 셋째 주 진행 예정인 AI 해커톤 참가팀 모집합니다. 백엔드/프론트엔드 1명씩 필요해요.',
+      author: '최유나',
+      authorInitial: '최',
+      avatarClass: 'comm-card__avatar--cyan',
+      time: '3일 전',
+      views: 321,
+      likes: 47,
+      comments: 19,
+      content: '7월 셋째 주 진행 예정인 AI 해커톤 참가팀 모집합니다!\n\n현재 기획 1명, 디자인 1명으로 구성되어 있고 백엔드/프론트엔드 각 1명씩 추가 모집 중입니다.\n\n주제: AI를 활용한 헬스케어 서비스\n일정: 2026년 7월 18~19일 (1박 2일)\n관심 있으신 분들은 댓글이나 DM 주세요!',
+      commentList: [
+        { name: '이준혁', initial: '이', avatarClass: 'prv-item__avatar--primary', text: '프론트엔드 지원 가능합니다! 연락드려도 될까요?', time: '2일 전' },
+        { name: '정하윤', initial: '정', avatarClass: 'prv-item__avatar--primary', text: '저도 백엔드 쪽으로 관심 있어요.', time: '2일 전' },
+      ]
+    },
+    {
+      id: 6,
+      tab: 'review',
+      badge: 'review',
+      badgeLabel: '프로젝트 후기',
+      title: '첫 해커톤 참가 후기 — 비록 수상은 못했지만',
+      excerpt: 'TIMO를 통해 만난 팀원들과 함께한 첫 해커톤. 결과는 아쉽지만 얻은 것들이 더 많았어요.',
+      author: '김도현',
+      authorInitial: '김',
+      avatarClass: 'comm-card__avatar--primary',
+      time: '4일 전',
+      views: 674,
+      likes: 102,
+      comments: 44,
+      content: 'TIMO를 통해 만난 팀원들과 함께한 첫 해커톤 후기입니다.\n\n결과는 아쉽게도 수상을 못 했지만, 그 과정에서 얻은 것들이 훨씬 더 많았어요. 빠른 의사결정, 역할 분담, 그리고 밤새 함께 고생한 팀원들과의 유대감까지!\n\n다음 번에는 꼭 수상하고 싶어요. 함께 해준 팀원들 모두 감사해요 🙏',
+      commentList: [
+        { name: '박민서', initial: '박', avatarClass: 'prv-item__avatar--cyan', text: '과정이 중요하죠! 다음엔 꼭 수상하실 거에요.', time: '3일 전' },
+        { name: '최유나', initial: '최', avatarClass: 'prv-item__avatar--purple', text: '고생 많으셨어요. 다음 해커톤도 화이팅!', time: '3일 전' },
+      ]
+    }
+  ];
+
+  let _currentTab = 'free';
+  let _currentPostId = null;
+  let _likedPosts = new Set();
+  let _savedPosts = new Set();
+  let _commentCounts = {};   // postId → extra comments added locally
+
+  /* ── 커뮤니티 목록 ── */
+  function init(params = {}) {
+    _renderList(_currentTab);
+    _bindTabs();
+  }
+
+  function _bindTabs() {
+    const tabs = document.querySelectorAll('[data-comm-tab]');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        _currentTab = btn.dataset.commTab;
+        tabs.forEach(t => {
+          t.classList.toggle('comm-tabs__item--active', t === btn);
+          t.setAttribute('aria-selected', t === btn ? 'true' : 'false');
+        });
+        _renderList(_currentTab);
+      });
+    });
+  }
+
+  function _renderList(tab) {
+    const container = document.getElementById('comm-list');
+    if (!container) return;
+    const filtered = POSTS.filter(p => p.tab === tab);
+
+    container.innerHTML = filtered.map(post => {
+      const extraComments = _commentCounts[post.id] || 0;
+      return `
+        <article class="comm-card" role="listitem" data-post-id="${post.id}" tabindex="0" aria-label="${post.title}">
+          <span class="comm-card__badge comm-card__badge--${post.badge}">${post.badgeLabel}</span>
+          <h2 class="comm-card__title">${post.title}</h2>
+          <p class="comm-card__excerpt">${post.excerpt}</p>
+          <div class="comm-card__meta">
+            <div class="comm-card__avatar ${post.avatarClass}">${post.authorInitial}</div>
+            <span class="comm-card__author">${post.author}</span>
+            <span class="comm-card__time">${post.time}</span>
+          </div>
+          <div class="comm-card__divider"></div>
+          <div class="comm-card__stats">
+            <span class="comm-card__stat">
+              <svg class="comm-card__stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              ${post.views}
+            </span>
+            <span class="comm-card__stat">
+              <svg class="comm-card__stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+              ${post.likes + (_likedPosts.has(post.id) ? 1 : 0)}
+            </span>
+            <span class="comm-card__stat">
+              <svg class="comm-card__stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              ${post.comments + extraComments}
+            </span>
+          </div>
+        </article>`;
+    }).join('');
+
+    /* 카드 클릭 → 상세 이동 */
+    container.querySelectorAll('.comm-card').forEach(card => {
+      const handler = () => {
+        _currentPostId = Number(card.dataset.postId);
+        Router.navigate('community-post');
+      };
+      card.addEventListener('click', handler);
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') handler(); });
+    });
+  }
+
+  /* ── 커뮤니티 게시글 상세 ── */
+  function initPost(params = {}) {
+    const post = POSTS.find(p => p.id === _currentPostId);
+    if (!post) {
+      Router.navigate('community');
+      return;
+    }
+    _renderPost(post);
+    _bindPostActions(post);
+    _bindCommentSubmit(post);
+    _bindBackBtn();
+  }
+
+  function _renderPost(post) {
+    const body = document.getElementById('comm-post-body');
+    if (!body) return;
+
+    const liked  = _likedPosts.has(post.id);
+    const saved  = _savedPosts.has(post.id);
+    const extraC = _commentCounts[post.id] || 0;
+
+    const commentsHtml = post.commentList.map(c => `
+      <div class="comm-post__comment">
+        <div class="comm-post__comment-avatar ${c.avatarClass}" style="background-color:${_avatarBg(c.avatarClass)}">${c.initial}</div>
+        <div class="comm-post__comment-bubble">
+          <div class="comm-post__comment-name">${c.name}</div>
+          <div class="comm-post__comment-text">${c.text}</div>
+          <div class="comm-post__comment-time">${c.time}</div>
+        </div>
+      </div>`).join('');
+
+    const localCommentsHtml = _getLocalComments(post.id).map(c => `
+      <div class="comm-post__comment" id="comm-local-comment-${c.id}">
+        <div class="comm-post__comment-avatar" style="background-color:var(--color-primary-light)">김</div>
+        <div class="comm-post__comment-bubble">
+          <div class="comm-post__comment-name">김티모 (나)</div>
+          <div class="comm-post__comment-text">${c.text}</div>
+          <div class="comm-post__comment-time">방금</div>
+        </div>
+      </div>`).join('');
+
+    const contentLines = post.content.split('\n').map(l => l ? `<p>${l}</p>` : '<br>').join('');
+
+    body.innerHTML = `
+      <span class="comm-post__badge comm-post__badge--${post.badge}">${post.badgeLabel}</span>
+      <h1 class="comm-post__title">${post.title}</h1>
+      <div class="comm-post__author">
+        <div class="comm-post__author-avatar" style="background-color:${_avatarBg(post.avatarClass)}">${post.authorInitial}</div>
+        <div class="comm-post__author-info">
+          <span class="comm-post__author-name">${post.author}</span>
+          <span class="comm-post__author-meta">${post.time} · 조회 ${post.views}</span>
+        </div>
+      </div>
+      <div class="comm-post__divider"></div>
+      <div class="comm-post__content">${contentLines}</div>
+      <div class="comm-post__actions">
+        <button class="comm-post__action-btn ${liked ? 'comm-post__action-btn--liked' : ''}" id="comm-like-btn" type="button" aria-pressed="${liked}">
+          <span class="comm-post__action-emoji">👍</span>
+          좋아요 ${post.likes + (liked ? 1 : 0)}
+        </button>
+        <button class="comm-post__action-btn" id="comm-share-btn" type="button">
+          <span class="comm-post__action-emoji">🔗</span>공유
+        </button>
+        <button class="comm-post__action-btn ${saved ? 'comm-post__action-btn--liked' : ''}" id="comm-save-btn" type="button" aria-pressed="${saved}">
+          <span class="comm-post__action-emoji">${saved ? '🔖' : '🔖'}</span>저장
+        </button>
+      </div>
+      <div class="comm-post__divider"></div>
+      <div class="comm-post__comments-title">댓글 ${post.comments + extraC}개</div>
+      <div id="comm-comment-list">
+        ${commentsHtml}
+        ${localCommentsHtml}
+      </div>`;
+  }
+
+  function _avatarBg(cls) {
+    if (cls.includes('cyan'))   return 'var(--color-avatar-cyan)';
+    if (cls.includes('purple')) return 'var(--color-avatar-purple)';
+    return 'var(--color-primary-light)';
+  }
+
+  /* 로컬 댓글 저장소 */
+  const _localComments = {};
+  let _localCommentIdSeq = 1;
+
+  function _getLocalComments(postId) {
+    return _localComments[postId] || [];
+  }
+
+  function _addLocalComment(postId, text) {
+    if (!_localComments[postId]) _localComments[postId] = [];
+    const c = { id: _localCommentIdSeq++, text };
+    _localComments[postId].push(c);
+    _commentCounts[postId] = (_commentCounts[postId] || 0) + 1;
+    return c;
+  }
+
+  function _bindPostActions(post) {
+    /* 좋아요 */
+    document.getElementById('comm-like-btn')?.addEventListener('click', (e) => {
+      if (_likedPosts.has(post.id)) {
+        _likedPosts.delete(post.id);
+      } else {
+        _likedPosts.add(post.id);
+      }
+      _renderPost(post);
+      _bindPostActions(post);
+      _bindCommentSubmit(post);
+    });
+
+    /* 공유 */
+    document.getElementById('comm-share-btn')?.addEventListener('click', () => {
+      if (navigator.share) {
+        navigator.share({ title: post.title, text: post.excerpt });
+      } else {
+        navigator.clipboard?.writeText(location.href);
+        const toast = document.getElementById('toast');
+        if (toast) {
+          toast.textContent = '링크가 복사됐어요!';
+          toast.classList.add('toast--show');
+          setTimeout(() => toast.classList.remove('toast--show'), 2000);
+        }
+      }
+    });
+
+    /* 저장 */
+    document.getElementById('comm-save-btn')?.addEventListener('click', () => {
+      if (_savedPosts.has(post.id)) {
+        _savedPosts.delete(post.id);
+      } else {
+        _savedPosts.add(post.id);
+      }
+      _renderPost(post);
+      _bindPostActions(post);
+      _bindCommentSubmit(post);
+    });
+  }
+
+  function _bindCommentSubmit(post) {
+    const input  = document.getElementById('comm-comment-input');
+    const sendBtn = document.getElementById('comm-comment-send');
+    if (!input || !sendBtn) return;
+
+    /* 이미 바인딩된 경우 교체 방지 */
+    const newSendBtn = sendBtn.cloneNode(true);
+    sendBtn.parentNode.replaceChild(newSendBtn, sendBtn);
+
+    newSendBtn.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (!text) return;
+      const c = _addLocalComment(post.id, text);
+      input.value = '';
+
+      const list = document.getElementById('comm-comment-list');
+      if (list) {
+        const div = document.createElement('div');
+        div.className = 'comm-post__comment';
+        div.id = `comm-local-comment-${c.id}`;
+        div.innerHTML = `
+          <div class="comm-post__comment-avatar" style="background-color:var(--color-primary-light)">김</div>
+          <div class="comm-post__comment-bubble">
+            <div class="comm-post__comment-name">김티모 (나)</div>
+            <div class="comm-post__comment-text">${c.text}</div>
+            <div class="comm-post__comment-time">방금</div>
+          </div>`;
+        list.appendChild(div);
+
+        /* 댓글 수 업데이트 */
+        const title = document.querySelector('.comm-post__comments-title');
+        if (title) {
+          const extraC = _commentCounts[post.id] || 0;
+          title.textContent = `댓글 ${post.comments + extraC}개`;
+        }
+        div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+
+  function _bindBackBtn() {
+    const section = document.querySelector('[data-page="community-post"]');
+    const btn = section?.querySelector('[data-action="back"]');
+    if (btn) {
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+      newBtn.addEventListener('click', () => Router.navigate('community'));
+    }
+  }
+
+  return { init, initPost };
+})();

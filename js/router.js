@@ -6,15 +6,16 @@ const NAV_HIDDEN_PAGES = [
   'onboarding-1', 'onboarding-2', 'onboarding-3',
   'login', 'signup',
   'quiz-1', 'quiz-2', 'quiz-3', 'quiz-result',
-  'project-detail', 'project-apply', 'apply-complete'
+  'project-detail', 'project-apply', 'apply-complete',
+  'community-post', 'project-review', 'profile-review-more'
 ];
 
 /* 탭 버튼 → 활성화 화면 매핑 */
 const NAV_TAB_MAP = {
   home:      ['home'],
   project:   [],
-  community: ['community', 'community-post'],
-  mypage:    ['mypage', 'project-review']
+  community: ['community', 'community-post', 'community-detail'],
+  mypage:    ['mypage', 'project-review', 'profile', 'profile-review', 'profile-review-more']
 };
 
 /* 페이지별 페이드 애니메이션 (detail 페이지는 slide) */
@@ -131,10 +132,14 @@ const Router = {
       'project-detail': () => typeof ProjectPage    !== 'undefined' && ProjectPage.initDetail(params),
       'project-apply':  () => typeof ProjectPage    !== 'undefined' && ProjectPage.initApply(params),
       'apply-complete': () => typeof ProjectPage    !== 'undefined' && ProjectPage.initComplete(params),
-      'community':      () => typeof CommunityPage  !== 'undefined' && CommunityPage.init(params),
-      'community-post': () => typeof CommunityPage  !== 'undefined' && CommunityPage.initPost(params),
-      'mypage':         () => typeof MyPage         !== 'undefined' && MyPage.init(params),
-      'project-review': () => typeof MyPage         !== 'undefined' && MyPage.initReview(params),
+      'community':          () => typeof CommunityPage !== 'undefined' && CommunityPage.init(params),
+      'community-post':     () => typeof CommunityPage !== 'undefined' && CommunityPage.initPost(params),
+      'community-detail':   () => typeof CommunityPage !== 'undefined' && CommunityPage.initPost(params),
+      'mypage':             () => typeof MyPage        !== 'undefined' && MyPage.init(params),
+      'project-review':     () => typeof MyPage        !== 'undefined' && MyPage.initReview(params),
+      'profile':            () => typeof ProfilePage   !== 'undefined' && ProfilePage.init(params),
+      'profile-review':     () => typeof ProfilePage   !== 'undefined' && ProfilePage.initReview(params),
+      'profile-review-more':() => typeof ReviewPage    !== 'undefined' && ReviewPage.init(params),
     };
 
     const fn = moduleMap[pageId];
