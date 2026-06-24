@@ -101,7 +101,9 @@
 
     initDetail(params = {}) {
       const project =
-        SAMPLE_PROJECTS.find((item) => item.id === params.id) || SAMPLE_PROJECTS[0];
+        params.project ||
+        SAMPLE_PROJECTS.find((item) => item.id === params.id) ||
+        SAMPLE_PROJECTS[0];
 
       this._currentProject = project;
       this._render(project);

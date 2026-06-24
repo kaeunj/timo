@@ -490,9 +490,45 @@
         <div class="comm-list" id="comm-list" role="list"></div>
 
         <!-- FAB (글 작성) -->
-        <button class="comm-fab" type="button" aria-label="글 작성">
-          <img src="assets/icons/plus-tab-icon.svg" alt="" class="comm-fab__icon" aria-hidden="true" />
+        <button class="fab fab--lg" type="button" data-action="create-community-post" aria-label="글 작성">
+          <img src="assets/icons/plus-tab-icon.svg" alt="" aria-hidden="true" />
         </button>
+      </div>
+    </section>
+
+    <!-- ── 커뮤니티 게시글 작성 ── -->
+    <section data-page="community-write" class="page" aria-label="게시글 작성">
+      <div class="comm-write">
+        <header class="comm-write__header">
+          <button class="comm-write__back" type="button" data-action="back" aria-label="뒤로가기">
+            <img src="assets/icons/back-icon.svg" alt="" aria-hidden="true" />
+          </button>
+          <h1 class="comm-write__title">게시글 작성</h1>
+          <div class="comm-write__header-right"></div>
+        </header>
+
+        <div class="comm-write__body">
+          <div class="comm-write__section">
+            <p class="comm-write__label">게시판 선택</p>
+            <div class="comm-write__cat-group">
+              <button class="comm-write__cat-btn comm-write__cat-btn--active" data-cat="free" type="button">자유게시판</button>
+              <button class="comm-write__cat-btn" data-cat="contest" type="button">공모전 정보</button>
+              <button class="comm-write__cat-btn" data-cat="review" type="button">프로젝트 후기</button>
+            </div>
+          </div>
+
+          <form class="comm-write__form" id="comm-write-form" novalidate>
+            <div class="comm-write__section">
+              <p class="comm-write__label">제목 <span class="comm-write__required">*</span></p>
+              <input class="comm-write__input" type="text" id="comm-write-title-input" placeholder="제목을 입력하세요" maxlength="100" />
+            </div>
+            <div class="comm-write__section">
+              <p class="comm-write__label">내용 <span class="comm-write__required">*</span></p>
+              <textarea class="comm-write__textarea" id="comm-write-content-input" placeholder="내용을 입력하세요" maxlength="2000"></textarea>
+            </div>
+            <button type="submit" class="comm-write__submit">등록</button>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -555,9 +591,9 @@
 
           <!-- 통계 -->
           <div class="myp-stats">
-            <button class="myp-stats__item" type="button" data-myp-stat="project-review" aria-label="참여 프로젝트 보기">
-              <span class="myp-stats__num">6</span>
-              <span class="myp-stats__label">참여 프로젝트</span>
+            <button class="myp-stats__item" type="button" data-myp-stat="saved-posts" aria-label="저장한 게시글 보기">
+              <span class="myp-stats__num">0</span>
+              <span class="myp-stats__label">저장한 게시글</span>
             </button>
             <button class="myp-stats__item" type="button" data-myp-stat="received-review" aria-label="받은 리뷰 보기">
               <span class="myp-stats__num">12</span>
@@ -569,11 +605,19 @@
             </button>
           </div>
 
+          <!-- 저장한 게시글 -->
+          <div id="myp-saved-section" style="display:none;">
+            <div class="myp-section-head">
+              <span class="myp-section-head__title">저장한 게시글</span>
+            </div>
+            <div class="myp-saved-list" id="myp-saved-list"></div>
+          </div>
+
           <!-- 참여 중인 프로젝트 -->
           <div>
             <div class="myp-section-head">
               <span class="myp-section-head__title">참여 중인 프로젝트</span>
-              <button class="myp-section-head__more" type="button" data-action="go-project-review">더보기</button>
+              <button class="myp-section-head__more" type="button" data-action="go-my-projects">더보기</button>
             </div>
             <div class="myp-project-list">
               <!-- 카드 1 -->
@@ -593,7 +637,7 @@
               <!-- 카드 2 -->
               <div class="myp-pcard">
                 <div class="myp-pcard__left">
-                  <div class="myp-pcard__icon myp-pcard__icon--orange">🏠</div>
+                  <div class="myp-pcard__icon myp-pcard__icon--orange">📱</div>
                   <div class="myp-pcard__info">
                     <span class="myp-pcard__name">캠퍼스 커뮤니티 플랫폼</span>
                     <span class="myp-pcard__sub">사이드 프로젝트 · 디자이너</span>
@@ -607,10 +651,10 @@
               <!-- 카드 3 -->
               <div class="myp-pcard">
                 <div class="myp-pcard__left">
-                  <div class="myp-pcard__icon myp-pcard__icon--purple">🎮</div>
+                  <div class="myp-pcard__icon myp-pcard__icon--purple">💡</div>
                   <div class="myp-pcard__info">
                     <span class="myp-pcard__name">소셜 커머스 플랫폼 MVP</span>
-                    <span class="myp-pcard__sub">웹개발 · 디자이너</span>
+                    <span class="myp-pcard__sub">사이드 프로젝트 · 디자이너</span>
                   </div>
                 </div>
                 <div class="myp-pcard__right">
@@ -621,6 +665,48 @@
             </div>
           </div>
         </div><!-- /.myp-body -->
+      </div>
+    </section>
+
+    <!-- ── 참여 프로젝트 전체 화면 ── -->
+    <section data-page="my-projects" class="page" aria-label="참여 프로젝트">
+      <div class="myproj-page">
+        <header class="myproj-header">
+          <button class="myproj-header__back" type="button" data-action="back" aria-label="뒤로가기">
+            <img src="assets/icons/back-icon.svg" alt="" aria-hidden="true" />
+          </button>
+          <h1 class="myproj-header__title">참여 프로젝트</h1>
+          <div style="width:40px;flex-shrink:0;"></div>
+        </header>
+        <div class="myproj-body" id="my-projects-list"></div>
+      </div>
+    </section>
+
+    <!-- ── 저장한 게시글 전체 화면 ── -->
+    <section data-page="saved-posts" class="page" aria-label="저장한 게시글">
+      <div class="svdp-page">
+        <header class="svdp-header">
+          <button class="svdp-header__back" type="button" data-action="back" aria-label="뒤로가기">
+            <img src="assets/icons/back-icon.svg" alt="" aria-hidden="true" />
+          </button>
+          <h1 class="svdp-header__title">저장한 게시글</h1>
+          <div style="width:40px;flex-shrink:0;"></div>
+        </header>
+        <div class="svdp-body" id="saved-posts-list"></div>
+      </div>
+    </section>
+
+    <!-- ── 작성 리뷰 화면 ── -->
+    <section data-page="my-written-reviews" class="page" aria-label="작성 리뷰">
+      <div class="wrvw-page">
+        <header class="wrvw-header">
+          <button class="wrvw-header__back" type="button" data-action="back" aria-label="뒤로가기">
+            <img src="assets/icons/back-icon.svg" alt="" aria-hidden="true" />
+          </button>
+          <h1 class="wrvw-header__title">작성한 리뷰</h1>
+          <div style="width:40px;flex-shrink:0;"></div>
+        </header>
+        <div class="wrvw-body" id="written-reviews-list"></div>
       </div>
     </section>
 
