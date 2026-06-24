@@ -38,29 +38,30 @@ const OnboardingPage = {
     });
   },
 
-  /* 현재 화면을 살짝 슬라이드아웃 시킨 뒤 다음 화면으로 이동하고
-     슬라이드인 시켜 자연스럽게 전환되는 느낌을 준다 */
+  /* 헤더(로고)·푸터(버튼)는 그대로 두고, 일러스트+텍스트(.onboarding__content)만
+     슬라이드아웃/슬라이드인 시켜 자연스럽게 전환되는 느낌을 준다 */
   _transitionTo(targetPage) {
     const currentPage = document.querySelector('.page.is-active');
+    const currentContent = currentPage?.querySelector('.onboarding__content');
 
-    if (!currentPage) {
+    if (!currentContent) {
       Router.navigate(targetPage);
       return;
     }
 
-    currentPage.classList.add('onboarding-slide-out');
-    currentPage.addEventListener(
+    currentContent.classList.add('onboarding-slide-out');
+    currentContent.addEventListener(
       'animationend',
       () => {
-        currentPage.classList.remove('onboarding-slide-out');
+        currentContent.classList.remove('onboarding-slide-out');
         Router.navigate(targetPage);
 
-        const nextPage = document.querySelector(`[data-page="${targetPage}"]`);
-        if (nextPage) {
-          nextPage.classList.add('onboarding-slide-in');
-          nextPage.addEventListener(
+        const nextContent = document.querySelector(`[data-page="${targetPage}"] .onboarding__content`);
+        if (nextContent) {
+          nextContent.classList.add('onboarding-slide-in');
+          nextContent.addEventListener(
             'animationend',
-            () => nextPage.classList.remove('onboarding-slide-in'),
+            () => nextContent.classList.remove('onboarding-slide-in'),
             { once: true }
           );
         }
