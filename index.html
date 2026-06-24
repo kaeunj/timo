@@ -23,8 +23,11 @@
   <link rel="stylesheet" href="css/pages/quiz.css" />
   <link rel="stylesheet" href="css/pages/home.css" />
   <link rel="stylesheet" href="css/pages/project.css" />
+  <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/pages/community.css" />
   <link rel="stylesheet" href="css/pages/mypage.css" />
+  <link rel="stylesheet" href="css/pages/profile.css" />
+  <link rel="stylesheet" href="css/pages/review.css" />
 </head>
 <body>
 
@@ -470,20 +473,388 @@
       </div>
     </section>
 
+    <!-- ── 커뮤니티 목록 ── -->
     <section data-page="community" class="page" aria-label="커뮤니티">
-      <!-- Phase 5에서 구현 -->
+      <div class="comm-page">
+        <!-- 헤더 + 탭 -->
+        <div class="comm-header">
+          <h1 class="comm-header__title">커뮤니티</h1>
+          <div class="comm-tabs" role="tablist" aria-label="커뮤니티 탭">
+            <button class="comm-tabs__item comm-tabs__item--active" data-comm-tab="free"    role="tab" aria-selected="true"  type="button">자유게시판</button>
+            <button class="comm-tabs__item"                         data-comm-tab="contest" role="tab" aria-selected="false" type="button">공모전 정보</button>
+            <button class="comm-tabs__item"                         data-comm-tab="review"  role="tab" aria-selected="false" type="button">프로젝트 후기</button>
+          </div>
+        </div>
+
+        <!-- 게시글 목록 -->
+        <div class="comm-list" id="comm-list" role="list"></div>
+
+        <!-- FAB (글 작성) -->
+        <button class="comm-fab" type="button" aria-label="글 작성">
+          <img src="assets/icons/plus-tab-icon.svg" alt="" class="comm-fab__icon" aria-hidden="true" />
+        </button>
+      </div>
     </section>
 
+    <!-- ── 커뮤니티 게시글 상세 ── -->
     <section data-page="community-post" class="page" aria-label="커뮤니티 게시글">
-      <!-- Phase 5에서 구현 -->
+      <div class="comm-post">
+        <!-- 헤더 -->
+        <div class="comm-post__header">
+          <button class="comm-post__back" type="button" data-action="back" aria-label="뒤로가기">
+            <img src="assets/icons/back-icon.svg" alt="" aria-hidden="true" />
+          </button>
+          <span class="comm-post__header-title">게시글</span>
+          <button class="comm-post__more" type="button" aria-label="더보기">
+            <img src="assets/icons/dotdotdot-icon.svg" alt="" aria-hidden="true" />
+          </button>
+        </div>
+
+        <!-- 본문 스크롤 -->
+        <div class="comm-post__body" id="comm-post-body">
+          <!-- community.js 로 동적 렌더링 -->
+        </div>
+
+        <!-- 댓글 입력 -->
+        <div class="comm-post__input-bar">
+          <div class="comm-post__input-avatar" style="background-color:var(--color-primary-light);">김</div>
+          <div class="comm-post__input-wrap">
+            <input class="comm-post__input" id="comm-comment-input" type="text" placeholder="댓글을 입력하세요..." maxlength="200" />
+          </div>
+          <button class="comm-post__send-btn" id="comm-comment-send" type="button">등록</button>
+        </div>
+      </div>
     </section>
 
+    <!-- ── 마이페이지 ── -->
     <section data-page="mypage" class="page" aria-label="마이페이지">
-      <!-- Phase 6에서 구현 -->
+      <div class="myp-page">
+        <!-- 헤더 -->
+        <div class="myp-header">
+          <h1 class="myp-header__title">나의 프로필</h1>
+          <button class="myp-header__settings" type="button" aria-label="설정">
+            <img src="assets/icons/notice-icon.svg" alt="" aria-hidden="true" />
+          </button>
+        </div>
+
+        <!-- 본문 -->
+        <div class="myp-body">
+          <!-- 프로필 -->
+          <div class="myp-profile">
+            <div class="myp-profile__top">
+              <div class="myp-profile__avatar-wrap">
+                <span class="myp-profile__avatar-emoji">🤖</span>
+              </div>
+              <div class="myp-profile__info">
+                <span class="myp-profile__name">김티모</span>
+                <span class="myp-profile__role">디자이너</span>
+                <span class="myp-profile__type-badge">🏅 계획러</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 통계 -->
+          <div class="myp-stats">
+            <button class="myp-stats__item" type="button" data-myp-stat="project-review" aria-label="참여 프로젝트 보기">
+              <span class="myp-stats__num">6</span>
+              <span class="myp-stats__label">참여 프로젝트</span>
+            </button>
+            <button class="myp-stats__item" type="button" data-myp-stat="received-review" aria-label="받은 리뷰 보기">
+              <span class="myp-stats__num">12</span>
+              <span class="myp-stats__label">받은 리뷰</span>
+            </button>
+            <button class="myp-stats__item" type="button" data-myp-stat="written-review" aria-label="작성 리뷰 보기">
+              <span class="myp-stats__num">8</span>
+              <span class="myp-stats__label">작성 리뷰</span>
+            </button>
+          </div>
+
+          <!-- 참여 중인 프로젝트 -->
+          <div>
+            <div class="myp-section-head">
+              <span class="myp-section-head__title">참여 중인 프로젝트</span>
+              <button class="myp-section-head__more" type="button" data-action="go-project-review">더보기</button>
+            </div>
+            <div class="myp-project-list">
+              <!-- 카드 1 -->
+              <div class="myp-pcard">
+                <div class="myp-pcard__left">
+                  <div class="myp-pcard__icon myp-pcard__icon--green">🤖</div>
+                  <div class="myp-pcard__info">
+                    <span class="myp-pcard__name">AI 기반 운동 루틴 추천 서비스</span>
+                    <span class="myp-pcard__sub">해커톤 · 디자이너</span>
+                  </div>
+                </div>
+                <div class="myp-pcard__right">
+                  <span class="myp-pcard__deadline myp-pcard__deadline--urgent">D - 3</span>
+                  <span class="myp-pcard__status myp-pcard__status--active">진행중</span>
+                </div>
+              </div>
+              <!-- 카드 2 -->
+              <div class="myp-pcard">
+                <div class="myp-pcard__left">
+                  <div class="myp-pcard__icon myp-pcard__icon--orange">🏠</div>
+                  <div class="myp-pcard__info">
+                    <span class="myp-pcard__name">캠퍼스 커뮤니티 플랫폼</span>
+                    <span class="myp-pcard__sub">사이드 프로젝트 · 디자이너</span>
+                  </div>
+                </div>
+                <div class="myp-pcard__right">
+                  <span class="myp-pcard__deadline myp-pcard__deadline--normal">D - 8</span>
+                  <span class="myp-pcard__status myp-pcard__status--active">진행중</span>
+                </div>
+              </div>
+              <!-- 카드 3 -->
+              <div class="myp-pcard">
+                <div class="myp-pcard__left">
+                  <div class="myp-pcard__icon myp-pcard__icon--purple">🎮</div>
+                  <div class="myp-pcard__info">
+                    <span class="myp-pcard__name">소셜 커머스 플랫폼 MVP</span>
+                    <span class="myp-pcard__sub">웹개발 · 디자이너</span>
+                  </div>
+                </div>
+                <div class="myp-pcard__right">
+                  <span class="myp-pcard__deadline myp-pcard__deadline--normal">D - 30</span>
+                  <span class="myp-pcard__status myp-pcard__status--active">진행중</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.myp-body -->
+      </div>
     </section>
 
+    <!-- ── 프로젝트 리뷰 목록 ── -->
     <section data-page="project-review" class="page" aria-label="프로젝트 리뷰">
-      <!-- Phase 6에서 구현 -->
+      <div class="prv-page">
+        <!-- 헤더 -->
+        <div class="prv-header">
+          <button class="prv-header__back" type="button" data-action="back" aria-label="뒤로가기">
+            <img src="assets/icons/back-icon.svg" alt="" aria-hidden="true" />
+          </button>
+          <button class="prv-header__more" type="button" aria-label="더보기">
+            <img src="assets/icons/dotdotdot-icon.svg" alt="" aria-hidden="true" />
+          </button>
+        </div>
+
+        <!-- 본문 -->
+        <div class="prv-body">
+          <!-- 프로필 -->
+          <div class="prv-profile">
+            <div class="prv-profile__top">
+              <div class="prv-profile__avatar">🤖</div>
+              <div class="prv-profile__info">
+                <span class="prv-profile__name">김티모</span>
+                <span class="prv-profile__role">디자이너</span>
+                <span class="prv-profile__type-badge">🏅 계획러</span>
+              </div>
+            </div>
+            <!-- 별점 -->
+            <div class="prv-rating">
+              <div class="prv-rating__stars" aria-label="4.8점">
+                <span class="prv-rating__star">⭐</span>
+                <span class="prv-rating__star">⭐</span>
+                <span class="prv-rating__star">⭐</span>
+                <span class="prv-rating__star">⭐</span>
+                <span class="prv-rating__star">⭐</span>
+              </div>
+              <span class="prv-rating__score">4.8</span>
+              <span class="prv-rating__total">/ 5.0 (23개)</span>
+            </div>
+          </div>
+
+          <div class="prv-divider"></div>
+
+          <!-- 리뷰 태그 -->
+          <div class="prv-tags-section">
+            <span class="prv-tags__title">리뷰 태그</span>
+            <div class="prv-tags__rows" id="prv-tags-rows">
+              <div class="prv-tags__row">
+                <span class="prv-tag">팀 분위기를 좋게 만들어요</span>
+                <span class="prv-tag">책임감이 강해요</span>
+              </div>
+              <div class="prv-tags__row" id="prv-tags-row2">
+                <span class="prv-tag">소통이 빨라요</span>
+                <span class="prv-tag">맡은 일을 끝까지 해요</span>
+                <!-- +2 버튼: 숨겨진 태그 2개 -->
+                <button class="prv-tag prv-tag--more" id="prv-tag-more-btn" type="button" aria-label="태그 더보기">+2</button>
+              </div>
+              <!-- 숨겨진 태그 (기본 hidden) -->
+              <div class="prv-tags__row" id="prv-tags-hidden" style="display:none;">
+                <span class="prv-tag">피드백을 잘 반영해요</span>
+                <span class="prv-tag">일정 관리를 잘해요</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="prv-divider"></div>
+
+          <!-- 리뷰 목록 -->
+          <span class="prv-list-title">리뷰 목록</span>
+          <div class="prv-list">
+            <!-- 리뷰 1 -->
+            <div class="prv-item">
+              <div class="prv-item__avatar prv-item__avatar--primary">이</div>
+              <div class="prv-item__content">
+                <div class="prv-item__top-row">
+                  <span class="prv-item__name">이지은</span>
+                  <div class="prv-item__stars" aria-label="별점 5점">
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span>
+                  </div>
+                </div>
+                <span class="prv-item__sub">디자이너 · 2026.04</span>
+                <p class="prv-item__text">정말 든든한 팀원이에요! 일정 관리도 꼼꼼하고 피드백도 빠르게 반영해줘서 프로젝트가 수월하게 진행됐어요 😊</p>
+              </div>
+            </div>
+            <!-- 리뷰 2 -->
+            <div class="prv-item">
+              <div class="prv-item__avatar prv-item__avatar--cyan">박</div>
+              <div class="prv-item__content">
+                <div class="prv-item__top-row">
+                  <span class="prv-item__name">박준형</span>
+                  <div class="prv-item__stars" aria-label="별점 4점">
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star prv-item__star--gray">⭐</span>
+                  </div>
+                </div>
+                <span class="prv-item__sub">백엔드 개발자 · 2026.03</span>
+                <p class="prv-item__text">소통이 원활하고 팀원들을 잘 이끌어줘요. 다음에도 함께하고 싶어요!</p>
+              </div>
+            </div>
+            <!-- 리뷰 3 -->
+            <div class="prv-item">
+              <div class="prv-item__avatar prv-item__avatar--purple">최</div>
+              <div class="prv-item__content">
+                <div class="prv-item__top-row">
+                  <span class="prv-item__name">최유나</span>
+                  <div class="prv-item__stars" aria-label="별점 5점">
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span>
+                  </div>
+                </div>
+                <span class="prv-item__sub">기획자 · 2026.02</span>
+                <p class="prv-item__text">책임감이 정말 강해요. 맡은 부분은 무조건 완성해오고, 팀 분위기도 항상 좋게 만들어줘서 감사했어요.</p>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.prv-body -->
+      </div>
+    </section>
+
+    <!-- ── 리뷰 더보기 ── -->
+    <section data-page="profile-review-more" class="page" aria-label="리뷰 더보기">
+      <div class="rvm-page">
+        <!-- 헤더 -->
+        <div class="rvm-header">
+          <button class="rvm-header__back" type="button" data-action="back" aria-label="뒤로가기">
+            <img src="assets/icons/back-icon.svg" alt="" aria-hidden="true" />
+          </button>
+          <button class="rvm-header__more" type="button" aria-label="더보기">
+            <img src="assets/icons/dotdotdot-icon.svg" alt="" aria-hidden="true" />
+          </button>
+        </div>
+
+        <!-- 본문 -->
+        <div class="rvm-body">
+          <!-- 프로필 -->
+          <div class="prv-profile">
+            <div class="prv-profile__top">
+              <div class="prv-profile__avatar">🤖</div>
+              <div class="prv-profile__info">
+                <span class="prv-profile__name">김티모</span>
+                <span class="prv-profile__role">디자이너</span>
+                <span class="prv-profile__type-badge">🏅 계획러</span>
+              </div>
+            </div>
+            <div class="prv-rating">
+              <div class="prv-rating__stars" aria-label="4.8점">
+                <span class="prv-rating__star">⭐</span>
+                <span class="prv-rating__star">⭐</span>
+                <span class="prv-rating__star">⭐</span>
+                <span class="prv-rating__star">⭐</span>
+                <span class="prv-rating__star">⭐</span>
+              </div>
+              <span class="prv-rating__score">4.8</span>
+              <span class="prv-rating__total">/ 5.0 (23개)</span>
+            </div>
+          </div>
+
+          <div class="prv-divider"></div>
+
+          <!-- 모든 태그 펼쳐진 상태 -->
+          <span class="prv-tags__title">리뷰 태그</span>
+          <div class="rvm-tags__rows">
+            <div class="rvm-tags__row">
+              <span class="rvm-tag">팀 분위기를 좋게 만들어요</span>
+              <span class="rvm-tag">소통이 빨라요</span>
+            </div>
+            <div class="rvm-tags__row">
+              <span class="rvm-tag">책임감이 강해요</span>
+              <span class="rvm-tag">맡은 일을 끝까지 해요</span>
+            </div>
+            <div class="rvm-tags__row">
+              <span class="rvm-tag">피드백을 잘 반영해요</span>
+              <span class="rvm-tag">일정 관리를 잘해요</span>
+            </div>
+          </div>
+
+          <div class="prv-divider"></div>
+
+          <!-- 리뷰 목록 -->
+          <span class="prv-list-title">리뷰 목록</span>
+          <div class="prv-list">
+            <div class="prv-item">
+              <div class="prv-item__avatar prv-item__avatar--primary">이</div>
+              <div class="prv-item__content">
+                <div class="prv-item__top-row">
+                  <span class="prv-item__name">이지은</span>
+                  <div class="prv-item__stars" aria-label="별점 5점">
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span>
+                  </div>
+                </div>
+                <span class="prv-item__sub">디자이너 · 2026.04</span>
+                <p class="prv-item__text">정말 든든한 팀원이에요! 일정 관리도 꼼꼼하고 피드백도 빠르게 반영해줘서 프로젝트가 수월하게 진행됐어요 😊</p>
+              </div>
+            </div>
+            <div class="prv-item">
+              <div class="prv-item__avatar prv-item__avatar--cyan">박</div>
+              <div class="prv-item__content">
+                <div class="prv-item__top-row">
+                  <span class="prv-item__name">박준형</span>
+                  <div class="prv-item__stars" aria-label="별점 4점">
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star prv-item__star--gray">⭐</span>
+                  </div>
+                </div>
+                <span class="prv-item__sub">백엔드 개발자 · 2026.03</span>
+                <p class="prv-item__text">소통이 원활하고 팀원들을 잘 이끌어줘요. 다음에도 함께하고 싶어요!</p>
+              </div>
+            </div>
+            <div class="prv-item">
+              <div class="prv-item__avatar prv-item__avatar--purple">최</div>
+              <div class="prv-item__content">
+                <div class="prv-item__top-row">
+                  <span class="prv-item__name">최유나</span>
+                  <div class="prv-item__stars" aria-label="별점 5점">
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span><span class="prv-item__star">⭐</span>
+                    <span class="prv-item__star">⭐</span>
+                  </div>
+                </div>
+                <span class="prv-item__sub">기획자 · 2026.02</span>
+                <p class="prv-item__text">책임감이 정말 강해요. 맡은 부분은 무조건 완성해오고, 팀 분위기도 항상 좋게 만들어줘서 감사했어요.</p>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.rvm-body -->
+      </div>
     </section>
 
     <!-- ④ 바텀 네비게이션 -->
@@ -541,6 +912,7 @@
   <!-- JS (의존성 순서 준수) -->
   <script src="js/common.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/mock-data.js"></script>
   <script src="js/pages/onboarding.js"></script>
   <script src="js/pages/auth.js"></script>
   <script src="js/pages/quiz.js"></script>
@@ -548,6 +920,8 @@
   <script src="js/pages/project.js"></script>
   <script src="js/pages/community.js"></script>
   <script src="js/pages/mypage.js"></script>
+  <script src="js/pages/profile.js"></script>
+  <script src="js/pages/review.js"></script>
   <script src="js/router.js"></script>
 
   <!-- 바텀 네비 탭 이벤트 바인딩 -->

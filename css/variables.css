@@ -53,7 +53,30 @@
   --gradient-banner: linear-gradient(145deg, #202020 0%, #333333 100%);
 
   /* 보조 아바타 색상 */
-  --color-avatar-cyan: #b2ebf2;
+  --color-avatar-cyan:   #b2ebf2;
+  --color-avatar-purple: #e1e0ff;
+
+  /* 프라이머리 틴트 배경 (아바타 래퍼, 프로젝트 아이콘 등) */
+  --color-primary-tint: #e8fff9;
+
+  /* 마감 임박 배지 */
+  --color-deadline:        #ef4444;
+  --color-deadline-bg:     #ffe5e5;
+  --color-deadline-gray:   #707070;
+  --color-deadline-gray-bg:#dfe1e1;
+
+  /* 프로젝트 진행 상태 */
+  --color-status-active:    #0f7d48;
+  --color-status-active-bg: #e8fff9;
+
+  /* 통계 박스 배경 */
+  --color-stats-bg: #f7f8fa;
+
+  /* 리뷰 태그 +more 배경 */
+  --color-tag-more-bg: #d7fff2;
+
+  /* 얕은 구분선 */
+  --color-divider-light: #f0f0f0;
 
   /* ── Typography ── */
   --font-title: "S-Core Dream", sans-serif;
