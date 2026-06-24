@@ -15,7 +15,7 @@ const NAV_HIDDEN_PAGES = [
 /* 탭 버튼 → 활성화 화면 매핑 */
 const NAV_TAB_MAP = {
   home:      ['home'],
-  project:   [],
+  project:   ['project-list'],
   community: ['community', 'community-post', 'community-detail', 'community-write'],
   mypage:    ['mypage', 'project-review', 'profile', 'profile-review', 'profile-review-more', 'my-projects', 'my-written-reviews', 'saved-posts']
 };
@@ -131,6 +131,7 @@ const Router = {
       'quiz-3':         () => typeof QuizPage       !== 'undefined' && QuizPage.init(3, params),
       'quiz-result':    () => typeof QuizPage       !== 'undefined' && QuizPage.initResult(params),
       'home':           () => typeof HomePage       !== 'undefined' && HomePage.init(params),
+      'project-list':   () => typeof ProjectPage    !== 'undefined' && ProjectPage.initList(params),
       'project-detail': () => typeof ProjectPage    !== 'undefined' && ProjectPage.initDetail(params),
       'project-apply':  () => typeof ProjectPage    !== 'undefined' && ProjectPage.initApply(params),
       'apply-complete': () => typeof ProjectPage    !== 'undefined' && ProjectPage.initComplete(params),
