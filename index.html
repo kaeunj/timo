@@ -34,11 +34,6 @@
   <!-- ① 앱 전체 래퍼 -->
   <div id="app">
 
-    <!-- ② 상태바 -->
-    <div class="status-bar" aria-hidden="true">
-      <img src="assets/icons/StatusBar.svg" alt="" class="status-bar__img" />
-    </div>
-
     <!-- ③ 페이지 섹션 (16개) -->
 
     <!-- [인증 플로우] -->
@@ -287,13 +282,21 @@
       <header class="home__header">
         <div class="home__header-top">
           <div class="home__greeting">
-            <p class="home__greeting-hello">안녕하세요 👋</p>
+            <p class="home__greeting-hello">안녕하세요 😊</p>
             <p class="home__greeting-name" id="home-username">님</p>
           </div>
-          <button class="icon-btn" type="button" data-action="open-notification" aria-label="알림">
-            <img src="assets/icons/notice-icon.svg" alt="" aria-hidden="true" />
-            <span class="icon-btn__badge" id="home-notification-badge" aria-hidden="true"></span>
-          </button>
+          <div class="home__mascot" aria-hidden="true">
+            <img src="assets/images/maintimo.svg" alt="" />
+          </div>
+          <div class="home__header-actions">
+            <button class="icon-btn" type="button" data-action="open-notification" aria-label="알림">
+              <img src="assets/icons/notice-icon.svg" alt="" aria-hidden="true" />
+              <span class="icon-btn__badge" id="home-notification-badge" aria-hidden="true"></span>
+            </button>
+            <button class="home__avatar-btn" type="button" data-action="open-profile" aria-label="프로필">
+              <span aria-hidden="true">🤖</span>
+            </button>
+          </div>
         </div>
         <div class="search-bar">
           <img src="assets/icons/search-icon.svg" alt="" class="search-bar__icon" aria-hidden="true" />
@@ -319,20 +322,71 @@
           </button>
         </div>
 
-        <div class="filter-chip-group" id="home-filter-chips" role="tablist" aria-label="프로젝트 카테고리 필터">
+        <section class="home__section">
+          <div class="home__section-head">
+            <h2 class="home__section-title">인기 공모전</h2>
+            <span class="home__section-more">더보기</span>
+          </div>
+          <div class="contest-card-list" id="home-contest-list"></div>
+        </section>
+
+        <section class="home__section">
+          <div class="home__section-head">
+            <h2 class="home__section-title">현재 가장 활발한 공모전</h2>
+            <span class="home__section-more">더보기</span>
+          </div>
+          <div class="active-contest-list" id="home-active-contest-list"></div>
+        </section>
+
+        <section class="recruit-card">
+          <div class="home__section-head">
+            <h2 class="home__section-title">팀원 모집</h2>
+            <span class="home__section-more">더보기</span>
+          </div>
+
+          <div class="filter-chip-group" id="home-filter-chips" role="tablist" aria-label="프로젝트 카테고리 필터">
+            <button class="filter-chip filter-chip--active" type="button" data-category="all" role="tab" aria-selected="true">전체</button>
+            <button class="filter-chip" type="button" data-category="공모전" role="tab" aria-selected="false">공모전</button>
+            <button class="filter-chip" type="button" data-category="해커톤" role="tab" aria-selected="false">해커톤</button>
+            <button class="filter-chip" type="button" data-category="사이드 프로젝트" role="tab" aria-selected="false">사이드</button>
+          </div>
+
+          <div class="recruit-row-list" id="home-recruit-list"></div>
+        </section>
+      </div>
+
+      <button class="fab fab--lg" type="button" data-action="create-project" aria-label="프로젝트 등록">
+        <img src="assets/icons/plus-tab-icon.svg" alt="" aria-hidden="true" />
+      </button>
+    </section>
+
+    <section data-page="project-list" class="page" aria-label="프로젝트 목록">
+      <header class="proj-list-header">
+        <h1 class="proj-list-header__title">프로젝트</h1>
+        <div class="search-bar">
+          <img src="assets/icons/search-icon.svg" alt="" class="search-bar__icon" aria-hidden="true" />
+          <input
+            type="text"
+            class="search-bar__input"
+            id="project-list-search-input"
+            placeholder="프로젝트 검색"
+            autocomplete="off"
+          />
+        </div>
+      </header>
+
+      <div class="proj-list-filters">
+        <div class="filter-chip-group" id="project-list-filter-chips" role="tablist" aria-label="프로젝트 카테고리 필터">
           <button class="filter-chip filter-chip--active" type="button" data-category="all" role="tab" aria-selected="true">전체</button>
           <button class="filter-chip" type="button" data-category="공모전" role="tab" aria-selected="false">공모전</button>
           <button class="filter-chip" type="button" data-category="해커톤" role="tab" aria-selected="false">해커톤</button>
           <button class="filter-chip" type="button" data-category="사이드 프로젝트" role="tab" aria-selected="false">사이드 프로젝트</button>
         </div>
+      </div>
 
-        <section class="home__section">
-          <div class="home__section-head">
-            <h2 class="home__section-title">추천 프로젝트</h2>
-            <span class="home__section-more">더보기</span>
-          </div>
-          <div class="project-card-list" id="home-project-list"></div>
-        </section>
+      <div class="proj-list-body">
+        <p class="proj-list-count" id="project-list-count"></p>
+        <div class="proj-list-cards" id="project-list-cards"></div>
       </div>
 
       <button class="fab fab--lg" type="button" data-action="create-project" aria-label="프로젝트 등록">
@@ -452,7 +506,7 @@
         <div class="success-visual" id="success-visual">
           <div class="success-visual__breathe">
             <div class="success-visual__badge">
-              <img src="assets/images/check.png" alt="" class="success-visual__badge-img" />
+              <img src="assets/images/timodone.svg" alt="" class="success-visual__badge-img" />
             </div>
             <span class="success-visual__deco success-visual__deco--star-1" aria-hidden="true">
               <img src="assets/icons/star-icon.svg" alt="" />
@@ -991,11 +1045,6 @@
     <!-- ⑧ 토스트 -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <!-- ⑨ 홈 인디케이터 (모든 화면 공통, 최상단 오버레이) -->
-    <div class="home-indicator" aria-hidden="true">
-      <img src="assets/icons/HomeIndicator.png" alt="" />
-    </div>
-
   </div><!-- /#app -->
 
   <!-- JS (의존성 순서 준수) -->
@@ -1018,7 +1067,7 @@
     document.querySelectorAll('.bottom-nav__item').forEach((btn) => {
       btn.addEventListener('click', () => {
         const navKey = btn.dataset.nav;
-        const pageMap = { home: 'home', project: 'home', community: 'community', mypage: 'mypage' };
+        const pageMap = { home: 'home', project: 'project-list', community: 'community', mypage: 'mypage' };
         const target  = pageMap[navKey];
         if (target) Router.navigate(target);
       });

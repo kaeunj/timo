@@ -24,6 +24,7 @@
         { name: '백엔드', status: '모집 중' },
         { name: '디자인', status: '모집 중' }
       ],
+      author: { name: '김민준', avatarColor: '#7fffd4', initial: '김' },
       applicants: 12
     },
     {
@@ -39,6 +40,7 @@
         { name: '백엔드', status: '모집 중' },
         { name: '기획', status: '모집 중' }
       ],
+      author: { name: '이수진', avatarColor: '#7fffd4', initial: '이' },
       applicants: 8
     },
     {
@@ -54,6 +56,7 @@
         { name: '프론트엔드', status: '모집 중' },
         { name: '디자인', status: '모집 중' }
       ],
+      author: { name: '박지호', avatarColor: '#b2ebf2', initial: '박' },
       applicants: 15
     },
     {
@@ -69,6 +72,7 @@
         { name: '프론트엔드', status: '모집 중' },
         { name: '백엔드', status: '모집 중' }
       ],
+      author: { name: '최다은', avatarColor: '#7fffd4', initial: '최' },
       applicants: 6
     }
   ];
@@ -98,6 +102,140 @@
     _bound: false,
     _currentApplyProject: null,
     _applyBound: false,
+    _listBound: false,
+    listState: {
+      category: 'all',
+      keyword: ''
+    },
+
+    initList(params = {}) {
+      this._renderList();
+      this._bindListEvents();
+    },
+
+    _renderList() {
+      const listEl = qs('#project-list-cards');
+      const countEl = qs('#project-list-count');
+      if (!listEl || !countEl) return;
+
+      const projects = this._getFilteredListProjects();
+
+      countEl.textContent = `총 ${projects.length}개의 프로젝트`;
+
+      if (projects.length === 0) {
+        listEl.innerHTML = '<p class="proj-list-empty">검색 결과가 없습니다.</p>';
+        return;
+      }
+
+      listEl.innerHTML = projects.map((p) => this._renderProjectCard(p)).join('');
+    },
+
+    _getFilteredListProjects() {
+      const { category, keyword } = this.listState;
+      return SAMPLE_PROJECTS.filter((p) => {
+        const matchCategory = category === 'all' || p.category === category;
+        const matchKeyword = !keyword || p.title.toLowerCase().includes(keyword.toLowerCase());
+        return matchCategory && matchKeyword;
+      });
+    },
+
+    _renderProjectCard(project) {
+      const catBadgeClass = CATEGORY_BADGE_CLASS[project.category] || '';
+      const statusLabel = STATUS_LABEL[project.status] || '';
+      const statusClass = STATUS_CLASS[project.status] || '';
+
+      const roles = project.roles
+        .map((r) => `<span class="role-badge">${r.name}</span>`)
+        .join('');
+
+      return `
+        <article class="proj-card" data-id="${project.id}" tabindex="0" role="button" aria-label="${project.title} 상세보기">
+          <div class="proj-card__head">
+            <div class="proj-card__head-left">
+              <span class="cat-badge ${catBadgeClass}">${project.category}</span>
+              <span class="recruit-status ${statusClass}">${statusLabel}</span>
+            </div>
+            <span class="proj-card__deadline">마감 ${project.deadlineLabel}</span>
+          </div>
+          <h3 class="proj-card__title">${project.title}</h3>
+          <p class="proj-card__desc">${project.description}</p>
+          <div class="proj-card__roles">${roles}</div>
+          <div class="proj-card__divider"></div>
+          <div class="proj-card__footer">
+            <span class="proj-card__author">
+              <span class="proj-card__avatar" style="background-color:${project.author.avatarColor};">${project.author.initial}</span>
+              <span class="proj-card__author-name">${project.author.name}</span>
+            </span>
+            <span class="proj-card__applicants">지원 ${project.applicants}명</span>
+          </div>
+        </article>
+      `;
+    },
+
+    _bindListEvents() {
+      if (this._listBound) return;
+      this._listBound = true;
+
+      const listSection = document.querySelector('[data-page="project-list"]');
+
+      /* 검색 (debounce) */
+      const searchInput = qs('#project-list-search-input', listSection);
+      if (searchInput) {
+        const debouncedSearch = debounce((value) => {
+          this.listState.keyword = value.trim();
+          this._renderList();
+        }, 300);
+
+        searchInput.addEventListener('input', (e) => {
+          debouncedSearch(e.target.value);
+        });
+      }
+
+      /* 카테고리 필터 칩 */
+      const chipGroup = qs('#project-list-filter-chips', listSection);
+      if (chipGroup) {
+        chipGroup.addEventListener('click', (e) => {
+          const chip = e.target.closest('.filter-chip');
+          if (!chip) return;
+
+          qsa('.filter-chip', chipGroup).forEach((c) => {
+            c.classList.remove('filter-chip--active');
+            c.setAttribute('aria-selected', 'false');
+          });
+          chip.classList.add('filter-chip--active');
+          chip.setAttribute('aria-selected', 'true');
+
+          this.listState.category = chip.dataset.category;
+          this._renderList();
+        });
+      }
+
+      /* 카드 클릭 → 상세 이동 */
+      const cardList = qs('#project-list-cards', listSection);
+      if (cardList) {
+        const goToDetail = (card) => {
+          if (!card) return;
+          Router.navigate('project-detail', { id: card.dataset.id });
+        };
+
+        cardList.addEventListener('click', (e) => {
+          goToDetail(e.target.closest('.proj-card'));
+        });
+
+        cardList.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          const card = e.target.closest('.proj-card');
+          if (!card) return;
+          e.preventDefault();
+          goToDetail(card);
+        });
+      }
+
+      /* FAB (프로젝트 등록) */
+      qs('[data-action="create-project"]', listSection)?.addEventListener('click', () => {
+        Router.navigate('project-detail');
+      });
+    },
 
     initDetail(params = {}) {
       const project =

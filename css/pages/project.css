@@ -1,6 +1,155 @@
 /* ===================================================
-   project.css — 프로젝트 상세 (이번 단계: 상세만 구현)
+   project.css — 프로젝트 목록 / 상세 / 지원 / 지원 완료
    =================================================== */
+
+/* ===================================================
+   프로젝트 목록 (Project List) — 바텀 네비 "프로젝트" 탭
+   =================================================== */
+
+.proj-list-header {
+  flex-shrink: 0;
+  padding: 17px var(--page-px) 15px;
+  background-color: var(--color-bg-base);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.proj-list-header__title {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--color-black);
+}
+
+.proj-list-filters {
+  flex-shrink: 0;
+  padding: 0 var(--page-px) 15px;
+  background-color: var(--color-bg-base);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+
+.proj-list-filters .filter-chip-group {
+  margin-top: 0;
+}
+
+.proj-list-body {
+  flex: 1;
+  padding: 14px var(--page-px) 0;
+  background-color: var(--color-bg-page);
+}
+
+.proj-list-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.proj-list-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: 12px;
+  padding-bottom: 24px;
+}
+
+.proj-list-empty {
+  padding: var(--space-6) 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ── 프로젝트 카드 ── */
+
+.proj-card {
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background-color: var(--color-bg-base);
+  cursor: pointer;
+}
+
+.proj-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.proj-card__head-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.proj-card__deadline {
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.proj-card__title {
+  margin-top: 9px;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-black);
+}
+
+.proj-card__desc {
+  margin-top: 4px;
+  overflow: hidden;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.proj-card__roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.proj-card__divider {
+  margin-top: 10px;
+  height: 1px;
+  background-color: var(--color-divider);
+}
+
+.proj-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.proj-card__author {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.proj-card__avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 23px;
+  height: 23px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.proj-card__author-name,
+.proj-card__applicants {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
 
 /* ── Hero ── */
 
@@ -391,16 +540,12 @@
   animation: success-breathe 3s ease-in-out 600ms infinite;
 }
 
-/* check.png(262x262, 원+체크+장식 일체형 에셋)에서 중앙 원형 배지만 잘라내 보여준다.
-   장식 6종은 배지 바깥 반경(85px)에는 걸치지 않아 따로 그리는 .success-visual__deco와 겹치지 않는다 */
 .success-visual__badge {
   position: absolute;
-  left: 46px;
-  top: 46px;
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  overflow: hidden;
+  left: 0;
+  top: 0;
+  width: 262px;
+  height: 262px;
   opacity: 0;
   transform: scale(0);
 }
@@ -411,11 +556,10 @@
 
 .success-visual__badge-img {
   position: absolute;
-  left: -46px;
-  top: -46px;
-  width: 262px;
-  max-width: none;
-  height: 262px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* ── 장식 요소 (별/다이아/물방울/라인) — Figma 좌표 기준 절대 위치 ── */
@@ -636,6 +780,13 @@
 /* ── 반응형 ── */
 
 @media (min-width: 430px) {
+  .proj-list-header,
+  .proj-list-filters,
+  .proj-list-body {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
   .detail__body {
     padding-left: 24px;
     padding-right: 24px;

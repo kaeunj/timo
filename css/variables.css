@@ -78,6 +78,10 @@
   /* 얕은 구분선 */
   --color-divider-light: #f0f0f0;
 
+  /* 인기 공모전 카드 상금 배지 */
+  --color-prize-bg:   #fff9e6;
+  --color-prize-text: #92400e;
+
   /* ── Typography ── */
   --font-title: "S-Core Dream", sans-serif;
   --font-body:  "Pretendard", sans-serif;
@@ -112,7 +116,6 @@
 
   /* ── Layout ── */
   --bottom-nav-height:  80px;
-  --status-bar-height:  47px;
   --page-px:            20px;   /* 페이지 좌우 패딩 */
 
   /* ── Transition ── */
