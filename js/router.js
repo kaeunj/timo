@@ -3,7 +3,7 @@
    =================================================== */
 
 const NAV_HIDDEN_PAGES = [
-  'onboarding-1', 'onboarding-2',
+  'onboarding-1', 'onboarding-2', 'onboarding-3',
   'login', 'signup',
   'quiz-1', 'quiz-2', 'quiz-3', 'quiz-result',
   'project-detail', 'project-apply', 'apply-complete'
@@ -120,6 +120,7 @@ const Router = {
     const moduleMap = {
       'onboarding-1':   () => typeof OnboardingPage !== 'undefined' && OnboardingPage.init(params),
       'onboarding-2':   () => typeof OnboardingPage !== 'undefined' && OnboardingPage.init(params),
+      'onboarding-3':   () => typeof OnboardingPage !== 'undefined' && OnboardingPage.init(params),
       'login':          () => typeof AuthPage       !== 'undefined' && AuthPage.initLogin(params),
       'signup':         () => typeof AuthPage       !== 'undefined' && AuthPage.initSignup(params),
       'quiz-1':         () => typeof QuizPage       !== 'undefined' && QuizPage.init(1, params),

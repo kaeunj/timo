@@ -1,11 +1,12 @@
 /* ===================================================
-   onboarding.css — 온보딩 1·2 화면
+   onboarding.css — 온보딩 1·2·3 화면
    =================================================== */
 
 /* ── 페이지 기본 ── */
 
 [data-page="onboarding-1"],
-[data-page="onboarding-2"] {
+[data-page="onboarding-2"],
+[data-page="onboarding-3"] {
   background-color: var(--color-bg-base);
   overflow: hidden;
 }
@@ -37,10 +38,17 @@
 }
 
 .onboarding__illustration {
-  width: 264px;
-  height: 264px;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
   object-fit: contain;
   flex-shrink: 0;
+}
+
+/* onboarding-3 일러스트는 원본 비율이 더 와이드해 다른 화면보다 크게 보여줘야
+   인물이 양쪽으로 잘리지 않는다 */
+.onboarding__illustration--wide {
+  max-width: 100%;
 }
 
 .onboarding__text {
@@ -105,18 +113,63 @@
   transform: scale(0.98);
 }
 
+/* ── 화면 전환 트랜지션 (다음/시작하기 클릭 시) ── */
+
+.onboarding-slide-out {
+  animation: onboarding-slide-out 320ms ease-in forwards;
+}
+
+.onboarding-slide-in {
+  animation: onboarding-slide-in 320ms ease-out forwards;
+}
+
+@keyframes onboarding-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-32px);
+    opacity: 0;
+  }
+}
+
+@keyframes onboarding-slide-in {
+  from {
+    transform: translateX(32px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-slide-out,
+  .onboarding-slide-in {
+    animation: none !important;
+  }
+}
+
 /* ── 반응형 ── */
 
 @media (min-width: 390px) {
   .onboarding__illustration {
-    width: 270px;
-    height: 270px;
+    max-width: 300px;
+  }
+
+  .onboarding__illustration--wide {
+    max-width: 100%;
   }
 }
 
 @media (min-width: 430px) {
   .onboarding__illustration {
-    width: 290px;
-    height: 290px;
+    max-width: 320px;
+  }
+
+  .onboarding__illustration--wide {
+    max-width: 100%;
   }
 }
