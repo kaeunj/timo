@@ -164,10 +164,20 @@
 }
 
 .fixed-action-bar__applicants {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
   flex-shrink: 0;
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
   white-space: nowrap;
+}
+
+.fixed-action-bar__applicants-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .fixed-action-bar__apply {
