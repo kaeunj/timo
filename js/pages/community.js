@@ -135,11 +135,32 @@ const CommunityPage = (() => {
   let _likedPosts = new Set();
   let _savedPosts = new Set();
   let _commentCounts = {};   // postId → extra comments added locally
+  let _selectedCat = 'free'; // 글쓰기 선택 카테고리
+  let _editingPostId = null; // 수정 중인 게시글 id
 
   /* ── 커뮤니티 목록 ── */
   function init(params = {}) {
+    _syncTabUI(_currentTab);
     _renderList(_currentTab);
     _bindTabs();
+    _bindFab();
+  }
+
+  function _syncTabUI(tab) {
+    document.querySelectorAll('[data-comm-tab]').forEach(btn => {
+      const active = btn.dataset.commTab === tab;
+      btn.classList.toggle('comm-tabs__item--active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  function _bindFab() {
+    const section = document.querySelector('[data-page="community"]');
+    const fab = section?.querySelector('[data-action="create-community-post"]');
+    if (!fab) return;
+    const newFab = fab.cloneNode(true);
+    fab.parentNode.replaceChild(newFab, fab);
+    newFab.addEventListener('click', () => Router.navigate('community-write'));
   }
 
   function _bindTabs() {
@@ -204,6 +225,7 @@ const CommunityPage = (() => {
 
   /* ── 커뮤니티 게시글 상세 ── */
   function initPost(params = {}) {
+    if (params.postId) _currentPostId = params.postId;
     const post = POSTS.find(p => p.id === _currentPostId);
     if (!post) {
       Router.navigate('community');
@@ -213,6 +235,7 @@ const CommunityPage = (() => {
     _bindPostActions(post);
     _bindCommentSubmit(post);
     _bindBackBtn();
+    _bindMoreBtn(post);
   }
 
   function _renderPost(post) {
@@ -314,17 +337,7 @@ const CommunityPage = (() => {
 
     /* 공유 */
     document.getElementById('comm-share-btn')?.addEventListener('click', () => {
-      if (navigator.share) {
-        navigator.share({ title: post.title, text: post.excerpt });
-      } else {
-        navigator.clipboard?.writeText(location.href);
-        const toast = document.getElementById('toast');
-        if (toast) {
-          toast.textContent = '링크가 복사됐어요!';
-          toast.classList.add('toast--show');
-          setTimeout(() => toast.classList.remove('toast--show'), 2000);
-        }
-      }
+      _showShareSheet(post);
     });
 
     /* 저장 */
@@ -380,6 +393,183 @@ const CommunityPage = (() => {
     });
   }
 
+  /* ── 공유 바텀시트 ── */
+  function _showShareSheet(post) {
+    const sheet = document.getElementById('bottom-sheet');
+    const overlay = document.getElementById('bottom-sheet-overlay');
+    const list = sheet?.querySelector('.bottom-sheet__list');
+    if (!sheet || !list) return;
+
+    list.innerHTML = `
+      <li role="menuitem">
+        <button class="bottom-sheet__option" id="comm-share-link" type="button">
+          🔗 &nbsp;링크 복사
+        </button>
+      </li>
+      <li role="menuitem">
+        <button class="bottom-sheet__option comm-share-kakao-btn" id="comm-share-kakao" type="button">
+          <img src="assets/icons/kakaotalk-icon.svg" alt="" class="comm-share__kakao-icon" aria-hidden="true" />
+          카카오톡으로 공유
+        </button>
+      </li>`;
+
+    sheet.setAttribute('aria-hidden', 'false');
+    sheet.classList.add('is-open');
+    overlay?.classList.add('is-visible');
+
+    document.getElementById('comm-share-link')?.addEventListener('click', () => {
+      navigator.clipboard?.writeText(location.href).then(() => {
+        showToast('링크가 복사됐어요!');
+      }).catch(() => showToast('링크가 복사됐어요!'));
+      closeBottomSheet();
+    });
+
+    document.getElementById('comm-share-kakao')?.addEventListener('click', () => {
+      const shareText = `${post.title}\n${post.excerpt}`;
+      const shareUrl  = location.href;
+      /* 모바일: 네이티브 공유 시트(카카오 포함) 우선 시도 */
+      if (navigator.share) {
+        navigator.share({ title: post.title, text: shareText, url: shareUrl }).catch(() => {});
+      } else {
+        /* 데스크탑: 링크 복사 후 안내 */
+        navigator.clipboard?.writeText(shareUrl).then(() => {
+          showToast('링크 복사 완료! 카카오톡에 붙여넣기 해주세요.');
+        }).catch(() => showToast('링크 복사 완료! 카카오톡에 붙여넣기 해주세요.'));
+      }
+      closeBottomSheet();
+    });
+  }
+
+  /* ── 글쓰기/수정 페이지 ── */
+  function initWrite(params = {}) {
+    const editPost = _editingPostId ? POSTS.find(p => p.id === _editingPostId) : null;
+    _selectedCat = editPost ? editPost.tab : 'free';
+
+    const titleEl   = document.getElementById('comm-write-title-input');
+    const contentEl = document.getElementById('comm-write-content-input');
+    const section   = document.querySelector('[data-page="community-write"]');
+    const headerTitle = section?.querySelector('.comm-write__title');
+
+    if (editPost) {
+      if (titleEl)   titleEl.value   = editPost.title;
+      if (contentEl) contentEl.value = editPost.content;
+      if (headerTitle) headerTitle.textContent = '게시글 수정';
+    } else {
+      if (titleEl)   titleEl.value   = '';
+      if (contentEl) contentEl.value = '';
+      if (headerTitle) headerTitle.textContent = '게시글 작성';
+    }
+
+    section?.querySelectorAll('[data-cat]').forEach(btn =>
+      btn.classList.toggle('comm-write__cat-btn--active', btn.dataset.cat === _selectedCat));
+    _bindWriteBack();
+    _bindWriteCatBtns();
+    _bindWriteSubmit();
+  }
+
+  function _bindWriteBack() {
+    const section = document.querySelector('[data-page="community-write"]');
+    const btn = section?.querySelector('[data-action="back"]');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener('click', () => {
+      if (_editingPostId) {
+        _editingPostId = null;
+        Router.navigate('community-post');
+      } else {
+        Router.navigate('community');
+      }
+    });
+  }
+
+  function _bindWriteCatBtns() {
+    const section = document.querySelector('[data-page="community-write"]');
+    const btns = section?.querySelectorAll('[data-cat]');
+    if (!btns) return;
+    btns.forEach(btn => {
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+      newBtn.addEventListener('click', () => {
+        _selectedCat = newBtn.dataset.cat;
+        section.querySelectorAll('[data-cat]').forEach(b =>
+          b.classList.toggle('comm-write__cat-btn--active', b.dataset.cat === _selectedCat));
+      });
+    });
+  }
+
+  function _bindWriteSubmit() {
+    const form = document.getElementById('comm-write-form');
+    if (!form) return;
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
+    newForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const titleEl   = document.getElementById('comm-write-title-input');
+      const contentEl = document.getElementById('comm-write-content-input');
+      const title   = titleEl?.value.trim();
+      const content = contentEl?.value.trim();
+      if (!title)   { showToast('제목을 입력해주세요.', 'error'); return; }
+      if (!content) { showToast('내용을 입력해주세요.', 'error'); return; }
+
+      const catMap = { free: '자유게시판', contest: '공모전 정보', review: '프로젝트 후기' };
+
+      if (_editingPostId) {
+        /* 수정 모드 */
+        const post = POSTS.find(p => p.id === _editingPostId);
+        if (post) {
+          post.title    = title;
+          post.content  = content;
+          post.excerpt  = content.slice(0, 80) + (content.length > 80 ? '...' : '');
+          post.tab      = _selectedCat;
+          post.badge    = _selectedCat;
+          post.badgeLabel = catMap[_selectedCat] || '자유게시판';
+        }
+        _currentTab = _selectedCat;
+        _editingPostId = null;
+        showToast('게시글이 수정됐어요!');
+        Router.navigate('community-post');
+      } else {
+        /* 작성 모드 */
+        const badgeLabel = catMap[_selectedCat] || '자유게시판';
+        const newPost = {
+          id: Date.now(),
+          tab: _selectedCat,
+          badge: _selectedCat,
+          badgeLabel,
+          title,
+          excerpt: content.slice(0, 80) + (content.length > 80 ? '...' : ''),
+          author: '김티모',
+          authorInitial: '김',
+          avatarClass: 'comm-card__avatar--primary',
+          time: '방금 전',
+          views: 0,
+          likes: 0,
+          comments: 0,
+          content,
+          commentList: []
+        };
+        POSTS.unshift(newPost);
+        _currentTab = _selectedCat;
+
+        if (titleEl)   titleEl.value   = '';
+        if (contentEl) contentEl.value = '';
+
+        showToast('게시글이 등록됐어요!');
+        Router.navigate('community');
+      }
+    });
+  }
+
+  /* ── 저장 게시글 공개 API ── */
+  function getSavedPosts() {
+    return POSTS.filter(p => _savedPosts.has(p.id));
+  }
+
+  function setCurrentPost(postId) {
+    _currentPostId = postId;
+  }
+
   function _bindBackBtn() {
     const section = document.querySelector('[data-page="community-post"]');
     const btn = section?.querySelector('[data-action="back"]');
@@ -390,5 +580,59 @@ const CommunityPage = (() => {
     }
   }
 
-  return { init, initPost };
+  /* ── 더보기 버튼 (내 게시글이면 수정/삭제) ── */
+  function _bindMoreBtn(post) {
+    const section = document.querySelector('[data-page="community-post"]');
+    const btn = section?.querySelector('.comm-post__more');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    if (post.author !== '김티모') {
+      newBtn.style.visibility = 'hidden';
+      return;
+    }
+    newBtn.style.visibility = 'visible';
+    newBtn.addEventListener('click', () => _showEditDeleteSheet(post));
+  }
+
+  function _showEditDeleteSheet(post) {
+    const sheet = document.getElementById('bottom-sheet');
+    const overlay = document.getElementById('bottom-sheet-overlay');
+    const list = sheet?.querySelector('.bottom-sheet__list');
+    if (!sheet || !list) return;
+
+    list.innerHTML = `
+      <li role="menuitem">
+        <button class="bottom-sheet__option" id="comm-edit-btn" type="button">✏️ &nbsp;수정하기</button>
+      </li>
+      <li role="menuitem">
+        <button class="bottom-sheet__option bottom-sheet__option--danger" id="comm-delete-btn" type="button">🗑️ &nbsp;삭제하기</button>
+      </li>`;
+
+    sheet.setAttribute('aria-hidden', 'false');
+    sheet.classList.add('is-open');
+    overlay?.classList.add('is-visible');
+
+    document.getElementById('comm-edit-btn')?.addEventListener('click', () => {
+      closeBottomSheet();
+      _editingPostId = post.id;
+      Router.navigate('community-write');
+    });
+
+    document.getElementById('comm-delete-btn')?.addEventListener('click', () => {
+      closeBottomSheet();
+      _deletePost(post.id);
+    });
+  }
+
+  function _deletePost(postId) {
+    const idx = POSTS.findIndex(p => p.id === postId);
+    if (idx !== -1) POSTS.splice(idx, 1);
+    _savedPosts.delete(postId);
+    showToast('게시글이 삭제됐어요.');
+    Router.navigate('community');
+  }
+
+  return { init, initPost, initWrite, getSavedPosts, setCurrentPost };
 })();

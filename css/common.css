@@ -400,6 +400,55 @@ h1, h2, h3, h4, h5, h6, .title {
   margin: 0 auto var(--space-4);
 }
 
+.bottom-sheet__list {
+  list-style: none;
+  padding: 0 var(--page-px) 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bottom-sheet__option {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-black);
+  background: var(--color-bg-base);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  text-align: left;
+}
+
+.bottom-sheet__option:active {
+  background-color: var(--color-bg-page);
+}
+
+.bottom-sheet__option--danger {
+  color: var(--color-deadline);
+}
+
+.comm-share__kakao-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.comm-share-kakao-btn {
+  background-color: var(--color-kakao);
+  color: var(--color-kakao-text);
+}
+
+.comm-share-kakao-btn:active {
+  background-color: #fdd800;
+}
+
 /* ── 토스트 ── */
 
 .toast {
