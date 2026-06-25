@@ -507,6 +507,14 @@
    지원 완료 (Apply Complete)
    =================================================== */
 
+/* 콘텐츠가 항상 한 화면에 맞도록 클램프 처리(아래) 했지만, 극단적으로 낮은
+   뷰포트 높이까지는 보장할 수 없어 안전망으로 스크롤 자체를 막는다.
+   (지원 완료는 정적 확인 화면이라 스크롤이 생기면 안 됨 — 생기면 세로 스크롤바가
+   레이아웃 너비를 줄여 콘텐츠가 옆으로 밀리는 문제가 있었음) */
+.success-page {
+  overflow-y: hidden;
+}
+
 .success {
   flex: 1;
   display: flex;
@@ -517,12 +525,12 @@
   text-align: center;
 }
 
-/* ── 성공 비주얼 (체크 아이콘 + 장식 요소) ── */
+/* ── 성공 비주얼 (TIMO 마스코트 일러스트) ── */
 
 .success-visual {
   position: relative;
-  width: 262px;
-  height: 262px;
+  width: clamp(140px, 34vh, 262px);
+  height: clamp(140px, 34vh, 262px);
   opacity: 0;
   transform: scale(0.6);
 }
@@ -542,10 +550,9 @@
 
 .success-visual__badge {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 262px;
-  height: 262px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
   transform: scale(0);
 }
@@ -560,100 +567,6 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-
-/* ── 장식 요소 (별/다이아/물방울/라인) — Figma 좌표 기준 절대 위치 ── */
-
-.success-visual__deco {
-  position: absolute;
-  display: block;
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.success-page.is-animating .success-visual__deco {
-  animation: success-deco-fade 300ms ease-out forwards;
-}
-
-.success-visual__deco--star-1 {
-  left: 31px;
-  top: 42px;
-  width: 32px;
-  height: 32px;
-}
-
-.success-visual__deco--star-1 img,
-.success-visual__deco--star-2 img {
-  width: 100%;
-  height: 100%;
-}
-
-.success-page.is-animating .success-visual__deco--star-1 {
-  animation-delay: 350ms;
-}
-
-.success-visual__deco--drop-1 {
-  left: 208px;
-  top: 71px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: var(--color-primary-light);
-}
-
-.success-page.is-animating .success-visual__deco--drop-1 {
-  animation-delay: 450ms;
-}
-
-.success-visual__deco--diamond {
-  left: 20px;
-  top: 125px;
-  width: 13px;
-  height: 13px;
-  background-color: var(--color-primary-light);
-  transform: scale(0.5) rotate(45deg);
-}
-
-.success-page.is-animating .success-visual__deco--diamond {
-  animation-name: success-deco-fade-diamond;
-  animation-delay: 550ms;
-}
-
-.success-visual__deco--drop-2 {
-  left: 222px;
-  top: 127px;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  background-color: #26c99a;
-}
-
-.success-page.is-animating .success-visual__deco--drop-2 {
-  animation-delay: 650ms;
-}
-
-.success-visual__deco--star-2 {
-  left: 194px;
-  top: 189px;
-  width: 20px;
-  height: 20px;
-}
-
-.success-page.is-animating .success-visual__deco--star-2 {
-  animation-delay: 750ms;
-}
-
-.success-visual__deco--line {
-  left: 26px;
-  top: 190px;
-  width: 26px;
-  height: 7px;
-  border-radius: 4px;
-  background-color: var(--color-primary-light);
-}
-
-.success-page.is-animating .success-visual__deco--line {
-  animation-delay: 850ms;
 }
 
 /* ── 완료 텍스트 ── */
@@ -743,16 +656,6 @@
   100% { opacity: 1; transform: scale(1); }
 }
 
-@keyframes success-deco-fade {
-  from { opacity: 0; transform: scale(0.5); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes success-deco-fade-diamond {
-  from { opacity: 0; transform: scale(0.5) rotate(45deg); }
-  to   { opacity: 1; transform: scale(1) rotate(45deg); }
-}
-
 @keyframes success-breathe {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.03); }
@@ -767,7 +670,6 @@
   .success-page.is-animating .success-visual,
   .success-page.is-animating .success-visual__breathe,
   .success-page.is-animating .success-visual__badge,
-  .success-page.is-animating .success-visual__deco,
   .success-page.is-animating .success__title,
   .success-page.is-animating .success__desc,
   .success-page.is-animating .success-actions {
