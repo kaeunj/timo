@@ -58,6 +58,7 @@
 .myp-profile {
   display: flex;
   flex-direction: column;
+  cursor: default;
 }
 
 .myp-profile__top {
@@ -773,6 +774,11 @@
 .wrvw-card__avatar--primary { background-color: var(--color-primary-light); }
 .wrvw-card__avatar--cyan    { background-color: var(--color-avatar-cyan); }
 .wrvw-card__avatar--purple  { background-color: var(--color-avatar-purple); }
+.wrvw-card__avatar--img {
+  display: block;
+  object-fit: contain;
+  background: none;
+}
 
 .wrvw-card__info {
   flex: 1;
@@ -820,4 +826,27 @@
   font-family: var(--font-body);
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
+}
+
+/* ══════════════════════════════════════════════════
+   마이페이지 진입 · 요소 등장 애니메이션
+   ══════════════════════════════════════════════════ */
+
+@keyframes mypFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.myp-fade-up {
+  animation: mypFadeUp 0.35s ease both;
+}
+
+/* 마이페이지 상세 화면 슬라이드인 */
+@keyframes mypPageIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.myp-page-in {
+  animation: mypPageIn 0.35s ease both;
 }

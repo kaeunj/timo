@@ -137,13 +137,23 @@ const CommunityPage = (() => {
   let _commentCounts = {};   // postId → extra comments added locally
   let _selectedCat = 'free'; // 글쓰기 선택 카테고리
   let _editingPostId = null; // 수정 중인 게시글 id
+  let _fabBound = false;     // FAB 이벤트 중복 바인딩 방지
 
   /* ── 커뮤니티 목록 ── */
   function init(params = {}) {
+    _closeFabMenu();
     _syncTabUI(_currentTab);
     _renderList(_currentTab);
     _bindTabs();
     _bindFab();
+    _moveIndicator(_currentTab);
+  }
+
+  function _moveIndicator(tab) {
+    const indicator = document.getElementById('comm-tabs-indicator');
+    if (!indicator) return;
+    const idx = { free: 0, contest: 1, review: 2 }[tab] ?? 0;
+    indicator.style.transform = `translateX(calc(100% * ${idx}))`;
   }
 
   function _syncTabUI(tab) {
@@ -154,13 +164,47 @@ const CommunityPage = (() => {
     });
   }
 
+  function _closeFabMenu() {
+    document.getElementById('comm-fab-menu')?.classList.remove('is-open');
+    document.getElementById('comm-fab-backdrop')?.classList.remove('is-open');
+    document.getElementById('comm-fab-main')?.classList.remove('is-open');
+    document.getElementById('comm-fab-menu')?.setAttribute('aria-hidden', 'true');
+  }
+
   function _bindFab() {
-    const section = document.querySelector('[data-page="community"]');
-    const fab = section?.querySelector('[data-action="create-community-post"]');
-    if (!fab) return;
-    const newFab = fab.cloneNode(true);
-    fab.parentNode.replaceChild(newFab, fab);
-    newFab.addEventListener('click', () => Router.navigate('community-write'));
+    if (_fabBound) return;
+    _fabBound = true;
+
+    const mainFab    = document.getElementById('comm-fab-main');
+    const menu       = document.getElementById('comm-fab-menu');
+    const backdrop   = document.getElementById('comm-fab-backdrop');
+    const projectBtn = document.getElementById('comm-fab-project-btn');
+    const communityBtn = document.getElementById('comm-fab-community-btn');
+    if (!mainFab) return;
+
+    function openMenu() {
+      menu?.classList.add('is-open');
+      backdrop?.classList.add('is-open');
+      mainFab.classList.add('is-open');
+      menu?.setAttribute('aria-hidden', 'false');
+    }
+
+    mainFab.addEventListener('click', () => {
+      if (mainFab.classList.contains('is-open')) _closeFabMenu();
+      else openMenu();
+    });
+
+    backdrop?.addEventListener('click', _closeFabMenu);
+
+    projectBtn?.addEventListener('click', () => {
+      _closeFabMenu();
+      Router.navigate('project-detail');
+    });
+
+    communityBtn?.addEventListener('click', () => {
+      _closeFabMenu();
+      Router.navigate('community-write');
+    });
   }
 
   function _bindTabs() {
@@ -172,6 +216,7 @@ const CommunityPage = (() => {
           t.classList.toggle('comm-tabs__item--active', t === btn);
           t.setAttribute('aria-selected', t === btn ? 'true' : 'false');
         });
+        _moveIndicator(_currentTab);
         _renderList(_currentTab);
       });
     });
@@ -201,7 +246,10 @@ const CommunityPage = (() => {
               ${post.views}
             </span>
             <span class="comm-card__stat">
-              <svg class="comm-card__stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+              ${_likedPosts.has(post.id)
+                ? `<img class="comm-card__stat-icon" src="assets/icons/like-active-icon.svg" alt="" aria-hidden="true">`
+                : `<svg class="comm-card__stat-icon" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g clip-path="url(#cp-card-like-${post.id})"><path d="M9.09731 3.5655L8.49096 6.06364H12.0259C12.2142 6.06364 12.3999 6.10747 12.5683 6.19166C12.7367 6.27586 12.8831 6.3981 12.9961 6.54871C13.1091 6.69932 13.1854 6.87416 13.2191 7.05939C13.2527 7.24462 13.2428 7.43514 13.1901 7.61588L11.7773 12.4666C11.7039 12.7185 11.5507 12.9398 11.3408 13.0972C11.1309 13.2547 10.8756 13.3398 10.6132 13.3398H2.42753C2.10591 13.3398 1.79745 13.212 1.57003 12.9846C1.34261 12.7571 1.21484 12.4487 1.21484 12.1271V7.27632C1.21484 6.9547 1.34261 6.64625 1.57003 6.41882C1.79745 6.1914 2.10591 6.06364 2.42753 6.06364H4.10104C4.32665 6.06352 4.54775 6.00046 4.73949 5.88156C4.93123 5.76267 5.086 5.59264 5.18639 5.3906L7.27828 1.21289C7.56421 1.21643 7.84565 1.28454 8.10157 1.41213C8.35749 1.53972 8.58126 1.7235 8.75618 1.94972C8.9311 2.17594 9.05263 2.43877 9.1117 2.71856C9.16585 2.99836 9.09731 3.5655Z" stroke="#aaa" stroke-width="1.21269" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.24414 6.06445V13.3406" stroke="#aaa" stroke-width="1.21269" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="cp-card-like-${post.id}"><rect width="14.5522" height="14.5522" fill="white"/></clipPath></defs></svg>`
+              }
               ${post.likes + (_likedPosts.has(post.id) ? 1 : 0)}
             </span>
             <span class="comm-card__stat">
@@ -221,6 +269,12 @@ const CommunityPage = (() => {
       card.addEventListener('click', handler);
       card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') handler(); });
     });
+
+    /* 카드 등장 애니메이션 (아래 → 위, 순차) */
+    container.querySelectorAll('.comm-card').forEach((card, i) => {
+      card.style.animationDelay = `${i * 0.06}s`;
+      card.classList.add('comm-fade-up');
+    });
   }
 
   /* ── 커뮤니티 게시글 상세 ── */
@@ -234,6 +288,7 @@ const CommunityPage = (() => {
     _renderPost(post);
     _bindPostActions(post);
     _bindCommentSubmit(post);
+    _bindCommentDelete();
     _bindBackBtn();
     _bindMoreBtn(post);
   }
@@ -260,7 +315,10 @@ const CommunityPage = (() => {
       <div class="comm-post__comment" id="comm-local-comment-${c.id}">
         <div class="comm-post__comment-avatar" style="background-color:var(--color-primary-light)">김</div>
         <div class="comm-post__comment-bubble">
-          <div class="comm-post__comment-name">김티모 (나)</div>
+          <div class="comm-post__comment-name-row">
+            <div class="comm-post__comment-name">김티모 (나)</div>
+            <button class="comm-post__comment-delete-btn" type="button" data-comment-id="${c.id}" data-post-id="${post.id}" aria-label="댓글 삭제">삭제</button>
+          </div>
           <div class="comm-post__comment-text">${c.text}</div>
           <div class="comm-post__comment-time">방금</div>
         </div>
@@ -282,7 +340,10 @@ const CommunityPage = (() => {
       <div class="comm-post__content">${contentLines}</div>
       <div class="comm-post__actions">
         <button class="comm-post__action-btn ${liked ? 'comm-post__action-btn--liked' : ''}" id="comm-like-btn" type="button" aria-pressed="${liked}">
-          <span class="comm-post__action-emoji">👍</span>
+          ${liked
+            ? `<img class="comm-post__like-img" src="assets/icons/like-active-icon.svg" width="18" height="18" alt="" aria-hidden="true">`
+            : `<svg class="comm-post__like-img" width="18" height="18" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g clip-path="url(#cp-like)"><path d="M9.09731 3.5655L8.49096 6.06364H12.0259C12.2142 6.06364 12.3999 6.10747 12.5683 6.19166C12.7367 6.27586 12.8831 6.3981 12.9961 6.54871C13.1091 6.69932 13.1854 6.87416 13.2191 7.05939C13.2527 7.24462 13.2428 7.43514 13.1901 7.61588L11.7773 12.4666C11.7039 12.7185 11.5507 12.9398 11.3408 13.0972C11.1309 13.2547 10.8756 13.3398 10.6132 13.3398H2.42753C2.10591 13.3398 1.79745 13.212 1.57003 12.9846C1.34261 12.7571 1.21484 12.4487 1.21484 12.1271V7.27632C1.21484 6.9547 1.34261 6.64625 1.57003 6.41882C1.79745 6.1914 2.10591 6.06364 2.42753 6.06364H4.10104C4.32665 6.06352 4.54775 6.00046 4.73949 5.88156C4.93123 5.76267 5.086 5.59264 5.18639 5.3906L7.27828 1.21289C7.56421 1.21643 7.84565 1.28454 8.10157 1.41213C8.35749 1.53972 8.58126 1.7235 8.75618 1.94972C8.9311 2.17594 9.05263 2.43877 9.1117 2.71856C9.16585 2.99836 9.09731 3.5655Z" stroke="#aaa" stroke-width="1.21269" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.24414 6.06445V13.3406" stroke="#aaa" stroke-width="1.21269" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="cp-like"><rect width="14.5522" height="14.5522" fill="white"/></clipPath></defs></svg>`
+          }
           좋아요 ${post.likes + (liked ? 1 : 0)}
         </button>
         <button class="comm-post__action-btn" id="comm-share-btn" type="button">
@@ -298,6 +359,12 @@ const CommunityPage = (() => {
         ${commentsHtml}
         ${localCommentsHtml}
       </div>`;
+
+    /* 댓글 등장 애니메이션 (아래 → 위, 순차) */
+    body.querySelectorAll('.comm-post__comment').forEach((el, i) => {
+      el.style.animationDelay = `${0.15 + i * 0.07}s`;
+      el.classList.add('comm-fade-up');
+    });
   }
 
   function _avatarBg(cls) {
@@ -322,10 +389,39 @@ const CommunityPage = (() => {
     return c;
   }
 
+  function _deleteLocalComment(postId, commentId) {
+    const comments = _localComments[postId];
+    if (!comments) return;
+    const idx = comments.findIndex(c => c.id === commentId);
+    if (idx === -1) return;
+    comments.splice(idx, 1);
+    _commentCounts[postId] = Math.max(0, (_commentCounts[postId] || 0) - 1);
+
+    document.getElementById(`comm-local-comment-${commentId}`)?.remove();
+
+    const post = POSTS.find(p => p.id === postId);
+    if (post) {
+      const titleEl = document.querySelector('.comm-post__comments-title');
+      if (titleEl) titleEl.textContent = `댓글 ${post.comments + (_commentCounts[postId] || 0)}개`;
+    }
+  }
+
+  function _bindCommentDelete() {
+    const body = document.getElementById('comm-post-body');
+    if (!body || body._deleteHandlerBound) return;
+    body._deleteHandlerBound = true;
+    body.addEventListener('click', (e) => {
+      const btn = e.target.closest('.comm-post__comment-delete-btn');
+      if (!btn) return;
+      _deleteLocalComment(Number(btn.dataset.postId), Number(btn.dataset.commentId));
+    });
+  }
+
   function _bindPostActions(post) {
     /* 좋아요 */
-    document.getElementById('comm-like-btn')?.addEventListener('click', (e) => {
-      if (_likedPosts.has(post.id)) {
+    document.getElementById('comm-like-btn')?.addEventListener('click', () => {
+      const wasLiked = _likedPosts.has(post.id);
+      if (wasLiked) {
         _likedPosts.delete(post.id);
       } else {
         _likedPosts.add(post.id);
@@ -333,6 +429,15 @@ const CommunityPage = (() => {
       _renderPost(post);
       _bindPostActions(post);
       _bindCommentSubmit(post);
+
+      if (!wasLiked) {
+        const img = document.querySelector('.comm-post__like-img');
+        img?.classList.add('like-pop');
+        img?.addEventListener('animationend', () => img.classList.remove('like-pop'), { once: true });
+        const btn = document.getElementById('comm-like-btn');
+        btn?.classList.add('like-ring');
+        btn?.addEventListener('animationend', () => btn.classList.remove('like-ring'), { once: true });
+      }
     });
 
     /* 공유 */
@@ -376,11 +481,18 @@ const CommunityPage = (() => {
         div.innerHTML = `
           <div class="comm-post__comment-avatar" style="background-color:var(--color-primary-light)">김</div>
           <div class="comm-post__comment-bubble">
-            <div class="comm-post__comment-name">김티모 (나)</div>
+            <div class="comm-post__comment-name-row">
+              <div class="comm-post__comment-name">김티모 (나)</div>
+              <button class="comm-post__comment-delete-btn" type="button" data-comment-id="${c.id}" data-post-id="${post.id}" aria-label="댓글 삭제">삭제</button>
+            </div>
             <div class="comm-post__comment-text">${c.text}</div>
             <div class="comm-post__comment-time">방금</div>
           </div>`;
+        div.querySelector('.comm-post__comment-delete-btn')?.addEventListener('click', () => {
+          _deleteLocalComment(post.id, c.id);
+        });
         list.appendChild(div);
+        div.classList.add('comm-fade-up');
 
         /* 댓글 수 업데이트 */
         const title = document.querySelector('.comm-post__comments-title');
