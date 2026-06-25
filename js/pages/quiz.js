@@ -42,25 +42,25 @@ const QUIZ_RESULTS = {
     typeLabel:    '🏅 계획러',
     title:        '체계적으로 프로젝트를 이끄는 유형',
     traits:       ['🎯 체계적인 계획', '📋 일정 관리', '📊 목표 지향적', '👥 신중한 의사결정'],
-    illustration: 'assets/images/result2.png',
+    illustration: 'assets/images/result1.svg',
   },
   executor: {
     typeLabel:    '🚀 실행러',
     title:        '아이디어를 행동으로 옮기는 유형',
     traits:       ['⚡ 빠른 실행력', '🔥 적극적인 추진', '💪 도전 정신', '🎯 결과 중심'],
-    illustration: 'assets/images/result1.png',
+    illustration: 'assets/images/result2.svg',
   },
   analyst: {
     typeLabel:    '🔍 분석러',
     title:        '논리적으로 문제를 해결하는 유형',
     traits:       ['📊 데이터 기반', '🧩 논리적 분석', '⚙️ 꼼꼼한 검토', '💡 최적 해결책'],
-    illustration: 'assets/images/result4.png',
+    illustration: 'assets/images/result3.svg',
   },
   communicator: {
     typeLabel:    '💬 소통러',
     title:        '팀을 자연스럽게 연결하는 유형',
     traits:       ['🤝 협업 중심', '💬 원활한 소통', '💡 아이디어 제안', '🌟 팀 조율'],
-    illustration: 'assets/images/result3.png',
+    illustration: 'assets/images/result4.svg',
   },
 };
 
