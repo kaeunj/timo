@@ -3,10 +3,10 @@
    =================================================== */
 
 const QUIZ_ROLES = [
-  { id: 'planning', label: '기획',        icon: 'assets/icons/plan-icon.svg' },
-  { id: 'design',   label: '디자인',      icon: 'assets/icons/design-icon.svg' },
-  { id: 'frontend', label: '프론트엔드',  icon: 'assets/icons/frontend-icon.svg' },
-  { id: 'backend',  label: '백엔드',      icon: 'assets/icons/backend-icon.svg' },
+  { id: 'planning', label: '기획',        emoji: '💡' },
+  { id: 'design',   label: '디자인',      emoji: '🎨' },
+  { id: 'frontend', label: '프론트엔드',  emoji: '💻' },
+  { id: 'backend',  label: '백엔드',      emoji: '⚙️' },
 ];
 
 const QUIZ_TOOLS = [
@@ -20,40 +20,36 @@ const QUIZ_TOOLS = [
 ];
 
 const QUIZ_STYLES = [
-  { id: 'planner',      label: '계획형',  desc: '철저한 계획으로 프로젝트를 이끌어요',    icon: 'assets/icons/planner-icon.svg' },
-  { id: 'executor',     label: '실행형',  desc: '빠른 실행력으로 결과를 만들어요',        icon: 'assets/icons/thunder-icon.svg' },
-  { id: 'analyst',      label: '분석형',  desc: '데이터 기반으로 최적 방향을 찾아요',     icon: 'assets/icons/analysis-icon.svg' },
-  { id: 'communicator', label: '소통형',  desc: '원활한 소통으로 팀을 연결해요',          icon: 'assets/icons/communication-icon.svg' },
+  { id: 'planner',      label: '계획형',  desc: '철저한 계획으로 프로젝트를 이끌어요',    emoji: '📋' },
+  { id: 'executor',     label: '실행형',  desc: '빠른 실행력으로 결과를 만들어요',        emoji: '⚡️' },
+  { id: 'analyst',      label: '분석형',  desc: '데이터 기반으로 최적 방향을 찾아요',     emoji: '🔍' },
+  { id: 'communicator', label: '소통형',  desc: '원활한 소통으로 팀을 연결해요',          emoji: '💬' },
 ];
 
 const QUIZ_RESULTS = {
-  planning: {
-    typeLabel:    '기획자형',
-    title:        '아이디어 설계자',
-    desc:         '큰 그림을 그리고 방향을 제시하는 타입이에요.\n팀의 비전을 명확히 설정하고 체계적인\n계획으로 프로젝트를 이끌어갑니다.',
-    traits:       ['#기획력', '#전략적사고', '#리더십', '#커뮤니케이션'],
-    illustration: 'assets/images/produce.png',
-  },
-  design: {
-    typeLabel:    '디자이너형',
-    title:        '창의적 비주얼리스트',
-    desc:         '감각적인 시각화로 아이디어를 구체화하는\n타입이에요. 사용자 경험을 고려한 디자인으로\n프로젝트에 가치를 더합니다.',
-    traits:       ['#창의력', '#시각화', '#UX감각', '#디테일'],
+  planner: {
+    typeLabel:    '🏅 계획러',
+    title:        '체계적으로 프로젝트를 이끄는 유형',
+    traits:       ['🎯 체계적인 계획', '📋 일정 관리', '📊 목표 지향적', '👥 신중한 의사결정'],
     illustration: 'assets/images/result2.png',
   },
-  frontend: {
-    typeLabel:    '프론트엔드형',
-    title:        '빠른 빌더',
-    desc:         '아이디어를 실제 화면으로 구현하는\n타입이에요. 빠른 실행력과 기술력으로\n팀에 활력을 불어넣는 에너자이저입니다.',
-    traits:       ['#구현력', '#실행력', '#기술력', '#적응력'],
-    illustration: 'assets/images/frontend.png',
+  executor: {
+    typeLabel:    '🚀 실행러',
+    title:        '아이디어를 행동으로 옮기는 유형',
+    traits:       ['⚡ 빠른 실행력', '🔥 적극적인 추진', '💪 도전 정신', '🎯 결과 중심'],
+    illustration: 'assets/images/result1.png',
   },
-  backend: {
-    typeLabel:    '백엔드형',
-    title:        '든든한 설계자',
-    desc:         '탄탄한 시스템을 설계하는 타입이에요.\n데이터 기반의 논리적 사고로\n서비스의 안정성을 책임집니다.',
-    traits:       ['#분석력', '#체계적', '#안정성', '#문제해결'],
-    illustration: 'assets/images/backend.png',
+  analyst: {
+    typeLabel:    '🔍 분석러',
+    title:        '논리적으로 문제를 해결하는 유형',
+    traits:       ['📊 데이터 기반', '🧩 논리적 분석', '⚙️ 꼼꼼한 검토', '💡 최적 해결책'],
+    illustration: 'assets/images/result4.png',
+  },
+  communicator: {
+    typeLabel:    '💬 소통러',
+    title:        '팀을 자연스럽게 연결하는 유형',
+    traits:       ['🤝 협업 중심', '💬 원활한 소통', '💡 아이디어 제안', '🌟 팀 조율'],
+    illustration: 'assets/images/result3.png',
   },
 };
 
@@ -82,7 +78,7 @@ const QuizPage = {
 
   initResult(params = {}) {
     const saved = Storage.get(QUIZ_STORAGE_KEY);
-    if (!saved || !saved.role) {
+    if (!saved || !saved.style) {
       Router.navigate('quiz-1');
       return;
     }
@@ -90,8 +86,8 @@ const QuizPage = {
     const section = document.querySelector('[data-page="quiz-result"]');
     if (!section) return;
 
-    Storage.set('quiz_result', saved.role);
-    const result = QUIZ_RESULTS[saved.role];
+    Storage.set('quiz_result', saved.style);
+    const result = QUIZ_RESULTS[saved.style];
     section.innerHTML = this._renderResult(result, saved);
     this._bindResult(section);
   },
@@ -133,7 +129,7 @@ const QuizPage = {
         aria-pressed="${selectedRole === role.id}"
       >
         <span class="quiz-role-card__icon">
-          <img src="${role.icon}" alt="" aria-hidden="true" />
+          <span class="quiz-role-card__icon-emoji" aria-hidden="true">${role.emoji}</span>
         </span>
         <span class="quiz-role-card__label">${role.label}</span>
       </button>
@@ -213,7 +209,7 @@ const QuizPage = {
         aria-pressed="${selectedStyle === style.id}"
       >
         <span class="quiz-style-card__icon">
-          <img src="${style.icon}" alt="" aria-hidden="true" />
+          <span class="quiz-style-card__icon-emoji" aria-hidden="true">${style.emoji}</span>
         </span>
         <div class="quiz-style-card__content">
           <span class="quiz-style-card__label">${style.label}</span>
@@ -248,64 +244,57 @@ const QuizPage = {
   /* ── 결과 화면 ── */
 
   _renderResult(result, saved) {
-    const traitsHTML = result.traits
-      .map(t => `<span class="quiz-result-page__trait">${t}</span>`)
+    const confettiPieces = [
+      { color: '#ff6b6b', left: 42,  top: 97,  w: 7,  h: 14, deg: -30 },
+      { color: '#ffd93d', left: 141, top: 127, w: 6,  h: 11, deg:  15 },
+      { color: '#6bcb77', left: 216, top: 81,  w: 8,  h: 8,  deg:  45 },
+      { color: '#4d96ff', left: 291, top: 112, w: 7,  h: 13, deg: -20 },
+      { color: '#ff6b6b', left: 328, top: 156, w: 6,  h: 10, deg:  30 },
+      { color: '#ffd93d', left: 23,  top: 200, w: 7,  h: 7,  deg:   0 },
+      { color: '#6bcb77', left: 342, top: 186, w: 6,  h: 11, deg: -45 },
+      { color: '#4d96ff', left: 59,  top: 259, w: 4,  h: 8,  deg:  20 },
+      { color: '#ff922b', left: 314, top: 273, w: 7,  h: 7,  deg: -15 },
+      { color: '#6bcb77', left: 12,  top: 318, w: 6,  h: 13, deg:  35 },
+      { color: '#ff6b6b', left: 352, top: 332, w: 4,  h: 10, deg:  10 },
+    ];
+
+    const confettiHTML = confettiPieces
+      .map(p => `<span class="confetti-piece" style="left:${p.left}px;top:${p.top}px;width:${p.w}px;height:${p.h}px;background:${p.color};transform:rotate(${p.deg}deg)"></span>`)
       .join('');
 
-    const roleLabel  = QUIZ_ROLES.find(r => r.id === saved.role)?.label  || '';
-    const styleLabel = QUIZ_STYLES.find(s => s.id === saved.style)?.label || '';
-    const toolLabels = (saved.tools || [])
-      .map(id => QUIZ_TOOLS.find(t => t.id === id)?.label)
-      .filter(Boolean);
-
-    const summaryHTML = `
-      <div class="quiz-result-summary">
-        <div class="quiz-result-summary__item">
-          <span class="quiz-result-summary__label">역할</span>
-          <span class="quiz-result-summary__value">${roleLabel}</span>
-        </div>
-        ${styleLabel ? `
-        <div class="quiz-result-summary__item">
-          <span class="quiz-result-summary__label">스타일</span>
-          <span class="quiz-result-summary__value">${styleLabel}</span>
-        </div>` : ''}
-        ${toolLabels.length ? `
-        <div class="quiz-result-summary__item quiz-result-summary__item--tools">
-          <span class="quiz-result-summary__label">툴</span>
-          <span class="quiz-result-summary__value">${toolLabels.join(' · ')}</span>
-        </div>` : ''}
-      </div>
-    `;
+    const traitsHTML = result.traits
+      .map(t => {
+        const [icon, ...words] = t.split(' ');
+        return `<div class="quiz-result-trait-card"><span class="quiz-result-trait-card__emoji">${icon}</span><span>${words.join(' ')}</span></div>`;
+      })
+      .join('');
 
     return `
       <div class="quiz-result-page">
-        <img
-          src="assets/icons/confetti-icon.svg"
-          alt=""
-          class="quiz-result-page__confetti"
-          aria-hidden="true"
-        />
-        <p class="quiz-result-page__subtitle">테스트가 완료되었어요!</p>
+        <div class="quiz-result-confetti" aria-hidden="true"><div class="quiz-result-confetti__inner">${confettiHTML}</div></div>
 
-        <img
-          src="${result.illustration}"
-          alt="${result.title}"
-          class="quiz-result-page__illustration"
-        />
+        <div class="quiz-result-page__content">
+          <p class="quiz-result-page__subtitle">축하해요! 당신의 성향은</p>
+          <h2 class="quiz-result-page__title">${result.typeLabel}</h2>
+          <p class="quiz-result-page__type-desc">${result.title}</p>
 
-        <span class="quiz-result-page__type-badge">${result.typeLabel}</span>
-        <h2 class="quiz-result-page__title">${result.title}</h2>
-        <p class="quiz-result-page__desc">${result.desc.replace(/\n/g, '<br>')}</p>
+          <img
+            src="${result.illustration}"
+            alt="${result.typeLabel}"
+            class="quiz-result-page__illustration"
+          />
 
-        <div class="quiz-result-page__traits" aria-label="주요 성향">
-          ${traitsHTML}
+          <div class="quiz-result-page__traits" aria-label="주요 성향">
+            ${traitsHTML}
+          </div>
         </div>
 
-        ${summaryHTML}
-
         <div class="quiz-result-page__cta">
-          <button class="btn btn--primary" id="quiz-result-home" type="button">
-            홈으로 이동하기
+          <button class="btn btn--dark" id="quiz-result-home" type="button">
+            프로필로 보러가기
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </button>
         </div>
       </div>

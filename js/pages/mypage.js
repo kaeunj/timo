@@ -133,6 +133,7 @@ const MyPage = {
     this._renderSavedPosts();
     this._updateSavedPostsCount();
     this._bindMyPcardClick();
+    this._bindLogout();
   },
 
   initReview(params = {}) {
@@ -410,5 +411,15 @@ const MyPage = {
     const newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
     newBtn.addEventListener('click', () => Router.back());
+  },
+
+  _bindLogout() {
+    const btn = document.getElementById('myp-logout-btn');
+    if (!btn) return;
+    btn.addEventListener('click', async () => {
+      await API.auth.logout();
+      Storage.remove('session');
+      Router.navigate('login', { noHistory: true });
+    });
   }
 };

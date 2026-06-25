@@ -694,6 +694,125 @@ h1, h2, h3, h4, h5, h6, .title {
   color: var(--color-primary-light);
 }
 
+/* ── 알림 팝오버 ── */
+
+.notif-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 449;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+.notif-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.notif-popover {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  width: calc(100% - 32px);
+  max-width: 360px;
+  background-color: var(--color-bg-base);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 450;
+  overflow: hidden;
+  max-height: 440px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.notif-popover.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.notif-popover__header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.notif-popover__title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.notif-popover__section-label {
+  padding: 12px 20px 4px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.notif-list {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.notif-list::-webkit-scrollbar {
+  display: none;
+}
+
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 20px;
+}
+
+.notif-item__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 5px;
+  visibility: hidden;
+}
+
+.notif-item--unread .notif-item__dot {
+  visibility: visible;
+}
+
+.notif-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-item__text {
+  font-size: var(--text-sm);
+  color: var(--color-black);
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+.notif-item__time {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.notif-list__divider {
+  height: 1px;
+  background-color: var(--color-divider-light);
+  margin: 0 20px;
+}
+
 /* ── 반응형 ── */
 
 @media (min-width: 390px) {

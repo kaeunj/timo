@@ -83,6 +83,7 @@
       id: 'proj-004',
       title: '교육 플랫폼 MVP 개발',
       category: '사이드 프로젝트',
+      emoji: '✏️',
       status: 'open',
       description: '온라인 학습 경험을 혁신하는 교육 플랫폼의 MVP를 함께 만들어갈 팀원을 찾습니다.',
       deadline: '2026-08-01',
@@ -247,7 +248,7 @@
 
     _renderRecruitRow(project) {
       const iconTheme = CATEGORY_THEME[project.category] || 'theme-purple';
-      const iconEmoji = CATEGORY_EMOJI[project.category] || '🤖';
+      const iconEmoji = project.emoji || CATEGORY_EMOJI[project.category] || '🤖';
       const ddayClass = project.status === 'urgent' ? 'recruit-row__dday--urgent' : '';
 
       const tags = [
@@ -333,9 +334,9 @@
         Router.navigate('project-detail', { id: banner?.dataset.id });
       });
 
-      /* 알림 버튼 */
-      qs('[data-action="open-notification"]')?.addEventListener('click', () => {
-        showToast('알림 기능은 준비 중입니다.', 'info');
+      /* 더보기 버튼 (인기 공모전 / 활발한 공모전 / 팀원 모집) */
+      document.querySelectorAll('[data-action="go-projects"]').forEach(btn => {
+        btn.addEventListener('click', () => Router.navigate('project-list'));
       });
 
       /* 프로필 아바타 버튼 */
