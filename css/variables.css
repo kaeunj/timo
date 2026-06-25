@@ -38,6 +38,10 @@
   --color-badge-hackathon-text: #e65100;
   --color-badge-side-bg:        #f0fff4;
   --color-badge-side-text:      #2e7d32;
+  --color-badge-project-bg:     #eef2ff;
+  --color-badge-project-text:   #4338ca;
+  --color-badge-startup-bg:     #fef3c7;
+  --color-badge-startup-text:   #92400e;
   /* 공모전은 --color-badge-contest-bg/text 재사용 */
 
   /* 모집 상태 */
