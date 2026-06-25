@@ -1,6 +1,6 @@
 /* ===================================================
-   community.css — 커뮤니티 목록 + 게시글 상세
-   prefix: comm-  (다른 페이지와 충돌 없음)
+  community.css — 커뮤니티 목록 + 게시글 상세
+  prefix: comm-  (다른 페이지와 충돌 없음)
    =================================================== */
 
 /* ── 커뮤니티 목록 페이지 ── */
@@ -212,7 +212,7 @@
 
 
 /* ══════════════════════════════════════════════════
-   커뮤니티 게시글 작성
+  커뮤니티 게시글 작성
    ══════════════════════════════════════════════════ */
 
 .comm-write {
@@ -385,7 +385,7 @@
 }
 
 /* ══════════════════════════════════════════════════
-   커뮤니티 게시글 상세
+  커뮤니티 게시글 상세
    ══════════════════════════════════════════════════ */
 
 .comm-post {
@@ -701,105 +701,7 @@
 }
 
 /* ══════════════════════════════════════════════════
-   커뮤니티 FAB 확장 메뉴
-   ══════════════════════════════════════════════════ */
-
-.comm-fab-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 98;
-  background: rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 250ms ease;
-}
-
-.comm-fab-backdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.comm-fab-wrap {
-  position: fixed;
-  right: 0;
-  bottom: calc(var(--bottom-nav-height) + var(--space-5) - 26px);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  z-index: 300;
-}
-
-.comm-fab-wrap .fab {
-  position: static;
-}
-
-.comm-fab-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: flex-end;
-  padding-right: 28px;
-  padding-bottom: 10px;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(12px);
-  transition: opacity 220ms ease, transform 220ms ease;
-}
-
-.comm-fab-menu.is-open {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-
-.comm-fab-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.comm-fab-option__label {
-  background: var(--color-black);
-  color: #ffffff;
-  padding: 9px 16px;
-  border-radius: var(--radius-full);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  white-space: nowrap;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-}
-
-.comm-fab-option__icon {
-  width: 48px;
-  height: 48px;
-  background: var(--color-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(92, 207, 166, 0.4);
-  flex-shrink: 0;
-}
-
-.comm-fab-option__icon svg {
-  stroke: var(--color-black);
-}
-
-.comm-fab-main img {
-  transition: transform 300ms ease;
-}
-
-.comm-fab-main.is-open img {
-  transform: rotate(45deg);
-}
-
-/* ══════════════════════════════════════════════════
-   카드 · 댓글 등장 애니메이션 (아래 → 위)
+  카드 · 댓글 등장 애니메이션 (아래 → 위)
    ══════════════════════════════════════════════════ */
 
 @keyframes commFadeUp {
@@ -812,7 +714,7 @@
 }
 
 /* ══════════════════════════════════════════════════
-   좋아요 아이콘 + 띵 애니메이션
+  좋아요 아이콘 + 띵 애니메이션
    ══════════════════════════════════════════════════ */
 
 .comm-post__like-img {
@@ -843,7 +745,7 @@
 }
 
 /* ══════════════════════════════════════════════════
-   댓글 삭제 버튼
+  댓글 삭제 버튼
    ══════════════════════════════════════════════════ */
 
 .comm-post__comment-name-row {

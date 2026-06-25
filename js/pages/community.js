@@ -137,15 +137,12 @@ const CommunityPage = (() => {
   let _commentCounts = {};   // postId → extra comments added locally
   let _selectedCat = 'free'; // 글쓰기 선택 카테고리
   let _editingPostId = null; // 수정 중인 게시글 id
-  let _fabBound = false;     // FAB 이벤트 중복 바인딩 방지
 
   /* ── 커뮤니티 목록 ── */
   function init(params = {}) {
-    _closeFabMenu();
     _syncTabUI(_currentTab);
     _renderList(_currentTab);
     _bindTabs();
-    _bindFab();
     _moveIndicator(_currentTab);
   }
 
@@ -161,49 +158,6 @@ const CommunityPage = (() => {
       const active = btn.dataset.commTab === tab;
       btn.classList.toggle('comm-tabs__item--active', active);
       btn.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-  }
-
-  function _closeFabMenu() {
-    document.getElementById('comm-fab-menu')?.classList.remove('is-open');
-    document.getElementById('comm-fab-backdrop')?.classList.remove('is-open');
-    document.getElementById('comm-fab-main')?.classList.remove('is-open');
-    document.getElementById('comm-fab-menu')?.setAttribute('aria-hidden', 'true');
-  }
-
-  function _bindFab() {
-    if (_fabBound) return;
-    _fabBound = true;
-
-    const mainFab    = document.getElementById('comm-fab-main');
-    const menu       = document.getElementById('comm-fab-menu');
-    const backdrop   = document.getElementById('comm-fab-backdrop');
-    const projectBtn = document.getElementById('comm-fab-project-btn');
-    const communityBtn = document.getElementById('comm-fab-community-btn');
-    if (!mainFab) return;
-
-    function openMenu() {
-      menu?.classList.add('is-open');
-      backdrop?.classList.add('is-open');
-      mainFab.classList.add('is-open');
-      menu?.setAttribute('aria-hidden', 'false');
-    }
-
-    mainFab.addEventListener('click', () => {
-      if (mainFab.classList.contains('is-open')) _closeFabMenu();
-      else openMenu();
-    });
-
-    backdrop?.addEventListener('click', _closeFabMenu);
-
-    projectBtn?.addEventListener('click', () => {
-      _closeFabMenu();
-      Router.navigate('project-detail');
-    });
-
-    communityBtn?.addEventListener('click', () => {
-      _closeFabMenu();
-      Router.navigate('community-write');
     });
   }
 

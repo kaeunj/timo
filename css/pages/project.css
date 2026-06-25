@@ -29,7 +29,7 @@
 }
 
 .proj-list-filters .filter-chip-group {
-  margin-top: 0;
+  margin-top: 10px;
 }
 
 .proj-list-body {
@@ -93,6 +93,7 @@
   font-weight: 700;
   line-height: 1.5;
   color: var(--color-black);
+  word-break: keep-all;
 }
 
 .proj-card__desc {
@@ -203,6 +204,7 @@
   font-size: 22px;
   font-weight: 800;
   color: var(--color-black);
+  word-break: keep-all;
 }
 
 /* ── 정보 그리드 (마감일/팀원수/기간 3분할) ── */

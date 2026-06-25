@@ -57,6 +57,9 @@ const Router = {
     /* 바텀 네비 업데이트 */
     this._updateBottomNav(pageId);
 
+    /* 글쓰기 FAB 노출 여부 업데이트 */
+    if (typeof GlobalFab !== 'undefined') GlobalFab.updateForPage(pageId);
+
     /* history 업데이트 — noHistory여도 state는 채워야 뒤로가기 시 popstate.state가
        null로 빠져 _getInitialPage()로 강제 이동하는 문제가 생기지 않는다 */
     if (params.noHistory) {
