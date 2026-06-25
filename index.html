@@ -294,7 +294,7 @@
               <span class="icon-btn__badge" id="home-notification-badge" aria-hidden="true"></span>
             </button>
             <button class="home__avatar-btn" type="button" data-action="open-profile" aria-label="프로필">
-              <span aria-hidden="true">🤖</span>
+              <img src="assets/icons/profile.svg" alt="프로필" />
             </button>
           </div>
         </div>
@@ -325,7 +325,7 @@
         <section class="home__section">
           <div class="home__section-head">
             <h2 class="home__section-title">인기 공모전</h2>
-            <span class="home__section-more">더보기</span>
+            <span class="home__section-more" data-action="go-projects">더보기</span>
           </div>
           <div class="contest-card-list" id="home-contest-list"></div>
         </section>
@@ -333,7 +333,7 @@
         <section class="home__section">
           <div class="home__section-head">
             <h2 class="home__section-title">현재 가장 활발한 공모전</h2>
-            <span class="home__section-more">더보기</span>
+            <span class="home__section-more" data-action="go-projects">더보기</span>
           </div>
           <div class="active-contest-list" id="home-active-contest-list"></div>
         </section>
@@ -341,7 +341,7 @@
         <section class="recruit-card">
           <div class="home__section-head">
             <h2 class="home__section-title">팀원 모집</h2>
-            <span class="home__section-more">더보기</span>
+            <span class="home__section-more" data-action="go-projects">더보기</span>
           </div>
 
           <div class="filter-chip-group" id="home-filter-chips" role="tablist" aria-label="프로젝트 카테고리 필터">
@@ -615,7 +615,7 @@
         <!-- 헤더 -->
         <div class="myp-header">
           <h1 class="myp-header__title">나의 프로필</h1>
-          <button class="myp-header__settings" type="button" aria-label="설정">
+          <button class="myp-header__settings" type="button" data-action="open-notification" aria-label="알림">
             <img src="assets/icons/notice-icon.svg" alt="" aria-hidden="true" />
           </button>
         </div>
@@ -626,7 +626,7 @@
           <div class="myp-profile">
             <div class="myp-profile__top">
               <div class="myp-profile__avatar-wrap">
-                <span class="myp-profile__avatar-emoji">🤖</span>
+                <img src="assets/icons/profile.svg" alt="프로필" class="myp-profile__avatar-img" />
               </div>
               <div class="myp-profile__info">
                 <span class="myp-profile__name">김티모</span>
@@ -710,6 +710,10 @@
                 </div>
               </div>
             </div>
+          </div>
+          <!-- 로그아웃 -->
+          <div class="myp-logout-wrap">
+            <button type="button" class="myp-logout-btn" id="myp-logout-btn">로그아웃</button>
           </div>
         </div><!-- /.myp-body -->
       </div>
@@ -1035,6 +1039,68 @@
     <!-- ⑧ 토스트 -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+    <!-- ⑨ 알림 팝오버 오버레이 -->
+    <div class="notif-overlay" id="notif-overlay" aria-hidden="true"></div>
+
+    <!-- ⑩ 알림 팝오버 -->
+    <div class="notif-popover" id="notif-popover" role="dialog" aria-label="알림" aria-hidden="true">
+      <div class="notif-popover__header">
+        <span class="notif-popover__title">🔔 알림</span>
+      </div>
+      <p class="notif-popover__section-label">최근 알림</p>
+      <div class="notif-list">
+
+        <div class="notif-item notif-item--unread">
+          <span class="notif-item__dot" aria-hidden="true"></span>
+          <div class="notif-item__body">
+            <p class="notif-item__text">👥 새로운 지원자가 프로젝트에 참여했습니다.</p>
+            <span class="notif-item__time">5분 전</span>
+          </div>
+        </div>
+
+        <div class="notif-list__divider"></div>
+
+        <div class="notif-item notif-item--unread">
+          <span class="notif-item__dot" aria-hidden="true"></span>
+          <div class="notif-item__body">
+            <p class="notif-item__text">✅ 프로젝트 지원이 승인되었습니다.</p>
+            <span class="notif-item__time">1시간 전</span>
+          </div>
+        </div>
+
+        <div class="notif-list__divider"></div>
+
+        <div class="notif-item">
+          <span class="notif-item__dot" aria-hidden="true"></span>
+          <div class="notif-item__body">
+            <p class="notif-item__text">⏰ 프로젝트 모집 마감이 3일 남았습니다.</p>
+            <span class="notif-item__time">어제</span>
+          </div>
+        </div>
+
+        <div class="notif-list__divider"></div>
+
+        <div class="notif-item">
+          <span class="notif-item__dot" aria-hidden="true"></span>
+          <div class="notif-item__body">
+            <p class="notif-item__text">💬 내 게시글에 새로운 댓글이 달렸습니다.</p>
+            <span class="notif-item__time">2일 전</span>
+          </div>
+        </div>
+
+        <div class="notif-list__divider"></div>
+
+        <div class="notif-item">
+          <span class="notif-item__dot" aria-hidden="true"></span>
+          <div class="notif-item__body">
+            <p class="notif-item__text">🎉 새로운 해커톤이 등록되었습니다.</p>
+            <span class="notif-item__time">3일 전</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div><!-- /#app -->
 
   <!-- JS (의존성 순서 준수) -->
@@ -1050,6 +1116,7 @@
   <script src="js/pages/mypage.js"></script>
   <script src="js/pages/profile.js"></script>
   <script src="js/pages/review.js"></script>
+  <script src="js/notification.js"></script>
   <script src="js/router.js"></script>
 
   <!-- 바텀 네비 탭 이벤트 바인딩 -->
@@ -1065,6 +1132,9 @@
 
     /* 바텀시트 오버레이 클릭 시 닫기 */
     document.getElementById('bottom-sheet-overlay')?.addEventListener('click', closeBottomSheet);
+
+    /* 알림 팝오버 초기화 */
+    NotificationPopover.init();
 
     /* 라우터 초기화 */
     Router.init();
