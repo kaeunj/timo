@@ -121,6 +121,50 @@ const MY_WRITTEN_REVIEWS_DATA = [
     text: '디자인 완성도가 정말 높았고, 개발자 입장에서 구현하기 쉽게 정리해주셨어요. 항상 피드백을 빠르게 반영해주셔서 감사했습니다.',
     project: 'AI 기반 운동 루틴 추천 서비스',
     date: '2026.01'
+  },
+  {
+    id: 'wr-5',
+    targetName: '한소현',
+    targetInitial: '한',
+    avatarClass: 'wrvw-card__avatar--cyan',
+    targetRole: '프론트엔드 개발자',
+    rating: 4,
+    text: '코드 퀄리티가 매우 높고 데드라인을 잘 지켜줬어요. 팀원들과 소통도 원활해서 협업이 즐거웠습니다!',
+    project: '스마트시티 솔루션 공모전',
+    date: '2025.12'
+  },
+  {
+    id: 'wr-6',
+    targetName: '김준서',
+    targetInitial: '김',
+    avatarClass: 'wrvw-card__avatar--primary',
+    targetRole: '백엔드 개발자',
+    rating: 5,
+    text: 'API 설계가 탁월했고 문서화도 꼼꼼하게 해주셔서 프론트 연동이 수월했어요. 진짜 실력자세요!',
+    project: '교육 플랫폼 MVP 개발',
+    date: '2025.11'
+  },
+  {
+    id: 'wr-7',
+    targetName: '이수빈',
+    targetInitial: '이',
+    avatarClass: 'wrvw-card__avatar--purple',
+    targetRole: '디자이너',
+    rating: 5,
+    text: '감각적인 디자인과 빠른 피드백 반영으로 프로젝트 완성도를 높여줬어요. 다음에도 꼭 같이 하고 싶습니다!',
+    project: 'AI 기반 운동 루틴 추천 서비스',
+    date: '2025.10'
+  },
+  {
+    id: 'wr-8',
+    targetName: '박진우',
+    targetInitial: '박',
+    avatarClass: 'wrvw-card__avatar--cyan',
+    targetRole: '기획자',
+    rating: 4,
+    text: '기획서를 체계적으로 작성해줘서 프로젝트 방향이 명확했어요. 팀원들을 잘 이끌어줘서 감사했어요.',
+    project: '캠퍼스 커뮤니티 플랫폼',
+    date: '2025.09'
   }
 ];
 
@@ -129,31 +173,35 @@ const MyPage = {
   init(params = {}) {
     this._bindStats();
     this._bindProjectMore();
-    this._bindProfileClick();
     this._renderSavedPosts();
     this._updateSavedPostsCount();
     this._bindMyPcardClick();
     this._bindLogout();
+    this._animateMyPage();
   },
 
   initReview(params = {}) {
     this._bindReviewBack();
     this._bindTagMore();
+    this._animatePageIn('[data-page="project-review"] .prv-page');
   },
 
   initProjects(params = {}) {
     this._renderMyProjects();
     this._bindMyProjectsBack();
+    this._animatePageIn('[data-page="my-projects"] .myproj-page');
   },
 
   initWrittenReviews(params = {}) {
     this._renderWrittenReviews();
     this._bindWrittenReviewsBack();
+    this._animatePageIn('[data-page="my-written-reviews"] .wrvw-page');
   },
 
   initSavedPosts(params = {}) {
     this._renderSavedPostsPage();
     this._bindSavedPostsBack();
+    this._animatePageIn('[data-page="saved-posts"] .svdp-page');
   },
 
   /* 통계 버튼 → 페이지 이동 */
@@ -224,16 +272,8 @@ const MyPage = {
     });
   },
 
-  /* 프로필 카드 클릭 → 받은 리뷰(프로젝트 리뷰) 화면 */
-  _bindProfileClick() {
-    const profile = document.querySelector('[data-page="mypage"] .myp-profile');
-    if (!profile) return;
-    profile.style.cursor = 'pointer';
-    const newProfile = profile.cloneNode(true);
-    profile.parentNode.replaceChild(newProfile, profile);
-    newProfile.style.cursor = 'pointer';
-    newProfile.addEventListener('click', () => Router.navigate('project-review'));
-  },
+  /* 프로필 카드 클릭 이벤트 없음 — 상단은 클릭 영역 아님 */
+  _bindProfileClick() {},
 
   /* 프로젝트 리뷰 뒤로가기 */
   _bindReviewBack() {
@@ -327,6 +367,12 @@ const MyPage = {
       card.addEventListener('click', handler);
       card.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
     });
+
+    /* 카드 등장 애니메이션 (아래 → 위, 순차) */
+    container.querySelectorAll('.myproj-card').forEach((el, i) => {
+      el.style.animationDelay = `${0.1 + i * 0.08}s`;
+      el.classList.add('myp-fade-up');
+    });
   },
 
   _bindMyProjectsBack() {
@@ -352,16 +398,22 @@ const MyPage = {
       ${MY_WRITTEN_REVIEWS_DATA.map(r => `
         <div class="wrvw-card">
           <div class="wrvw-card__top">
-            <div class="wrvw-card__avatar ${r.avatarClass}">${r.targetInitial}</div>
+            <img src="assets/icons/profile.svg" alt="프로필" class="wrvw-card__avatar wrvw-card__avatar--img" />
             <div class="wrvw-card__info">
-              <p class="wrvw-card__name">${r.targetName}</p>
-              <p class="wrvw-card__role-project">${r.targetRole} · ${r.date}</p>
+              <p class="wrvw-card__name">김티모</p>
+              <p class="wrvw-card__role-project">디자이너 · ${r.date}</p>
             </div>
           </div>
           <div class="wrvw-card__stars">${starsHtml(r.rating)}</div>
           <p class="wrvw-card__text">${r.text}</p>
           <span class="wrvw-card__project-tag">📁 ${r.project}</span>
         </div>`).join('')}`;
+
+    /* 카드 등장 애니메이션 */
+    container.querySelectorAll('.wrvw-card').forEach((el, i) => {
+      el.style.animationDelay = `${0.1 + i * 0.07}s`;
+      el.classList.add('myp-fade-up');
+    });
   },
 
   _bindWrittenReviewsBack() {
@@ -402,6 +454,12 @@ const MyPage = {
       card.addEventListener('click', handler);
       card.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
     });
+
+    /* 카드 등장 애니메이션 */
+    container.querySelectorAll('.svdp-card').forEach((el, i) => {
+      el.style.animationDelay = `${0.1 + i * 0.08}s`;
+      el.classList.add('myp-fade-up');
+    });
   },
 
   _bindSavedPostsBack() {
@@ -421,5 +479,41 @@ const MyPage = {
       Storage.remove('session');
       Router.navigate('login', { noHistory: true });
     });
+  },
+
+  /* 마이페이지 메인 요소 순차 등장 애니메이션 */
+  _animateMyPage() {
+    const page = document.querySelector('[data-page="mypage"]');
+    if (!page) return;
+
+    const animate = (el, delay) => {
+      if (!el) return;
+      el.classList.remove('myp-fade-up');
+      void el.offsetWidth;
+      el.style.animationDelay = `${delay}s`;
+      el.classList.add('myp-fade-up');
+    };
+
+    /* 1. 프로필 상단 */
+    animate(page.querySelector('.myp-profile'), 0);
+
+    /* 2. 통계 3개 (왼쪽부터 하나씩) */
+    page.querySelectorAll('.myp-stats__item').forEach((el, i) => {
+      animate(el, 0.12 + i * 0.08);
+    });
+
+    /* 3. 참여 중인 프로젝트 카드 (위에서부터 아래로 하나씩) */
+    page.querySelectorAll('.myp-pcard').forEach((el, i) => {
+      animate(el, 0.3 + i * 0.08);
+    });
+  },
+
+  /* 상세 페이지 슬라이드인 애니메이션 */
+  _animatePageIn(selector) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    el.classList.remove('myp-page-in');
+    void el.offsetWidth;
+    el.classList.add('myp-page-in');
   }
 };
