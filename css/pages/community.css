@@ -32,6 +32,7 @@
 .comm-tabs {
   display: flex;
   margin-top: 14px;
+  position: relative;
 }
 
 .comm-tabs__item {
@@ -41,8 +42,8 @@
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
-  border-bottom: 2.5px solid transparent;
-  transition: color var(--transition-fast), border-color var(--transition-fast);
+  border-bottom: none;
+  transition: color var(--transition-fast);
   background: none;
   cursor: pointer;
 }
@@ -50,7 +51,19 @@
 .comm-tabs__item--active {
   color: var(--color-black);
   font-weight: 700;
-  border-bottom-color: var(--color-black);
+}
+
+/* 슬라이딩 탭 인디케이터 */
+.comm-tabs__indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(100% / 3);
+  height: 2.5px;
+  background-color: var(--color-black);
+  border-radius: 2px 2px 0 0;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 /* 스크롤 영역 */
@@ -549,6 +562,7 @@
 .comm-post__action-btn--liked {
   border-color: var(--color-primary);
   color: var(--color-primary);
+  background-color: var(--color-primary-tint);
 }
 
 .comm-post__action-btn:active {
@@ -684,4 +698,175 @@
 
 .comm-post__send-btn:disabled {
   opacity: 0.4;
+}
+
+/* ══════════════════════════════════════════════════
+   커뮤니티 FAB 확장 메뉴
+   ══════════════════════════════════════════════════ */
+
+.comm-fab-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+.comm-fab-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.comm-fab-wrap {
+  position: fixed;
+  right: 0;
+  bottom: calc(var(--bottom-nav-height) + var(--space-5) - 26px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 300;
+}
+
+.comm-fab-wrap .fab {
+  position: static;
+}
+
+.comm-fab-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+  padding-right: 28px;
+  padding-bottom: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.comm-fab-menu.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.comm-fab-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.comm-fab-option__label {
+  background: var(--color-black);
+  color: #ffffff;
+  padding: 9px 16px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.comm-fab-option__icon {
+  width: 48px;
+  height: 48px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(92, 207, 166, 0.4);
+  flex-shrink: 0;
+}
+
+.comm-fab-option__icon svg {
+  stroke: var(--color-black);
+}
+
+.comm-fab-main img {
+  transition: transform 300ms ease;
+}
+
+.comm-fab-main.is-open img {
+  transform: rotate(45deg);
+}
+
+/* ══════════════════════════════════════════════════
+   카드 · 댓글 등장 애니메이션 (아래 → 위)
+   ══════════════════════════════════════════════════ */
+
+@keyframes commFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.comm-fade-up {
+  animation: commFadeUp 0.35s ease both;
+}
+
+/* ══════════════════════════════════════════════════
+   좋아요 아이콘 + 띵 애니메이션
+   ══════════════════════════════════════════════════ */
+
+.comm-post__like-img {
+  flex-shrink: 0;
+  display: block;
+}
+
+@keyframes like-pop {
+  0%   { transform: scale(0.4) rotate(-20deg); opacity: 0.5; }
+  35%  { transform: scale(1.4) rotate(8deg);   opacity: 1;   }
+  55%  { transform: scale(0.88) rotate(-4deg); }
+  75%  { transform: scale(1.1) rotate(2deg);  }
+  100% { transform: scale(1) rotate(0deg);    }
+}
+
+.like-pop {
+  animation: like-pop 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+}
+
+@keyframes like-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(127, 255, 212, 0.75); }
+  60%  { box-shadow: 0 0 0 12px rgba(127, 255, 212, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(127, 255, 212, 0);   }
+}
+
+.like-ring {
+  animation: like-ring 0.5s ease-out;
+}
+
+/* ══════════════════════════════════════════════════
+   댓글 삭제 버튼
+   ══════════════════════════════════════════════════ */
+
+.comm-post__comment-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.comm-post__comment-delete-btn {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.comm-post__comment-delete-btn:hover {
+  color: var(--color-status-urgent);
+  background-color: #fff0f0;
 }
