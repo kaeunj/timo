@@ -272,6 +272,8 @@
     '창업': '🚀'
   };
 
+  const RECRUIT_INITIAL_COUNT = 3;
+
   const HomePage = {
     state: {
       category: 'all',
@@ -288,6 +290,7 @@
       this.renderActiveContestList();
       this.renderCardList();
       this.bindEvents();
+      this._animateHome();
     },
 
     renderGreeting() {
@@ -384,7 +387,19 @@
         return;
       }
 
-      list.innerHTML = projects.map((p) => this._renderRecruitRow(p)).join('');
+      const hasMore = projects.length > RECRUIT_INITIAL_COUNT;
+      const initialProjects = projects.slice(0, RECRUIT_INITIAL_COUNT);
+      const extraProjects = hasMore ? projects.slice(RECRUIT_INITIAL_COUNT) : [];
+
+      list.innerHTML = `
+        ${initialProjects.map((p) => this._renderRecruitRow(p)).join('')}
+        ${hasMore ? `
+          <div class="recruit-row-list__extra" id="recruit-extra-rows">
+            ${extraProjects.map((p) => this._renderRecruitRow(p)).join('')}
+          </div>
+          <button class="recruit-row-list__toggle-btn" id="recruit-toggle-btn" type="button">more</button>
+        ` : ''}
+      `;
     },
 
     _getFilteredProjects() {
@@ -420,6 +435,41 @@
           </div>
         </article>
       `;
+    },
+
+    _animateHome() {
+      const page = document.querySelector('[data-page="home"]');
+      if (!page) return;
+
+      const anim = (el, delay) => {
+        if (!el) return;
+        el.style.animationDelay = `${delay}s`;
+        el.classList.remove('home-anim');
+        void el.offsetWidth;
+        el.classList.add('home-anim');
+      };
+
+      anim(page.querySelector('.home__header-top'), 0);
+      anim(page.querySelector('.home__mascot'), 0.06);
+      anim(page.querySelector('.search-bar'), 0.1);
+      anim(page.querySelector('#home-tagline'), 0.15);
+      anim(page.querySelector('#home-banner'), 0.2);
+
+      page.querySelectorAll('.home__section-head').forEach((el, i) => {
+        anim(el, 0.26 + i * 0.07);
+      });
+
+      page.querySelectorAll('.contest-card').forEach((el, i) => {
+        anim(el, 0.32 + i * 0.04);
+      });
+
+      page.querySelectorAll('.active-contest-card').forEach((el, i) => {
+        anim(el, 0.38 + i * 0.04);
+      });
+
+      page.querySelectorAll('.recruit-row').forEach((el, i) => {
+        anim(el, 0.44 + i * 0.05);
+      });
     },
 
     bindEvents() {
@@ -458,7 +508,7 @@
         });
       }
 
-      /* 팀원 모집 행 클릭 */
+      /* 팀원 모집 행 클릭 + 더보기/접기 토글 */
       const list = qs('#home-recruit-list');
       if (list) {
         const goToDetail = (row) => {
@@ -467,6 +517,24 @@
         };
 
         list.addEventListener('click', (e) => {
+          /* 더보기/접기 버튼 */
+          const toggleBtn = e.target.closest('#recruit-toggle-btn');
+          if (toggleBtn) {
+            const extraRows = document.getElementById('recruit-extra-rows');
+            if (!extraRows) return;
+            const isExpanded = extraRows.dataset.expanded === 'true';
+            if (!isExpanded) {
+              extraRows.style.maxHeight = extraRows.scrollHeight + 'px';
+              extraRows.dataset.expanded = 'true';
+              toggleBtn.textContent = 'close';
+            } else {
+              extraRows.style.maxHeight = '0';
+              extraRows.dataset.expanded = 'false';
+              toggleBtn.textContent = 'more';
+            }
+            return;
+          }
+          /* 카드 클릭 */
           goToDetail(e.target.closest('.recruit-row'));
         });
 

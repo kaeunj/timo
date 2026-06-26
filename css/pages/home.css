@@ -7,7 +7,7 @@
 .home__header {
   position: relative;
   flex-shrink: 0;
-  padding: 17px var(--page-px) 17px;
+  padding: 24px var(--page-px) 17px;
   background-color: var(--color-bg-base);
   border-bottom: 1px solid var(--color-border);
 }
@@ -19,14 +19,14 @@
 }
 
 .home__greeting-hello {
-  font-size: var(--text-sm);
+  font-size: 16px;
   color: var(--color-text-secondary);
 }
 
 .home__greeting-name {
-  margin-top: 2px;
+  margin-top: 3px;
   font-family: var(--font-body);
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 800;
   color: var(--color-black);
   white-space: nowrap;
@@ -66,7 +66,7 @@
   align-items: center;
   gap: 10px;
   height: 52px;
-  margin-top: 40px;
+  margin-top: 24px;
   padding: 0 14px;
   border-radius: var(--radius-md);
   background-color: var(--color-bg-page);
@@ -463,7 +463,7 @@
 .recruit-card {
   margin-top: 28px;
   margin-bottom: 24px;
-  padding: var(--space-6) var(--space-6) var(--space-5);
+  padding: var(--space-6) var(--space-6) var(--space-2);
   border-radius: 23px;
   background-color: var(--color-bg-base);
   box-shadow: var(--shadow-card);
@@ -485,6 +485,33 @@
   text-align: center;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
+}
+
+.recruit-row-list__extra {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.38s ease;
+}
+
+.recruit-row-list__toggle-btn {
+  display: block;
+  margin: 6px auto;
+  padding: 5px 16px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.recruit-row-list__toggle-btn:hover {
+  background-color: var(--color-bg-page);
 }
 
 .recruit-row {
@@ -634,6 +661,34 @@
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--color-role-badge-text);
+}
+
+/* ── 홈 화면 등장 애니메이션 ── */
+
+@keyframes homeFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.home-anim {
+  opacity: 0;
+  animation: homeFadeUp 0.35s ease both;
+}
+
+/* 카드 호버 (터치 없는 환경에서만) */
+@media (hover: hover) {
+  .contest-card:hover,
+  .active-contest-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .recruit-row:hover {
+    background-color: var(--color-bg-page);
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s ease;
+  }
 }
 
 /* ── 반응형 ── */
