@@ -36,12 +36,17 @@ const NotificationPopover = (() => {
     /* 오버레이 클릭 → 닫기 */
     document.getElementById('notif-overlay')?.addEventListener('click', close);
 
+    /* X 버튼 클릭 → 닫기 */
+    document.getElementById('notif-popover')?.addEventListener('click', (e) => {
+      if (e.target.closest('.notif-popover__close')) close();
+    });
+
     /* ESC 키 → 닫기 */
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _isOpen) close();
     });
 
-    /* 알림 버튼 (홈·마이페이지 공통 — 이벤트 위임) */
+    /* 알림 버튼 (모든 페이지 공통 — 이벤트 위임) */
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-action="open-notification"]');
       if (!btn) return;

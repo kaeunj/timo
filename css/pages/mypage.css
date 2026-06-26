@@ -30,6 +30,7 @@
 }
 
 .myp-header__settings {
+  position: relative;
   width: 46px;
   height: 46px;
   display: flex;
@@ -63,9 +64,9 @@
 
 .myp-profile__top {
   display: flex;
-  align-items: center;
-  gap: 22px;
-  margin-bottom: -6px;
+  align-items: flex-start;
+  gap: 23px;
+  margin-bottom: 16px;
 }
 
 .myp-profile__avatar-wrap {
@@ -74,9 +75,10 @@
 
 .myp-profile__avatar-img {
   display: block;
-  width: 87px;
-  height: 87px;
-  object-fit: contain;
+  width: 93px;
+  height: 93px;
+  object-fit: cover;
+  border-radius: 28px;
   margin: 0 auto;
 }
 
@@ -96,14 +98,15 @@
 
 .myp-profile__role {
   font-family: var(--font-body);
-  font-size: var(--text-lg);
+  font-size: 17px;
   color: var(--color-text-secondary);
   line-height: 1.5;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .myp-profile__type-badge {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
   gap: 5px;
   background-color: var(--color-primary-light);
@@ -115,21 +118,48 @@
   color: var(--color-black);
 }
 
+/* ── 성향 추천 툴 ── */
+.myp-tools {
+  margin-top: 4px;
+}
+
+.myp-tools__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.myp-tools__chip {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  border: 1.2px solid var(--color-primary-light);
+  background-color: #fff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
 /* ── 통계 박스 ── */
 .myp-stats {
   display: flex;
   gap: 20px;
-  padding-top: 34px;
 }
 
 .myp-stats__item {
   flex: 1;
   background-color: var(--color-stats-bg);
   border-radius: 20px;
-  padding: 10px;
+  padding: 10px 10px;
+  min-height: 94px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2px;
   cursor: pointer;
   transition: background-color var(--transition-fast);
@@ -150,7 +180,7 @@
 
 .myp-stats__label {
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: 14.5px;
   color: var(--color-text-secondary);
   text-align: center;
   line-height: 1.4;
@@ -169,13 +199,14 @@
   font-size: 20px;
   font-weight: 700;
   color: var(--color-black);
+  letter-spacing: -0.3px;
 }
 
 .myp-section-head__more {
   font-family: var(--font-body);
-  font-size: var(--text-lg);
+  font-size: 17px;
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: #5fbf9f;
   cursor: pointer;
 }
 

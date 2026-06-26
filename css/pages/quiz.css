@@ -365,148 +365,292 @@
 }
 
 /* ════════════════════════════════════
-   결과 화면
+   결과 화면 v2 — 카드형 레이아웃
+   (클래스 prefix: qr-)
 ════════════════════════════════════ */
 
-.quiz-result-page {
+.qr-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background-color: var(--color-bg-base);
+}
+
+.qr-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 상단 네비 (뒤로가기) */
+
+.qr-nav {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 var(--page-px);
+  background-color: var(--color-bg-base);
+  flex-shrink: 0;
+}
+
+.qr-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: -8px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color var(--transition-fast);
+}
+
+.qr-back:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.qr-back img {
+  width: 24px;
+  height: 24px;
+}
+
+/* 히어로 영역 (흰 배경, 중앙 정렬) */
+
+.qr-hero {
   position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px var(--page-px) 32px;
-  flex: 1;
+  background-color: var(--color-bg-base);
+  padding: 20px var(--page-px) 28px;
   text-align: center;
   overflow: hidden;
 }
 
-/* 컨페티 조각 — 375px 기준으로 중앙 정렬 */
+/* 컨페티 — z-index: -1 로 캐릭터 뒤에 위치 */
 
-.quiz-result-confetti {
+.qr-confetti {
   position: absolute;
   inset: 0;
+  z-index: -1;
   pointer-events: none;
-  z-index: 0;
 }
 
-.quiz-result-confetti__inner {
-  position: relative;
-  width: 375px;
-  height: 100%;
-  margin: 0 auto;
-}
-
-.confetti-piece {
+.qr-confetti__piece {
   position: absolute;
-  display: block;
   border-radius: 3px;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
-/* 메인 콘텐츠 래퍼 — 세로 중앙 정렬 */
-
-.quiz-result-page__content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  position: relative;
-  z-index: 1;
+/* left는 % 기준(390px 기준 환산)으로 반응형 중앙 유지 */
+.qr-confetti__piece--1 {
+  width: 7px; height: 13px;
+  background-color: #ff6b6b;
+  left: 9%; top: 15px;
+  transform: rotate(-30deg);
+}
+.qr-confetti__piece--2 {
+  width: 6px; height: 10px;
+  background-color: #ffd93d;
+  left: 30%; top: 32px;
+  transform: rotate(15deg);
+}
+.qr-confetti__piece--3 {
+  width: 9px; height: 9px;
+  background-color: #6bcb77;
+  left: 55%; top: 8px;
+  transform: rotate(45deg);
+}
+.qr-confetti__piece--4 {
+  width: 7px; height: 12px;
+  background-color: #4d96ff;
+  left: 75%; top: 22px;
+  transform: rotate(-20deg);
+}
+.qr-confetti__piece--5 {
+  width: 6px; height: 10px;
+  background-color: #ff6b6b;
+  left: 90%; top: 62px;
+  transform: rotate(30deg);
+}
+.qr-confetti__piece--6 {
+  width: 7px; height: 7px;
+  background-color: #ffd93d;
+  left: 5%; top: 140px;
+}
+.qr-confetti__piece--7 {
+  width: 6px; height: 12px;
+  background-color: #6bcb77;
+  left: 92%; top: 105px;
+  transform: rotate(-45deg);
+}
+.qr-confetti__piece--8 {
+  width: 4px; height: 9px;
+  background-color: #4d96ff;
+  left: 15%; top: 200px;
+  transform: rotate(20deg);
+}
+.qr-confetti__piece--9 {
+  width: 7px; height: 7px;
+  background-color: #ff922b;
+  left: 86%; top: 182px;
+  transform: rotate(-15deg);
 }
 
-/* 콘텐츠 공통 z-index */
-
-.quiz-result-page__cta {
-  position: relative;
-  z-index: 1;
-}
-
-/* 상단 자막 */
-
-.quiz-result-page__subtitle {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-2);
-}
-
-/* 메인 제목 (이모지 + 결과명) */
-
-.quiz-result-page__title {
-  font-family: var(--font-title);
-  font-size: 34px;
-  font-weight: 800;
-  color: var(--color-black);
-  line-height: 1.2;
-  margin-bottom: var(--space-2);
-}
-
-/* 부제목 */
-
-.quiz-result-page__type-desc {
-  font-size: 15px;
-  font-weight: 400;
+.qr-completion {
+  font-size: var(--text-base);
   color: var(--color-text-secondary);
   margin-bottom: 28px;
+  animation: quiz-result-fade-up 0.4s ease 0.05s both;
 }
 
-/* 캐릭터 이미지 */
-
-.quiz-result-page__illustration {
+.qr-illustration {
   width: 200px;
-  height: 185px;
+  height: 200px;
   object-fit: contain;
   margin-bottom: 32px;
+  animation:
+    quiz-result-pop   0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both,
+    quiz-result-float 2.6s ease-in-out 0.7s infinite;
 }
 
-/* 성향 2×2 그리드 */
+.qr-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 22px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-tint);
+  border: 1.5px solid var(--color-primary-light);
+  color: var(--color-black);
+  font-size: var(--text-base);
+  font-weight: 700;
+  margin-bottom: 20px;
+  animation: quiz-result-fade-up 0.4s ease 0.4s both;
+}
 
-.quiz-result-page__traits {
+.qr-title {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-black);
+  line-height: 1.35;
+  word-break: keep-all;
+  animation: quiz-result-fade-up 0.4s ease 0.5s both;
+}
+
+/* 바디 영역 */
+
+.qr-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px var(--page-px) 16px;
+  background-color: var(--color-bg-base);
+}
+
+/* 하단 고정 버튼 */
+
+.qr-footer {
+  flex-shrink: 0;
+  background-color: var(--color-bg-base);
+  padding: var(--space-5) var(--page-px) 32px;
+}
+
+/* 성향 요약 카드 */
+
+.qr-summary-card {
+  background-color: #f8f8f8;
+  border-radius: 22px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  animation: quiz-result-fade-up 0.4s ease 0.6s both;
+}
+
+.qr-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 14px 22px;
+}
+
+.qr-summary-label {
+  min-width: 46px;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.qr-summary-value {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.qr-summary-divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 0;
+}
+
+/* 특성 키워드 2×2 그리드 */
+
+.qr-traits {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  width: 100%;
-  margin-bottom: 32px;
+  gap: 12px;
+  animation: quiz-result-fade-up 0.4s ease 0.7s both;
 }
 
-/* 성향 pill 카드 */
-
-.quiz-result-trait-card {
+.qr-trait-card {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 56px;
+  height: 60px;
   padding: 0 12px;
   background-color: #f8f8f8;
-  border: 1.5px solid #eaeaea;
-  border-radius: 16px;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-black);
-  word-break: keep-all;
+  border: 1.5px solid var(--color-border);
+  border-radius: 17px;
 }
 
-.quiz-result-trait-card__emoji {
+.qr-trait-card__emoji {
   font-size: 20px;
   line-height: 1;
   flex-shrink: 0;
 }
 
-/* CTA 버튼 */
-
-.quiz-result-page__cta {
-  width: 100%;
+.qr-trait-card__label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-black);
+  white-space: nowrap;
 }
 
-.quiz-result-page__cta .btn {
+/* 하단 홈 버튼 */
+
+.qr-cta {
+  animation: quiz-result-fade-up 0.4s ease 0.8s both;
+}
+
+.qr-cta .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 62px;
-  font-size: 17px;
-  font-weight: 700;
+  gap: 10px;
+  height: 56px;
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.qr-cta__icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
 }
 
 /* ── 결과 화면 등장 애니메이션 ── */
@@ -548,11 +692,13 @@
 
 @media (min-width: 390px) {
   .quiz-title { font-size: 21px; }
+  .qr-title { font-size: 25px; }
+  .qr-illustration { width: 210px; height: 210px; }
 }
 
 @media (min-width: 430px) {
   .quiz-title { font-size: 22px; }
-  .quiz-result-page__title { font-size: 36px; }
-  .quiz-result-page__illustration { width: 216px; height: 200px; }
   .quiz-interest-card__emoji { font-size: 30px; }
+  .qr-title { font-size: 26px; }
+  .qr-illustration { width: 220px; height: 220px; }
 }

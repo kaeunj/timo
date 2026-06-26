@@ -244,6 +244,11 @@
       }
 
       listEl.innerHTML = projects.map((p) => this._renderProjectCard(p)).join('');
+
+      listEl.querySelectorAll('.proj-card').forEach((el, i) => {
+        el.style.animationDelay = `${0.05 + i * 0.06}s`;
+        el.classList.add('proj-card-anim');
+      });
     },
 
     _getFilteredListProjects() {

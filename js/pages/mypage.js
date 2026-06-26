@@ -168,19 +168,37 @@ const MY_WRITTEN_REVIEWS_DATA = [
   }
 ];
 
+/* ── 성향별 추천 툴 데이터 (추후 DB 연동 시 이 객체만 교체) ── */
+const RESULT_TOOLS = {
+  planner:      ['Notion', 'Google Calendar', 'Slack'],
+  executor:     ['GitHub', 'VS Code', 'Discord'],
+  analyst:      ['Excel', 'FigJam', 'Miro'],
+  communicator: ['Figma', 'React', 'Slack'],
+};
+
+/* ── 성향 타입 라벨 ── */
+const RESULT_TYPE_LABELS = {
+  planner:      '📅 계획러',
+  executor:     '🚀 실행러',
+  analyst:      '🔍 분석러',
+  communicator: '💬 소통러',
+};
+
 const MyPage = {
 
   init(params = {}) {
     this._bindStats();
     this._bindProjectMore();
-    this._renderSavedPosts();
     this._updateSavedPostsCount();
     this._bindMyPcardClick();
     this._bindLogout();
+    this._renderPersonalityBadge('.myp-profile__type-badge');
+    this._renderPersonalityTools();
     this._animateMyPage();
   },
 
   initReview(params = {}) {
+    this._renderPersonalityBadge('[data-page="project-review"] .prv-profile__type-badge');
     this._bindReviewBack();
     this._bindTagMore();
     this._animatePageIn('[data-page="project-review"] .prv-page');
@@ -270,6 +288,38 @@ const MyPage = {
         applicants: 0
       }
     });
+  },
+
+  /* 성향 배지 업데이트 */
+  _renderPersonalityBadge(selector) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    const quizResult = Storage.get('quiz_result');
+    const label = RESULT_TYPE_LABELS[quizResult];
+    if (label) el.textContent = label;
+  },
+
+  /* 성향 추천 툴 렌더링 */
+  _renderPersonalityTools() {
+    const profileTop = document.querySelector('.myp-profile__top');
+    if (!profileTop) return;
+
+    const existing = profileTop.parentNode.querySelector('.myp-tools');
+    if (existing) existing.remove();
+
+    const quizTools = Storage.get('quiz_tools');
+    const tools = (quizTools && quizTools.length > 0)
+      ? quizTools
+      : (RESULT_TOOLS[Storage.get('quiz_result')] || RESULT_TOOLS.planner);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'myp-tools';
+    wrap.innerHTML = `
+      <div class="myp-tools__chips">
+        ${tools.map(t => `<span class="myp-tools__chip">${t}</span>`).join('')}
+      </div>`;
+
+    profileTop.insertAdjacentElement('afterend', wrap);
   },
 
   /* 프로필 카드 클릭 이벤트 없음 — 상단은 클릭 영역 아님 */
@@ -441,7 +491,6 @@ const MyPage = {
       <div class="svdp-card" data-post-id="${post.id}" role="button" tabindex="0" aria-label="${post.title}">
         <span class="svdp-card__badge svdp-card__badge--${post.badge}">${post.badgeLabel}</span>
         <p class="svdp-card__title">${post.title}</p>
-        <p class="svdp-card__excerpt">${post.excerpt}</p>
         <p class="svdp-card__meta">${post.author} · ${post.time}</p>
       </div>`).join('');
 
