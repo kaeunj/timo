@@ -95,6 +95,8 @@ const Router = {
 
   /* 최초 진입 시 이동할 화면 결정 */
   async _getInitialPage() {
+    const session = await API.auth.getSession();
+    if (session) return 'home';
     return 'onboarding-1';
   },
 
