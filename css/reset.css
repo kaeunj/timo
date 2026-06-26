@@ -20,6 +20,16 @@ body {
   overflow: hidden;
 }
 
+/* 모든 스크롤 영역에서 스크롤바를 숨긴다 (스크롤 동작 자체는 유지) */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
 img,
 svg {
   display: block;

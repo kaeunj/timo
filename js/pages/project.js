@@ -9,78 +9,194 @@
  * 이동 시 동일한 프로젝트 id/내용이 보이도록 맞춘다.
  */
 (function () {
+  /* home.js의 팀원 모집 데이터와 동일한 id/내용으로 맞춰 home → detail
+     이동 시 같은 프로젝트가 보이도록 한다(분야도 기획·개발·디자인·
+     마케팅·영상·AI·창업 등으로 다양하게 구성). */
   const SAMPLE_PROJECTS = [
     {
-      id: 'proj-001',
-      title: 'AI 헬스케어 앱 개발',
-      category: '해커톤',
-      status: 'open',
-      description: '건강 데이터를 AI로 분석하는 맞춤형 헬스케어 앱입니다. ML 모델 통합 및 사용자 친화적 UI 구현이 목표입니다.',
-      deadlineLabel: '07.15',
-      teamSizeRange: '3~5명',
-      durationLabel: '3개월',
-      roles: [
-        { name: '프론트엔드', status: '모집 중' },
-        { name: '백엔드', status: '모집 중' },
-        { name: '디자인', status: '모집 중' }
-      ],
-      author: { name: '김민준', avatarColor: '#7fffd4', initial: '김' },
-      applicants: 12
-    },
-    {
-      id: 'proj-002',
-      title: '스마트시티 솔루션 공모전',
+      id: 'proj-101',
+      title: '대한민국 아이디어 공모전',
       category: '공모전',
-      status: 'urgent',
-      description: 'IoT 센서 데이터를 활용한 스마트시티 솔루션을 제안하는 공모전입니다.',
-      deadlineLabel: '07.01',
-      teamSizeRange: '4~6명',
+      status: 'open',
+      description: '다양한 아이디어로 사회 문제를 해결하는 공모전입니다. 기획부터 발표까지 함께할 팀원을 찾아요.',
+      deadlineLabel: '07.23',
+      deadlineDday: 23,
+      teamSizeRange: '3~5명',
       durationLabel: '2개월',
       roles: [
-        { name: '백엔드', status: '모집 중' },
-        { name: '기획', status: '모집 중' }
+        { name: '기획', status: '모집 중' },
+        { name: '아이디어', status: '모집 중' }
       ],
-      author: { name: '이수진', avatarColor: '#7fffd4', initial: '이' },
-      applicants: 8
+      author: { name: '김도윤', avatarColor: '#7fffd4', initial: '김' },
+      applicants: 128
     },
     {
-      id: 'proj-003',
-      title: '소셜 커머스 플랫폼 MVP',
-      category: '사이드 프로젝트',
-      status: 'open',
-      description: '사용자 경험을 최우선으로 하는 소셜 커머스 플랫폼을 함께 개발합니다.',
-      deadlineLabel: '07.20',
-      teamSizeRange: '3~4명',
-      durationLabel: '4개월',
+      id: 'proj-102',
+      title: 'AI 서비스 해커톤',
+      category: '해커톤',
+      status: 'urgent',
+      description: 'AI 기술을 활용한 서비스를 단기간에 구현하는 해커톤입니다.',
+      deadlineLabel: '07.15',
+      deadlineDday: 15,
+      teamSizeRange: '4~6명',
+      durationLabel: '3일',
       roles: [
-        { name: '프론트엔드', status: '모집 중' },
-        { name: '디자인', status: '모집 중' }
+        { name: 'AI', status: '모집 중' },
+        { name: '개발', status: '모집 중' }
       ],
-      author: { name: '박지호', avatarColor: '#b2ebf2', initial: '박' },
-      applicants: 15
+      author: { name: '이서준', avatarColor: '#7fffd4', initial: '이' },
+      applicants: 84
     },
     {
-      id: 'proj-004',
-      title: '교육 플랫폼 MVP 개발',
-      category: '사이드 프로젝트',
+      id: 'proj-103',
+      title: '스마트시티 공모전',
+      category: '공모전',
       status: 'open',
-      description: '온라인 학습 경험을 혁신하는 교육 플랫폼의 MVP를 함께 만들어갈 팀원을 찾습니다.',
-      deadlineLabel: '08.01',
+      description: 'IoT·데이터를 활용해 도시 문제를 해결하는 아이디어를 제안하는 공모전입니다.',
+      deadlineLabel: '07.12',
+      deadlineDday: 12,
+      teamSizeRange: '3~4명',
+      durationLabel: '1개월',
+      roles: [
+        { name: '기획', status: '모집 중' },
+        { name: '데이터', status: '모집 중' }
+      ],
+      author: { name: '박하은', avatarColor: '#b2ebf2', initial: '박' },
+      applicants: 65
+    },
+    {
+      id: 'proj-104',
+      title: '지역 관광 플랫폼 프로젝트',
+      category: '프로젝트',
+      emoji: '🧳',
+      status: 'open',
+      description: '지역 관광 정보를 한눈에 볼 수 있는 플랫폼을 함께 만들어요.',
+      deadlineLabel: '상시모집',
+      deadlineDday: null,
       teamSizeRange: '3~5명',
       durationLabel: '3개월',
       roles: [
-        { name: '프론트엔드', status: '모집 중' },
-        { name: '백엔드', status: '모집 중' }
+        { name: '디자인', status: '모집 중' },
+        { name: '개발', status: '모집 중' }
       ],
-      author: { name: '최다은', avatarColor: '#7fffd4', initial: '최' },
-      applicants: 6
+      author: { name: '최지우', avatarColor: '#7fffd4', initial: '최' },
+      applicants: 41
+    },
+    {
+      id: 'proj-105',
+      title: '창업 MVP 제작',
+      category: '창업',
+      status: 'open',
+      description: '예비 창업팀의 MVP 제작을 함께할 팀원을 찾습니다.',
+      deadlineLabel: '상시모집',
+      deadlineDday: null,
+      teamSizeRange: '2~4명',
+      durationLabel: '4개월',
+      roles: [
+        { name: '창업', status: '모집 중' },
+        { name: '기획', status: '모집 중' }
+      ],
+      author: { name: '정우진', avatarColor: '#e1e0ff', initial: '정' },
+      applicants: 32
+    },
+    {
+      id: 'proj-106',
+      title: 'ESG 캠페인 프로젝트',
+      category: '프로젝트',
+      emoji: '🌱',
+      status: 'open',
+      description: '환경 문제 해결을 위한 ESG 캠페인을 기획하고 실행할 팀원을 모집합니다.',
+      deadlineLabel: '07.20',
+      deadlineDday: 20,
+      teamSizeRange: '3~5명',
+      durationLabel: '2개월',
+      roles: [
+        { name: '마케팅', status: '모집 중' },
+        { name: '콘텐츠', status: '모집 중' }
+      ],
+      author: { name: '한소율', avatarColor: '#b2ebf2', initial: '한' },
+      applicants: 56
+    },
+    {
+      id: 'proj-107',
+      title: '숏폼 콘텐츠 제작',
+      category: '프로젝트',
+      emoji: '🎬',
+      status: 'open',
+      description: 'SNS 채널을 위한 숏폼 콘텐츠를 기획하고 제작할 팀원을 찾아요.',
+      deadlineLabel: '상시모집',
+      deadlineDday: null,
+      teamSizeRange: '2~3명',
+      durationLabel: '1개월',
+      roles: [
+        { name: '영상', status: '모집 중' },
+        { name: '콘텐츠', status: '모집 중' }
+      ],
+      author: { name: '윤서아', avatarColor: '#7fffd4', initial: '윤' },
+      applicants: 19
+    },
+    {
+      id: 'proj-108',
+      title: '여행 플랫폼 제작',
+      category: '사이드 프로젝트',
+      status: 'open',
+      description: '여행 일정을 손쉽게 공유하는 플랫폼을 함께 만들어갈 팀원을 찾습니다.',
+      deadlineLabel: '07.18',
+      deadlineDday: 18,
+      teamSizeRange: '3~5명',
+      durationLabel: '3개월',
+      roles: [
+        { name: '디자인', status: '모집 중' },
+        { name: '개발', status: '모집 중' }
+      ],
+      author: { name: '강민재', avatarColor: '#b2ebf2', initial: '강' },
+      applicants: 27
+    },
+    {
+      id: 'proj-109',
+      title: '모바일 게임 개발',
+      category: '사이드 프로젝트',
+      emoji: '🎮',
+      status: 'open',
+      description: '캐주얼 모바일 게임을 함께 만들어갈 팀원을 모집합니다.',
+      deadlineLabel: '07.25',
+      deadlineDday: 25,
+      teamSizeRange: '4~6명',
+      durationLabel: '4개월',
+      roles: [
+        { name: '게임', status: '모집 중' },
+        { name: '개발', status: '모집 중' }
+      ],
+      author: { name: '오지훈', avatarColor: '#e1e0ff', initial: '오' },
+      applicants: 38
+    },
+    {
+      id: 'proj-110',
+      title: '대학 축제 홍보 프로젝트',
+      category: '프로젝트',
+      emoji: '🎉',
+      status: 'open',
+      description: '대학 축제를 홍보할 콘텐츠와 디자인을 함께 제작할 팀원을 찾습니다.',
+      deadlineLabel: '상시모집',
+      deadlineDday: null,
+      teamSizeRange: '3~6명',
+      durationLabel: '1개월',
+      roles: [
+        { name: '마케팅', status: '모집 중' },
+        { name: '디자인', status: '모집 중' },
+        { name: '영상', status: '모집 중' }
+      ],
+      author: { name: '신예은', avatarColor: '#7fffd4', initial: '신' },
+      applicants: 22
     }
   ];
 
   const CATEGORY_BADGE_CLASS = {
     '해커톤': 'cat-badge--hackathon',
     '공모전': 'cat-badge--contest',
-    '사이드 프로젝트': 'cat-badge--side'
+    '프로젝트': 'cat-badge--project',
+    '사이드 프로젝트': 'cat-badge--side',
+    '창업': 'cat-badge--startup'
   };
 
   const STATUS_LABEL = {
@@ -128,6 +244,11 @@
       }
 
       listEl.innerHTML = projects.map((p) => this._renderProjectCard(p)).join('');
+
+      listEl.querySelectorAll('.proj-card').forEach((el, i) => {
+        el.style.animationDelay = `${0.05 + i * 0.06}s`;
+        el.classList.add('proj-card-anim');
+      });
     },
 
     _getFilteredListProjects() {
@@ -143,6 +264,7 @@
       const catBadgeClass = CATEGORY_BADGE_CLASS[project.category] || '';
       const statusLabel = STATUS_LABEL[project.status] || '';
       const statusClass = STATUS_CLASS[project.status] || '';
+      const deadlineText = project.deadlineDday != null ? `마감 ${project.deadlineLabel}` : project.deadlineLabel;
 
       const roles = project.roles
         .map((r) => `<span class="role-badge">${r.name}</span>`)
@@ -155,7 +277,7 @@
               <span class="cat-badge ${catBadgeClass}">${project.category}</span>
               <span class="recruit-status ${statusClass}">${statusLabel}</span>
             </div>
-            <span class="proj-card__deadline">마감 ${project.deadlineLabel}</span>
+            <span class="proj-card__deadline">${deadlineText}</span>
           </div>
           <h3 class="proj-card__title">${project.title}</h3>
           <p class="proj-card__desc">${project.description}</p>
@@ -166,7 +288,7 @@
               <span class="proj-card__avatar" style="background-color:${project.author.avatarColor};">${project.author.initial}</span>
               <span class="proj-card__author-name">${project.author.name}</span>
             </span>
-            <span class="proj-card__applicants">지원 ${project.applicants}명</span>
+            <span class="proj-card__applicants">모집 ${project.teamSizeRange} · 지원 ${project.applicants}명</span>
           </div>
         </article>
       `;
@@ -230,11 +352,6 @@
           goToDetail(card);
         });
       }
-
-      /* FAB (프로젝트 등록) */
-      qs('[data-action="create-project"]', listSection)?.addEventListener('click', () => {
-        Router.navigate('project-detail');
-      });
     },
 
     initDetail(params = {}) {

@@ -57,6 +57,9 @@ const Router = {
     /* 바텀 네비 업데이트 */
     this._updateBottomNav(pageId);
 
+    /* 글쓰기 FAB 노출 여부 업데이트 */
+    if (typeof GlobalFab !== 'undefined') GlobalFab.updateForPage(pageId);
+
     /* history 업데이트 — noHistory여도 state는 채워야 뒤로가기 시 popstate.state가
        null로 빠져 _getInitialPage()로 강제 이동하는 문제가 생기지 않는다 */
     if (params.noHistory) {
@@ -78,27 +81,20 @@ const Router = {
   },
 
   /* 라우터 초기화 (앱 시작 시 1회 호출) */
-  init() {
+  async init() {
     /* 브라우저 뒤로가기/앞으로가기 처리 */
-    window.addEventListener('popstate', (e) => {
-      const pageId = e.state?.page || this._getInitialPage();
+    window.addEventListener('popstate', async (e) => {
+      const pageId = e.state?.page || await this._getInitialPage();
       this.navigate(pageId, { noHistory: true });
     });
 
     /* 초기 화면 결정 */
-    const hashPage = location.hash.replace('#', '');
-    const startPage = hashPage
-      ? hashPage
-      : this._getInitialPage();
-
+    const startPage = await this._getInitialPage();
     this.navigate(startPage, { noHistory: true });
   },
 
   /* 최초 진입 시 이동할 화면 결정 */
-  _getInitialPage() {
-    /* 개발 중: 항상 온보딩부터 시작 — Supabase 연동 후 세션 체크로 교체 */
-    Storage.remove('onboarding_done');
-    Storage.remove('session');
+  async _getInitialPage() {
     return 'onboarding-1';
   },
 
