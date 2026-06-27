@@ -389,6 +389,14 @@
     _render(project) {
       if (!project) return;
 
+      let heroUrl = project.heroImage;
+      if (!heroUrl) {
+        const heroIndex = SAMPLE_PROJECTS.findIndex((p) => p.id === project.id);
+        const heroNum = String(heroIndex >= 0 ? heroIndex + 1 : 1).padStart(2, '0');
+        heroUrl = `assets/images/project-img${heroNum}.jpg`;
+      }
+      qs('#detail-hero-bg').style.backgroundImage = `url('${heroUrl}')`;
+
       const catBadge = qs('#detail-cat-badge');
       catBadge.textContent = project.category;
       catBadge.className = `cat-badge ${CATEGORY_BADGE_CLASS[project.category] || ''}`;
