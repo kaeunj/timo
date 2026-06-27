@@ -339,13 +339,18 @@
       list.innerHTML = SAMPLE_CONTESTS.map((c) => this._renderContestCard(c)).join('');
     },
 
+    /* 공모전 카드 사진 번호(01~10)를 카드/상세 페이지가 동일하게 공유 */
+    _contestPhotoNum(contest) {
+      const photoIndex = SAMPLE_CONTESTS.findIndex((c) => c.id === contest.id);
+      return String((photoIndex >= 0 ? photoIndex : 0) % 10 + 1).padStart(2, '0');
+    },
+
     _renderContestCard(contest) {
       const ddayClass = contest.ddayUrgent ? 'contest-card__dday-pill--urgent' : '';
-      const photoIndex = SAMPLE_CONTESTS.findIndex((c) => c.id === contest.id);
-      const photoNum = String((photoIndex >= 0 ? photoIndex : 0) % 10 + 1).padStart(2, '0');
+      const photoNum = this._contestPhotoNum(contest);
 
       return `
-        <article class="contest-card" data-id="${contest.id}">
+        <article class="contest-card" data-id="${contest.id}" tabindex="0" role="button" aria-label="${contest.title} 상세보기">
           <div class="contest-card__photo" style="background-image: url('assets/images/project-img${photoNum}.jpg')">
             <span class="contest-card__category-pill">${contest.category}</span>
             <span class="contest-card__dday-pill ${ddayClass}">D-${contest.deadlineDday}</span>
@@ -358,6 +363,24 @@
           </div>
         </article>
       `;
+    },
+
+    /* 공모전 카드 → 프로젝트 상세 페이지 데이터 형태로 변환 */
+    _contestToProject(contest) {
+      return {
+        id: contest.id,
+        title: contest.title,
+        category: contest.category,
+        status: contest.ddayUrgent ? 'urgent' : 'open',
+        description: `${contest.organizer}에서 주최하는 공모전입니다. ${contest.extraLabel}.`,
+        deadlineLabel: `D-${contest.deadlineDday}`,
+        teamSizeRange: '제한 없음',
+        durationLabel: '심사 후 발표',
+        roles: [{ name: contest.category, status: '모집 중' }],
+        author: { name: contest.organizer, avatarColor: '#7fffd4', initial: contest.organizer.charAt(0) },
+        applicants: Math.max(20, 200 - contest.deadlineDday * 6),
+        heroImage: `assets/images/project-img${this._contestPhotoNum(contest)}.jpg`
+      };
     },
 
     renderActiveContestList() {
@@ -506,6 +529,29 @@
 
           this.state.category = chip.dataset.category;
           this.renderCardList();
+        });
+      }
+
+      /* 인기 공모전 카드 클릭 → 상세 페이지 */
+      const contestList = qs('#home-contest-list');
+      if (contestList) {
+        const goToContestDetail = (card) => {
+          if (!card) return;
+          const contest = SAMPLE_CONTESTS.find((c) => c.id === card.dataset.id);
+          if (!contest) return;
+          Router.navigate('project-detail', { project: this._contestToProject(contest) });
+        };
+
+        contestList.addEventListener('click', (e) => {
+          goToContestDetail(e.target.closest('.contest-card'));
+        });
+
+        contestList.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          const card = e.target.closest('.contest-card');
+          if (!card) return;
+          e.preventDefault();
+          goToContestDetail(card);
         });
       }
 
