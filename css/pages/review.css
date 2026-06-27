@@ -80,13 +80,19 @@
   width: 76px;
   height: 76px;
   border-radius: var(--radius-full);
-  border: 2.5px solid var(--color-primary-light);
   background-color: var(--color-primary-tint);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 34px;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.prv-profile__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .prv-profile__info {

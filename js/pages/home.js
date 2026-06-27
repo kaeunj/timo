@@ -341,11 +341,12 @@
 
     _renderContestCard(contest) {
       const ddayClass = contest.ddayUrgent ? 'contest-card__dday-pill--urgent' : '';
+      const photoIndex = SAMPLE_CONTESTS.findIndex((c) => c.id === contest.id);
+      const photoNum = String((photoIndex >= 0 ? photoIndex : 0) % 10 + 1).padStart(2, '0');
 
       return `
         <article class="contest-card" data-id="${contest.id}">
-          <div class="contest-card__photo theme-${contest.theme}">
-            <span class="contest-card__emoji" aria-hidden="true">${contest.emoji}</span>
+          <div class="contest-card__photo" style="background-image: url('assets/images/project-img${photoNum}.jpg')">
             <span class="contest-card__category-pill">${contest.category}</span>
             <span class="contest-card__dday-pill ${ddayClass}">D-${contest.deadlineDday}</span>
           </div>
