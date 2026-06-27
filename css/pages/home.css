@@ -264,13 +264,9 @@
 .contest-card__photo {
   position: relative;
   height: 112px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.contest-card__emoji {
-  font-size: 40px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-bg-page);
 }
 
 .contest-card__category-pill {
