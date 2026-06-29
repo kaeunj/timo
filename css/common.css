@@ -604,19 +604,39 @@ h1, h2, h3, h4, h5, h6, .title {
   transform: scale(0.93);
 }
 
-/* 아이콘 자체에 배경/그림자가 포함된 경우 (예: plus-tab-icon.svg) */
+/* CSS 원형으로 교체 — SVG 필터가 overflow:hidden에 잘리는 문제 방지 */
 .fab--lg {
-  width: 111px;
-  height: 111px;
-  background-color: transparent;
-  box-shadow: none;
-  right: 0;
-  bottom: calc(var(--bottom-nav-height) + var(--space-5) - 26px);
+  width: 56px;
+  height: 56px;
+  background-color: var(--color-primary-light);
+  box-shadow: var(--shadow-fab);
 }
 
 .fab--lg img {
-  width: 100%;
-  height: 100%;
+  display: none;
+}
+
+.fab--lg::before,
+.fab--lg::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: var(--color-black);
+  border-radius: 2px;
+  transition: transform 300ms ease;
+}
+
+.fab--lg::before {
+  width: 3px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+}
+
+.fab--lg::after {
+  width: 22px;
+  height: 3px;
+  transform: translate(-50%, -50%);
 }
 
 /* ── 글쓰기 FAB 확장 메뉴 (홈 · 프로젝트 · 커뮤니티 공통) ── */
@@ -638,8 +658,8 @@ h1, h2, h3, h4, h5, h6, .title {
 
 .global-fab-wrap {
   position: fixed;
-  right: 0;
-  bottom: calc(var(--bottom-nav-height) + var(--space-5) - 26px);
+  right: 16px;
+  bottom: calc(var(--bottom-nav-height) + 16px);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -650,8 +670,11 @@ h1, h2, h3, h4, h5, h6, .title {
   display: none;
 }
 
+/* .fab의 position:fixed를 덮어써서 버튼을 flex flow 안에 고정 */
 .global-fab-wrap .fab {
-  position: static;
+  position: relative;
+  bottom: auto;
+  right: auto;
 }
 
 .global-fab-menu {
@@ -659,8 +682,9 @@ h1, h2, h3, h4, h5, h6, .title {
   flex-direction: column;
   gap: 14px;
   align-items: flex-end;
-  padding-right: 30px;
-  padding-bottom: 10px;
+  padding-bottom: 14px;
+  position: relative;
+  z-index: 1;
   opacity: 0;
   pointer-events: none;
   transform: translateY(12px);
@@ -727,12 +751,12 @@ h1, h2, h3, h4, h5, h6, .title {
   white-space: nowrap;
 }
 
-.global-fab-main img {
-  transition: transform 300ms ease;
+.global-fab-main.is-open::before {
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.global-fab-main.is-open img {
-  transform: rotate(45deg);
+.global-fab-main.is-open::after {
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 /* ── 아이콘 버튼 (원형) ── */
